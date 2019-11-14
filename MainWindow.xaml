@@ -1,0 +1,17 @@
+﻿<Window x:Class="Project_ChessWithInterface.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project_ChessWithInterface"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="805.328" Width="1146.721">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="193*"/>
+            <ColumnDefinition Width="57*"/>
+        </Grid.ColumnDefinitions>
+        <Image x:Name="image" HorizontalAlignment="Left" Height="709" Margin="153,-3,0,0" VerticalAlignment="Top" Width="734" Source="F:\Project_ChessWithInterface\Resources\output-onlinepngtools (1).png" Grid.ColumnSpan="2"/>
+
+    </Grid>
+</Window>
