@@ -5,13 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="MainWindow" Height="805.328" Width="1146.721">
-    <Grid>
+        Title="MainWindow" Height="821.061" Width="1002.499">
+    <Grid Margin="0,0,2,-21">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="193*"/>
-            <ColumnDefinition Width="57*"/>
+            <ColumnDefinition Width="270*"/>
+            <ColumnDefinition Width="551*"/>
+            <ColumnDefinition Width="198*"/>
+            <ColumnDefinition Width="175*"/>
+            <ColumnDefinition Width="354*"/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="image" HorizontalAlignment="Left" Height="709" Margin="153,-3,0,0" VerticalAlignment="Top" Width="734" Source="F:\Project_ChessWithInterface\Resources\output-onlinepngtools (1).png" Grid.ColumnSpan="2"/>
+        <Image x:Name="image" HorizontalAlignment="Left" Height="710" Margin="136,25,0,0" VerticalAlignment="Top" Width="710" Source="N:\Visual Studio 2019\Project\Chess44\Resources\output-onlinepngtools1.png" Grid.ColumnSpan="5"/>
+        <Button x:Name="button"  Background="Transparent" HorizontalAlignment="Left" Margin="52,117,0,0" VerticalAlignment="Top" Width="90" Height="86" Grid.Column="1">
+            <Image x:Name="image1" HorizontalAlignment="Left" Height="78" VerticalAlignment="Top" Stretch="Uniform" Width="74" RenderTransformOrigin="1.552,1.83" Source="N:\Visual Studio 2019\Project\Chess44\Resources\WhiteKing.png"/>
+        </Button>
 
     </Grid>
 </Window>
