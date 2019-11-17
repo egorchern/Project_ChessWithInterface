@@ -1,23 +1,89 @@
-﻿<Window x:Class="Project_ChessWithInterface.MainWindow"
+﻿<Window x:Class="Project_ChessWithInterface.MainWindow" ResizeMode="NoResize"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="MainWindow" Height="821.061" Width="1002.499">
-    <Grid Margin="0,0,2,-21">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="270*"/>
-            <ColumnDefinition Width="551*"/>
-            <ColumnDefinition Width="198*"/>
-            <ColumnDefinition Width="175*"/>
-            <ColumnDefinition Width="354*"/>
-        </Grid.ColumnDefinitions>
-        <Image x:Name="image" HorizontalAlignment="Left" Height="710" Margin="136,25,0,0" VerticalAlignment="Top" Width="710" Source="N:\Visual Studio 2019\Project\Chess44\Resources\output-onlinepngtools1.png" Grid.ColumnSpan="5"/>
-        <Button x:Name="button"  Background="Transparent" HorizontalAlignment="Left" Margin="52,117,0,0" VerticalAlignment="Top" Width="90" Height="86" Grid.Column="1">
-            <Image x:Name="image1" HorizontalAlignment="Left" Height="78" VerticalAlignment="Top" Stretch="Uniform" Width="74" RenderTransformOrigin="1.552,1.83" Source="N:\Visual Studio 2019\Project\Chess44\Resources\WhiteKing.png"/>
-        </Button>
+        Title="MainWindow" Height="871.061" Width="1026.499">
+    <Grid Margin="0,0,2,-38">
+
+        <Image x:Name="Board" HorizontalAlignment="Left" Height="710" Margin="70,51,0,0" VerticalAlignment="Top" Width="710" Source="F:\Chess44\Resources\Board.png"/>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="841,34,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="button1_Copy1" Background="Transparent"  HorizontalAlignment="Left" Margin="70,51,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy2" Background="Transparent"  HorizontalAlignment="Left" Margin="70,139,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy3" Background="Transparent"  HorizontalAlignment="Left" Margin="70,228,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy4" Background="Transparent"  HorizontalAlignment="Left" Margin="70,316,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy5" Background="Transparent"  HorizontalAlignment="Left" Margin="70,405,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy6" Background="Transparent"  HorizontalAlignment="Left" Margin="70,493,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy7" Background="Transparent"  HorizontalAlignment="Left" Margin="70,582,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy8" Background="Transparent"  HorizontalAlignment="Left" Margin="70,671,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy9" Background="Transparent"  HorizontalAlignment="Left" Margin="160,671,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy" Background="Transparent"  HorizontalAlignment="Left" Margin="159,582,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy10" Background="Transparent"  HorizontalAlignment="Left" Margin="160,494,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy11" Background="Transparent"  HorizontalAlignment="Left" Margin="159,405,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy12" Background="Transparent"  HorizontalAlignment="Left" Margin="160,317,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy13" Background="Transparent"  HorizontalAlignment="Left" Margin="159,228,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy14" Background="Transparent"  HorizontalAlignment="Left" Margin="159,140,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy15" Background="Transparent"  HorizontalAlignment="Left" Margin="159,51,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy16" Background="Transparent"  HorizontalAlignment="Left" Margin="248,51,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy17" Background="Transparent"  HorizontalAlignment="Left" Margin="248,139,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy18" Background="Transparent"  HorizontalAlignment="Left" Margin="247,228,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy19" Background="Transparent"  HorizontalAlignment="Left" Margin="336,228,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy20" Background="Transparent"  HorizontalAlignment="Left" Margin="337,140,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy21" Background="Transparent"  HorizontalAlignment="Left" Margin="336,51,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy22" Background="Transparent"  HorizontalAlignment="Left" Margin="248,316,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy23" Background="Transparent"  HorizontalAlignment="Left" Margin="248,405,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy24" Background="Transparent"  HorizontalAlignment="Left" Margin="248,493,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy25" Background="Transparent"  HorizontalAlignment="Left" Margin="337,494,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy26" Background="Transparent"  HorizontalAlignment="Left" Margin="336,405,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy27" Background="Transparent"  HorizontalAlignment="Left" Margin="337,317,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy28" Background="Transparent"  HorizontalAlignment="Left" Margin="248,582,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy29" Background="Transparent"  HorizontalAlignment="Left" Margin="248,671,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy30" Background="Transparent"  HorizontalAlignment="Left" Margin="337,671,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy31" Background="Transparent"  HorizontalAlignment="Left" Margin="336,582,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy32" Background="Transparent"  HorizontalAlignment="Left" Margin="425,51,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy33" Background="Transparent"  HorizontalAlignment="Left" Margin="425,139,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy34" Background="Transparent"  HorizontalAlignment="Left" Margin="424,228,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy35" Background="Transparent"  HorizontalAlignment="Left" Margin="513,228,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy36" Background="Transparent"  HorizontalAlignment="Left" Margin="514,140,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy37" Background="Transparent"  HorizontalAlignment="Left" Margin="513,51,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy38" Background="Transparent"  HorizontalAlignment="Left" Margin="425,316,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy39" Background="Transparent"  HorizontalAlignment="Left" Margin="425,405,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy40" Background="Transparent"  HorizontalAlignment="Left" Margin="425,493,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy41" Background="Transparent"  HorizontalAlignment="Left" Margin="514,494,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy42" Background="Transparent"  HorizontalAlignment="Left" Margin="513,405,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy43" Background="Transparent"  HorizontalAlignment="Left" Margin="514,317,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy44" Background="Transparent"  HorizontalAlignment="Left" Margin="425,582,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy45" Background="Transparent"  HorizontalAlignment="Left" Margin="425,671,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy46" Background="Transparent"  HorizontalAlignment="Left" Margin="514,671,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy47" Background="Transparent"  HorizontalAlignment="Left" Margin="513,582,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy48" Background="Transparent"  HorizontalAlignment="Left" Margin="602,51,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy49" Background="Transparent"  HorizontalAlignment="Left" Margin="602,139,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy50" Background="Transparent"  HorizontalAlignment="Left" Margin="601,228,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy51" Background="Transparent"  HorizontalAlignment="Left" Margin="690,228,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy52" Background="Transparent"  HorizontalAlignment="Left" Margin="691,140,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy53" Background="Transparent"  HorizontalAlignment="Left" Margin="690,51,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy54" Background="Transparent"  HorizontalAlignment="Left" Margin="602,316,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy55" Background="Transparent"  HorizontalAlignment="Left" Margin="602,405,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy56" Background="Transparent"  HorizontalAlignment="Left" Margin="602,493,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy57" Background="Transparent"  HorizontalAlignment="Left" Margin="691,494,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy58" Background="Transparent"  HorizontalAlignment="Left" Margin="690,405,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy59" Background="Transparent"  HorizontalAlignment="Left" Margin="691,317,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy60" Background="Transparent"  HorizontalAlignment="Left" Margin="602,582,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy61" Background="Transparent"  HorizontalAlignment="Left" Margin="602,671,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy62" Background="Transparent"  HorizontalAlignment="Left" Margin="691,671,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="button1_Copy63" Background="Transparent"  HorizontalAlignment="Left" Margin="690,582,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="95,-11,0,0" TextWrapping="Wrap" Text="A    B    C    D    E     F    G    H" VerticalAlignment="Top" Width="708" FontSize="50" FontWeight="Bold" />
+        <Label x:Name="label" Content="1" HorizontalAlignment="Left" Margin="20,55,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <Label x:Name="label_Copy" Content="2" HorizontalAlignment="Left" Margin="20,145,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <Label x:Name="label_Copy1" Content="3" HorizontalAlignment="Left" Margin="20,235,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <Label x:Name="label_Copy2" Content="4" HorizontalAlignment="Left" Margin="20,325,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <Label x:Name="label_Copy3" Content="5" HorizontalAlignment="Left" Margin="20,415,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <Label x:Name="label_Copy4" Content="6" HorizontalAlignment="Left" Margin="20,503,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <Label x:Name="label_Copy5" Content="7" HorizontalAlignment="Left" Margin="20,593,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+        <Label x:Name="label_Copy6" Content="8" HorizontalAlignment="Left" Margin="20,683,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold"/>
+
 
     </Grid>
 </Window>
