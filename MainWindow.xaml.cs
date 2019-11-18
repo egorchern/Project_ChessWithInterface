@@ -32,7 +32,7 @@ namespace Project_ChessWithInterface
 
             
             GetAllButtonElements();
-
+            
             Globals.pathToResources = GetPathToResources();
 
             foreach(Button btn in Globals.AllButtons)
@@ -46,11 +46,17 @@ namespace Project_ChessWithInterface
                 
                 
         }
-
+        public static bool CanProceedWithTurn(int index)
+        {
+            return true;
+        }
         private void UniversalSquareClickEventHandle(object sender, RoutedEventArgs e)
         {
             
             string name = ((Button)sender).Name;
+            string subStringForIndex = Regex.Replace(name, @"^btn", "");
+            int indexOfClickedSquare = Convert.ToInt32(subStringForIndex);
+            bool Verified = CanProceedWithTurn(indexOfClickedSquare);
             string pathToPiece = comboBox.SelectedItem.ToString();
             int index = 0;
             for(int i = 0; i < Globals.AllButtons.Count; i++)
@@ -125,8 +131,10 @@ namespace Project_ChessWithInterface
         public static List<string> PathsToPieces = new List<string> { "\\WhiteRook.png", "\\WhiteKnight.png", "\\WhiteBishop.png", "\\WhiteQueen.png", "\\WhiteKing.png", "\\WhitePawn.png", "\\BlackRook.png", "\\BlackKnight.png", "\\BlackBishop.png", "\\BlackQueen.png", "\\BlackKing.png", "\\BlackPawn.png" };
         public static string pathToResources = "";
         public static List<Button> AllButtons = new List<Button>();
+        public static int CurrentSquareClicked = -1;
 
-       
+
+
     }
     
 
