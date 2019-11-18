@@ -8,7 +8,7 @@
         Title="MainWindow" Height="871.061" Width="1026.499">
     <Grid Margin="0,0,2,-38">
 
-        <Image x:Name="Board" HorizontalAlignment="Left" Height="710" Margin="70,51,0,0" VerticalAlignment="Top" Width="710" Source="F:\Chess44\Resources\Board.png"/>
+        <Image x:Name="Board" HorizontalAlignment="Left" Height="710" Margin="70,51,0,0" VerticalAlignment="Top" Width="710" />
         <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="841,34,0,0" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="btn0" Background="Transparent"  HorizontalAlignment="Left" Margin="70,51,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
         <Button x:Name="btn8" Background="Transparent"  HorizontalAlignment="Left" Margin="70,139,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
