@@ -60,7 +60,8 @@ namespace Project_ChessWithInterface
             }
             */
             InitializeBoard();
-            InitializeInterface();
+            DisplayBoardOnInterface();
+            Globals.WhitesTurn = true;
                 
         }
         public static bool CanProceedWithTurn(int index)
@@ -73,12 +74,12 @@ namespace Project_ChessWithInterface
             }
             else
             {
-                if(Globals.WhitesTurn == true && CurrentPieceOnSquare[0] == 'W')
+                if(Globals.WhitesTurn == true && CurrentPieceOnSquare[0] == 'B')
                 {
                     MessageBox.Show("ERROR: Opposite color piece selected");
                     return false;
                 }
-                else if(Globals.WhitesTurn == false && CurrentPieceOnSquare[0] == 'B')
+                else if(Globals.WhitesTurn == false && CurrentPieceOnSquare[0] == 'W')
                 {
                     MessageBox.Show("ERROR: Opposite color piece selected");
                     return false;
@@ -86,8 +87,12 @@ namespace Project_ChessWithInterface
             }
             return true;
         }
-        public void InitializeInterface()
+        public void DisplayBoardOnInterface()
         {
+            foreach(Button btn in Globals.AllButtons)
+            {
+                btn.Content = null;
+            }
             for(int i = 0; i < Globals.Board.Count; i++)
             {
                 if (Globals.Board[i] != Empty)
@@ -105,6 +110,16 @@ namespace Project_ChessWithInterface
                     };
                 }
             }
+            if(Globals.WhitesTurn == true)
+            {
+                TurnIndicator.Text = "White's Turn";
+            }
+            else
+            {
+                TurnIndicator.Text = "Black's Turn";
+            }
+            MoveRecordWhite.Document.Blocks.Clear();
+            MoveRecordWhite.Document.Blocks.Add(new Paragraph(new Run(String.Join("\n", Globals.MoveRecord))));
         }
         public void SortButtons()
         {
@@ -233,18 +248,56 @@ namespace Project_ChessWithInterface
             string name = ((Button)sender).Name;
             string subStringForIndex = Regex.Replace(name, @"^btn", "");
             int indexOfClickedSquare = Convert.ToInt32(subStringForIndex);
-            bool Verified = CanProceedWithTurn(indexOfClickedSquare);
-            
-            int index = 0;
-            for(int i = 0; i < Globals.AllButtons.Count; i++)
+            if (Globals.WaitingForSecondClick == false)
             {
-                string scopedName = Globals.AllButtons[i].Name;
-                if(scopedName == name)
+
+
+                bool Verified = CanProceedWithTurn(indexOfClickedSquare);
+                if (Verified == true)
                 {
-                    index = i;
-                    break;
+
+
+                    int index = 0;
+                    for (int i = 0; i < Globals.AllButtons.Count; i++)
+                    {
+                        string scopedName = Globals.AllButtons[i].Name;
+                        if (scopedName == name)
+                        {
+                            index = i;
+                            break;
+                        }
+                    }
+                    Globals.WaitingForSecondClick = true;
+                    Globals.FirstClickIndex = indexOfClickedSquare;
+
                 }
             }
+            else
+            {
+                bool verifiedForSecondClick = CanProceedWithSecondClick(Globals.FirstClickIndex, indexOfClickedSquare);
+                if(verifiedForSecondClick == false)
+                {
+                    Globals.WaitingForSecondClick = false;
+                    Globals.FirstClickIndex = -1;
+                }
+                else
+                {
+                    MovePiece(ConvertAbsoluteToBoardNotation(Globals.FirstClickIndex), ConvertAbsoluteToBoardNotation(indexOfClickedSquare), Globals.MoveCounter);
+                    Globals.MoveCounter++;
+                    if (Globals.WhitesTurn == true)
+                    {
+                        Globals.WhitesTurn = false;
+                    }
+                    else
+                    {
+                        Globals.WhitesTurn = true;
+                    }
+                    Globals.WaitingForSecondClick = false;
+                    Globals.FirstClickIndex = -1;
+                    DisplayBoardOnInterface();
+                }
+            }
+
 
             /*Globals.AllButtons[index].Content = new Image
             {
@@ -255,6 +308,18 @@ namespace Project_ChessWithInterface
             */
             
         }
+        public static bool CanProceedWithSecondClick(int startIndex,int endIndex) 
+        {
+            List<int> PossibleMovesOfSelectedPiece = IndexesOfPossibleMoves(Globals.Board[startIndex], startIndex);
+            if(PossibleMovesOfSelectedPiece.Contains(endIndex) == false)
+            {
+                MessageBox.Show("ERROR: Ilegal move");
+                return false;
+            }
+            
+            return true;
+        }
+
         public  void GetAllButtonElements()
         {
             /// casting the content into panel
@@ -1041,7 +1106,7 @@ namespace Project_ChessWithInterface
 
 
         }
-        public static void MovePiece(string initialPos, string destination, ref bool valid, int counter)
+        public static void MovePiece(string initialPos, string destination, int counter)
         {
             string piece = "";
             int AbsoluteInitialPos = ChessNotationToAbsolute(initialPos);
@@ -1051,7 +1116,7 @@ namespace Project_ChessWithInterface
 
             if (IndexesOfPossibleMovess.Contains(DestinationAbsolute) == true)
             {
-                valid = true;
+                
                 bool kingCastling = false;
 
                 if (initialPos == "E1")
@@ -1743,7 +1808,7 @@ namespace Project_ChessWithInterface
 
     public static class Globals
     {
-        public static int CurrentySelected = 0;
+        public static int MoveCounter = 1;
         //public static List<string> PathsToPieces = new List<string> { "\\WhiteRook.png", "\\WhiteKnight.png", "\\WhiteBishop.png", "\\WhiteQueen.png", "\\WhiteKing.png", "\\WhitePawn.png", "\\BlackRook.png", "\\BlackKnight.png", "\\BlackBishop.png", "\\BlackQueen.png", "\\BlackKing.png", "\\BlackPawn.png" };
         public static string pathToResources = "";
         public static List<Button> AllButtons = new List<Button>();
@@ -1763,6 +1828,8 @@ namespace Project_ChessWithInterface
         public static int CapturedInEnPessant = -1;
         public static int EnPessantDestination = -1;
         public static Dictionary<string, string> FromBoardToPiecePathes;
+        public static bool WaitingForSecondClick = false;
+        public static int FirstClickIndex = -1;
         
 
 
