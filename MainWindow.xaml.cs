@@ -40,7 +40,7 @@ namespace Project_ChessWithInterface
         public MainWindow()
         {
             InitializeComponent();
-
+            
             
 
             
@@ -48,8 +48,11 @@ namespace Project_ChessWithInterface
             SortButtons();
             Globals.FromBoardToPiecePathes = PopulateADictionary();
             Globals.pathToResources = GetPathToResources();
+            GameWindow.Icon = new BitmapImage(new Uri(Globals.pathToResources + "\\ChessIcon.png"));
             Board.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\Board.png"));
-            foreach(Button btn in Globals.AllButtons)
+            SaveGameImage.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\SaveGameIcon.png"));
+            SaveGameImage.MouseDown += SaveGameImage_MouseDown;
+            foreach (Button btn in Globals.AllButtons)
             {
                 btn.Click += UniversalSquareClickEventHandle;
             }
@@ -64,6 +67,13 @@ namespace Project_ChessWithInterface
             Globals.WhitesTurn = true;
                 
         }
+
+        private void SaveGameImage_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SaveGameDialog save = new SaveGameDialog();
+            save.ShowDialog();
+        }
+
         public static bool CanProceedWithTurn(int index)
         {
             string CurrentPieceOnSquare = Globals.Board[index];
@@ -1569,59 +1579,8 @@ namespace Project_ChessWithInterface
             }
             return OutList;
         }
-        public static void SaveGame()
-        {
-            //Console.WriteLine("Enter a name for a save file: ");
-            string ans = "";
-            if (ans.Length > 0)
-            {
-                string path = AppDomain.CurrentDomain.BaseDirectory;
-                var temp = path.Split('\\').ToList();
-                temp.RemoveAt(temp.Count - 1);
-                temp.RemoveAt(temp.Count - 1);
-                temp.RemoveAt(temp.Count - 1);
-                path = String.Join("\\", temp);
-                path += $"\\Saves\\{ans}.bin";
-                bool FileExists = File.Exists(path);
-                if (FileExists == true)
-                {
-                    //Console.WriteLine("File with this name already exists");
-                }
-                else
-                {
-                    var t = File.Create(path);
-                    t.Close();
-                }
-
-                using (FileStream stream = new FileStream(path, FileMode.Open))
-                {
-                    using (BinaryWriter writer = new BinaryWriter(stream))
-                    {
-                        for (int i = 0; i < BoardSize * BoardSize; i++)
-                        {
-                            writer.Write($"{i}={Globals.Board[i]}");
-                        }
-                        if (Globals.WhitesTurn == true)
-                        {
-                            writer.Write("true");
-                        }
-                        else
-                        {
-                            writer.Write("false");
-                        }
-                        for (int i = 0; i < Globals.MoveRecord.Count; i++)
-                        {
-                            writer.Write(Globals.MoveRecord[i]);
-                        }
-
-                    }
-                }
-
-
-
-
-            }
-        }
+        
+        
         public static void LoadGame(string path)
         {
             byte[] fileBytes = File.ReadAllBytes(path);
@@ -1809,7 +1768,7 @@ namespace Project_ChessWithInterface
     public static class Globals
     {
         public static int MoveCounter = 1;
-        //public static List<string> PathsToPieces = new List<string> { "\\WhiteRook.png", "\\WhiteKnight.png", "\\WhiteBishop.png", "\\WhiteQueen.png", "\\WhiteKing.png", "\\WhitePawn.png", "\\BlackRook.png", "\\BlackKnight.png", "\\BlackBishop.png", "\\BlackQueen.png", "\\BlackKing.png", "\\BlackPawn.png" };
+        public static string PathToSave = "";
         public static string pathToResources = "";
         public static List<Button> AllButtons = new List<Button>();
         public static int CurrentSquareClicked = -1;
