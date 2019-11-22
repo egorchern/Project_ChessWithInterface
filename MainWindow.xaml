@@ -88,7 +88,7 @@
         <Label x:Name="label_Copy4" Content="6" HorizontalAlignment="Left" Margin="20,503,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" Grid.ColumnSpan="2"/>
         <Label x:Name="label_Copy5" Content="7" HorizontalAlignment="Left" Margin="20,593,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" Grid.ColumnSpan="2"/>
         <Label x:Name="label_Copy6" Content="8" HorizontalAlignment="Left" Margin="20,683,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" Grid.ColumnSpan="2"/>
-        <RichTextBox x:Name="MoveRecordWhite" HorizontalAlignment="Left" Height="433" Margin="32,244,0,0" VerticalAlignment="Top" Width="260" FontWeight="Bold" FontSize="25" Grid.Column="2">
+        <RichTextBox x:Name="MoveRecordWhite" HorizontalAlignment="Left" Height="433" Margin="41,270,0,0" VerticalAlignment="Top" Width="260" FontWeight="Bold" FontSize="25" Grid.Column="2">
             <FlowDocument>
                 <Paragraph>
                     <Run Text="1: WpE2 =&gt; E4"/>
@@ -96,8 +96,8 @@
             </FlowDocument>
         </RichTextBox>
 
-        <TextBlock x:Name="TurnIndicator" Grid.Column="2" HorizontalAlignment="Center" Margin="13,38,26,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="76" Width="302" FontWeight="Bold" FontSize="50" Foreground="Red" TextAlignment="Center"/>
-        <Image x:Name="SaveGameImage" Grid.Column="2" HorizontalAlignment="Left" Height="72" Margin="16,140,0,0" VerticalAlignment="Top" Width="65"/>
+        <TextBlock x:Name="TurnIndicator" Grid.Column="2" HorizontalAlignment="Center" Margin="6,13,16,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="161" Width="319" FontWeight="Bold" FontSize="40" Foreground="Red" TextAlignment="Center"/>
+        <Image x:Name="SaveGameImage" Grid.Column="2" HorizontalAlignment="Left" Height="72" Margin="40,183,0,0" VerticalAlignment="Top" Width="65"/>
 
 
     </Grid>

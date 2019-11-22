@@ -161,7 +161,7 @@ namespace Project_ChessWithInterface
             }
             
         }
-        public static string CheckGameEndConditions(bool whitesTurn)
+        public static int CheckGameEndConditions(bool whitesTurn) //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
         {
             List<int> PositionsOfWhiteFigures = new List<int>();
             List<int> PositionsOfBlackFigures = new List<int>();
@@ -213,12 +213,12 @@ namespace Project_ChessWithInterface
                     if (WhatPiecesCheckingKing.Count == 0)
                     {
                         //DRAW
-                        return "Stalemate";
+                        return 3;
                     }
                     else
                     {
                         //WHITE CHECKMATED
-                        return "White king checkmated";
+                        return 1;
                     }
                 }
             }
@@ -241,16 +241,23 @@ namespace Project_ChessWithInterface
                     if (WhatPiecesCheckingKing.Count == 0)
                     {
                         //DRAW
-                        return "Stalemate";
+                        return 3;
                     }
                     else
                     {
                         //BLACK CHECKMATED
-                        return "Black king checkmated";
+                        return 2;
                     }
                 }
             }
-            return "";
+            return 0;
+        }
+        public void DisableAllButtons()
+        {
+            foreach (Button btn in Globals.AllButtons)
+            {
+                btn.Click -= UniversalSquareClickEventHandle;
+            }
         }
         private void UniversalSquareClickEventHandle(object sender, RoutedEventArgs e)
         {
@@ -305,17 +312,27 @@ namespace Project_ChessWithInterface
                     Globals.WaitingForSecondClick = false;
                     Globals.FirstClickIndex = -1;
                     DisplayBoardOnInterface();
+                    int StateOfGame = CheckGameEndConditions(Globals.WhitesTurn); //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
+                    if (StateOfGame == 1)
+                    {
+                        TurnIndicator.Text = "White king chechmated\nBlack has won!";
+                        DisableAllButtons();
+                    }
+                    else if (StateOfGame == 2)
+                    {
+                        TurnIndicator.Text = "Black king checkmated\nWhite has won!";
+                        DisableAllButtons();
+                    }
+                    else if(StateOfGame == 3)
+                    {
+                        TurnIndicator.Text = "Stalemate\nGame has been drawn!";
+                        DisableAllButtons();
+                    }
                 }
             }
 
 
-            /*Globals.AllButtons[index].Content = new Image
-            {
-                Source = new BitmapImage(new Uri(Globals.pathToResources + pathToPiece)),
-                VerticalAlignment = VerticalAlignment.Center
-
-            };
-            */
+           
             
         }
         public static bool CanProceedWithSecondClick(int startIndex,int endIndex) 
@@ -1227,7 +1244,10 @@ namespace Project_ChessWithInterface
 
                                 {
                                     string color = Convert.ToString(piece[0]);
-                                    string PromotedTo = PromotePawn(DestinationAbsolute, color);
+                                    Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { DestinationAbsolute, -1 };
+                                    PawnPromotion promotion = new PawnPromotion();
+                                    promotion.ShowDialog();
+                                    string PromotedTo = "";
                                     Globals.MoveRecord[Globals.MoveRecord.Count - 1] += $"(Promoted to {PromotedTo.ToUpper()})";
 
                                 }
@@ -1254,7 +1274,10 @@ namespace Project_ChessWithInterface
 
                                 {
                                     string color = Convert.ToString(piece[0]);
-                                    string PromotedTo = PromotePawn(DestinationAbsolute, color);
+                                    Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { DestinationAbsolute, -1 };
+                                    PawnPromotion promotion = new PawnPromotion();
+                                    promotion.ShowDialog();
+                                    string PromotedTo = "";
                                     Globals.MoveRecord[Globals.MoveRecord.Count - 1] += $"(Promoted to {PromotedTo.ToUpper()})";
 
                                 }
@@ -1265,6 +1288,10 @@ namespace Project_ChessWithInterface
             }
 
 
+
+        }
+        public void PromoteAPawn(int position)
+        {
 
         }
         public static List<string> MovePieceLocal(string initialPos, string destination, List<string> arr)
@@ -1709,40 +1736,7 @@ namespace Project_ChessWithInterface
             }
             return ForOut;
         }
-        public static string PromotePawn(int position, string color)
-        {
-            //Console.WriteLine($"To which piece do you wish to promote that pawn? (r|q|b|n): ");
-            string ans = "";
-            bool close = false;
-            while (close == false)
-            {
-                if (Regex.IsMatch(ans, @"[rqbn]") == true)
-                {
-                    close = true;
-                    switch (ans)
-                    {
-                        case "q":
-                            Globals.Board[position] = $"{color}{Queen}";
-                            break;
-                        case "r":
-                            Globals.Board[position] = $"{color}{Rook}";
-                            break;
-                        case "b":
-                            Globals.Board[position] = $"{color}{Bishop}";
-                            break;
-                        case "n":
-                            Globals.Board[position] = $"{color}{Knight}";
-                            break;
-                    }
-
-                }
-                else
-                {
-
-                }
-            }
-            return ans;
-        }
+        
         public static Dictionary<string, string> PopulateADictionary()
         {
             Dictionary<string, string> dict = new Dictionary<string, string>
@@ -1789,6 +1783,7 @@ namespace Project_ChessWithInterface
         public static Dictionary<string, string> FromBoardToPiecePathes;
         public static bool WaitingForSecondClick = false;
         public static int FirstClickIndex = -1;
+        public static List<int> PositionOfPawnToBePromotedAndPiece = null;
         
 
 
