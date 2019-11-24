@@ -65,7 +65,7 @@ namespace Project_ChessWithInterface
             InitializeBoard();
             DisplayBoardOnInterface();
             Globals.WhitesTurn = true;
-                
+            
         }
 
         private void SaveGameImage_MouseDown(object sender, MouseButtonEventArgs e)
@@ -689,7 +689,7 @@ namespace Project_ChessWithInterface
                 lastMove = Globals.MoveRecord.Last();
                 if (whitesTurnn == true)
                 {
-                    Match matchForDestination = Regex.Match(lastMove, @"^\d: Bp.7 => (?<capture>.5)$");
+                    Match matchForDestination = Regex.Match(lastMove, @"^\d+: Bp.7 => (?<capture>.5)$");
                     if (matchForDestination.Success == true)
                     {
                         lastMove = matchForDestination.Groups["capture"].Value;
@@ -713,7 +713,7 @@ namespace Project_ChessWithInterface
                 }
                 else
                 {
-                    Match matchForDestination = Regex.Match(lastMove, @"^\d: Wp.2 => (?<capture>.4)$");
+                    Match matchForDestination = Regex.Match(lastMove, @"^\d+: Wp.2 => (?<capture>.4)$");
                     if (matchForDestination.Success == true)
                     {
                         lastMove = matchForDestination.Groups["capture"].Value;
