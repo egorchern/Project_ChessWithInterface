@@ -40,7 +40,7 @@
         <Button x:Name="btn26" Background="Transparent"  HorizontalAlignment="Left" Margin="219,316,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
         <Button x:Name="btn34" Background="Transparent"  HorizontalAlignment="Left" Margin="219,405,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
         <Button x:Name="btn42" Background="Transparent"  HorizontalAlignment="Left" Margin="219,493,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
-        <Button x:Name="btn43" Background="Transparent"  HorizontalAlignment="Left" Margin="308,494,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
+        <Button x:Name="btn43" Background="Transparent"  HorizontalAlignment="Left" Margin="308,493,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
         <Button x:Name="btn35" Background="Transparent"  HorizontalAlignment="Left" Margin="307,405,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
         <Button x:Name="btn27" Background="Transparent"  HorizontalAlignment="Left" Margin="308,317,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
         <Button x:Name="btn50" Background="Transparent"  HorizontalAlignment="Left" Margin="219,582,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
@@ -49,7 +49,7 @@
         <Button x:Name="btn51" Background="Transparent"  HorizontalAlignment="Left" Margin="307,582,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
         <Button x:Name="btn4" Background="Transparent"  HorizontalAlignment="Left" Margin="396,51,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
         <Button x:Name="btn12" Background="Transparent"  HorizontalAlignment="Left" Margin="396,139,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
-        <Button x:Name="btn20" Background="Transparent"  HorizontalAlignment="Left" Margin="395,228,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
+        <Button x:Name="btn20" Background="Transparent"  HorizontalAlignment="Left" Margin="396,227,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
         <Button x:Name="btn21" Background="Transparent"  HorizontalAlignment="Left" Margin="484,228,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
         <Button x:Name="btn13" Background="Transparent"  HorizontalAlignment="Left" Margin="485,140,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>
         <Button x:Name="btn5" Background="Transparent"  HorizontalAlignment="Left" Margin="484,51,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.Column="1"/>

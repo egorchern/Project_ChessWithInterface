@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="PawnPromotion" Height="185.15" Width="451.771" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="PawnPromotion" Height="185.15" Width="451.771" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,-1,-1,-2">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="401*"/>

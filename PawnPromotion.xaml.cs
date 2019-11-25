@@ -51,6 +51,34 @@ namespace Project_ChessWithInterface
                 Source = new BitmapImage(new Uri(Globals.pathToResources + "\\" + colorSubString + "Knight.png")),
                 VerticalAlignment = VerticalAlignment.Center
             };
+            btn0.Click += Btn0_Click;
+            btn1.Click += Btn1_Click;
+            btn2.Click += Btn2_Click;
+            btn3.Click += Btn3_Click;
+        }
+
+        private void Btn3_Click(object sender, RoutedEventArgs e)
+        {
+            Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 3 };
+            this.Close();
+        }
+
+        private void Btn2_Click(object sender, RoutedEventArgs e)
+        {
+            Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 2 };
+            this.Close();
+        }
+
+        private void Btn1_Click(object sender, RoutedEventArgs e)
+        {
+            Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 1 };
+            this.Close();
+        }
+
+        private void Btn0_Click(object sender, RoutedEventArgs e)
+        {
+            Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 0 };
+            this.Close();
         }
     }
 }
