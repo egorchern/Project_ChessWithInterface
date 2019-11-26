@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="SaveGameDialog" Height="304.917" Width="786.001" ResizeMode="NoResize">
+        Title="SaveGameDialog" Height="304.917" Width="786.001" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,2,1">
         <TextBox x:Name="txt_FileNameForSave" HorizontalAlignment="Left" Height="53" Margin="17,104,0,0" TextWrapping="Wrap" Text="Save1" VerticalAlignment="Top" Width="718" FontSize="20" FontWeight="Bold"/>
         <Label x:Name="NameFileLabel" Content="Enter a name for the save file:" HorizontalAlignment="Left" Margin="14,5,0,0" VerticalAlignment="Top" Height="92" Width="729" FontSize="50" FontWeight="Bold"/>

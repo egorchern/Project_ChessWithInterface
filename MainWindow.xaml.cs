@@ -39,20 +39,15 @@ namespace Project_ChessWithInterface
         const int BlackPieces = 16;
         public MainWindow()
         {
+            
             InitializeComponent();
 
 
 
-            InitializeUI();
-            
-            
            
-            InitializeBoard();
-            DisplayBoardOnInterface();
-            Globals.WhitesTurn = true;
             
         }
-        public void InitializeUI()
+        public  void InitializeUI()
         {
             GetAllButtonElements();
             SortButtons();
@@ -1677,90 +1672,7 @@ namespace Project_ChessWithInterface
         }
         
         
-        public static void LoadGame(string path)
-        {
-            byte[] fileBytes = File.ReadAllBytes(path);
-
-            string ter = "";
-            foreach (byte b in fileBytes)
-            {
-                ter += (char)b;
-            }
-
-            List<string> arr = new List<string>();
-            arr = ter.Split('\u0005', '\u0004').ToList();
-            string temp = arr.Last();
-            var p = temp.Split('\r', '\u0016', '\u0017', '\u000E').ToList();
-            arr.RemoveAt(0);
-            arr.RemoveAt(arr.Count - 1);
-            foreach (string element in p)
-            {
-                arr.Add(element);
-            }
-            InitializeBoardLoad(arr);
-
-
-        }
-        public static void InitializeBoardLoad(List<string> l)
-        {
-            for (int i = 0; i < BoardSize * BoardSize; i++)
-            {
-                Globals.Board.Add(Empty);
-            }
-            for (int i = 0; i < Globals.Board.Count; i++)
-            {
-                string temp = l[i];
-                temp = Regex.Replace(temp, @"\d*=", "");
-                Globals.Board[i] = temp;
-                double d = 0.0;
-            }
-            if (l[64] == "true")
-            {
-                Globals.WhitesTurn = true;
-            }
-            else
-            {
-                Globals.WhitesTurn = false;
-            }
-            if (l.Count > 64)
-            {
-                for (int i = 65; i < l.Count; i++)
-                {
-                    Globals.MoveRecord.Add(l[i]);
-                }
-            }
-            bool whiteKingMoved = false;
-            bool blackKingMoved = false;
-            var tempList = new List<string>();
-            foreach (string item in Globals.MoveRecord)
-            {
-                string forReplacement = item;
-                forReplacement = Regex.Replace(forReplacement, @"\d*: ", "");
-                tempList.Add(forReplacement);
-            }
-            if (tempList.Any(x => x.StartsWith("Wk")) == true)
-            {
-                whiteKingMoved = true;
-            }
-            if (tempList.Any(x => x.StartsWith("Bk")) == true)
-            {
-                blackKingMoved = true;
-            }
-
-
-
-
-            if (whiteKingMoved == true)
-            {
-                Globals.WhiteKingMoved = true;
-            }
-            else if (blackKingMoved == true)
-            {
-                Globals.BlackKingMoved = true;
-            }
-
-
-        }
+       
         public static List<bool> DetermineIfRooksMovedInOrder()
         {
             var tempList = new List<string>();
@@ -1826,6 +1738,16 @@ namespace Project_ChessWithInterface
             return dict;
         }
 
+        private void GameWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            InitializeUI();
+
+
+
+
+            DisplayBoardOnInterface();
+            Globals.WhitesTurn = true;
+        }
     }
 
     public static class Globals

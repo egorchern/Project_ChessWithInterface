@@ -44,6 +44,7 @@ namespace Project_ChessWithInterface
                 path = String.Join("\\", temp);
                 path += $"\\Saves\\{ans}.bin";
                 bool FileExists = File.Exists(path);
+                Globals.PathToSave = path;
                 if (FileExists == true)
                 {
                     MessageBox.Show("A file with the same file name already exists in Save folder! Please choose another name!");

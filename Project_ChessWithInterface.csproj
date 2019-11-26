@@ -61,6 +61,9 @@
     <Compile Include="PawnPromotion.xaml.cs">
       <DependentUpon>PawnPromotion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RootWindow.xaml.cs">
+      <DependentUpon>RootWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SaveGameDialog.xaml.cs">
       <DependentUpon>SaveGameDialog.xaml</DependentUpon>
     </Compile>
@@ -77,6 +80,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PawnPromotion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RootWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
