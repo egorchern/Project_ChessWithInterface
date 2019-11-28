@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="RootWindow" Height="450" Width="800" ResizeMode="NoResize">
+        Title="RootWindow" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="Manual">
     <Grid>
         <Button x:Name="button" Content="New Game" HorizontalAlignment="Left" Margin="13,12,0,0" VerticalAlignment="Top" Width="165" Height="106" FontWeight="Bold" FontSize="30"/>
         <Button x:Name="button_Copy" Content="Load Game" HorizontalAlignment="Left" Margin="210,16,0,0" VerticalAlignment="Top" Width="165" Height="106" FontWeight="Bold" FontSize="30"/>

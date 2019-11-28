@@ -43,6 +43,14 @@ namespace Project_ChessWithInterface
 
         private void Button_Copy_Click(object sender, RoutedEventArgs e)
         {
+            LoadGameDialog loadDialog = new LoadGameDialog();
+            loadDialog.ShowDialog();
+            string SaveChosen = "";
+            SaveChosen = res.PathChosen;
+            LoadGame(SaveChosen);
+            MainWindow instance = new MainWindow();
+            instance.Show();
+            this.Close();
             
         }
 
@@ -50,7 +58,7 @@ namespace Project_ChessWithInterface
         {
             MainWindow instance = new MainWindow();
             MainWindow.InitializeBoard();
-            
+            Globals.WhitesTurn = true;
             instance.Show();
             
             this.Close();
@@ -81,7 +89,7 @@ namespace Project_ChessWithInterface
         }
         public static void InitializeBoardLoad(List<string> l)
         {
-            for (int i = 0; i < 8 * 9; i++)
+            for (int i = 0; i < 8 * 8; i++)
             {
                 Globals.Board.Add("00");
             }

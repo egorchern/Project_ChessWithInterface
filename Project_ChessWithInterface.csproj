@@ -58,6 +58,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="LoadGameDialog.xaml.cs">
+      <DependentUpon>LoadGameDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PawnPromotion.xaml.cs">
       <DependentUpon>PawnPromotion.xaml</DependentUpon>
     </Compile>
@@ -67,6 +70,10 @@
     <Compile Include="SaveGameDialog.xaml.cs">
       <DependentUpon>SaveGameDialog.xaml</DependentUpon>
     </Compile>
+    <Page Include="LoadGameDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

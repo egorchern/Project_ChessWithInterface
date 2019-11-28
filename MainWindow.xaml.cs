@@ -1746,7 +1746,7 @@ namespace Project_ChessWithInterface
 
 
             DisplayBoardOnInterface();
-            Globals.WhitesTurn = true;
+            
         }
     }
 
