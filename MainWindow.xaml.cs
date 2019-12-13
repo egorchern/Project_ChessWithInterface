@@ -57,6 +57,7 @@ namespace Project_ChessWithInterface
             Board.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\Board.png"));
             SaveGameImage.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\SaveGameIcon.png"));
             SaveGameImage.MouseDown += SaveGameImage_MouseDown;
+            image.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\ChessIcon.png"));
             foreach (Button btn in Globals.AllButtons)
             {
                 btn.Click += UniversalSquareClickEventHandle;
@@ -1748,12 +1749,12 @@ namespace Project_ChessWithInterface
             DisplayBoardOnInterface();
             
         }
-        public static void AiTurn(string color,List<string> Board)
+        public static void AiTurn(string color, List<string> Board)
         {
             List<List<int>> listOfAllMoves = new List<List<int>>();
             List<int> PositionsOfWhiteFigures = new List<int>();
             List<int> PositionsOfBlackFigures = new List<int>();
-            
+
             int positionOfWhiteKing = 0;
             int positionOfBlackKing = 0;
 
@@ -1791,14 +1792,14 @@ namespace Project_ChessWithInterface
 
                 }
             }
-            if(color == "W")
+            if (color == "W")
             {
-                for(int i = 0; i < PositionsOfWhiteFigures.Count; i++)
+                for (int i = 0; i < PositionsOfWhiteFigures.Count; i++)
                 {
                     List<int> LegalMovesForScopedFigure = IndexesOfPossibleMoves(Board[PositionsOfWhiteFigures[i]], PositionsOfWhiteFigures[i]);
                     var temp = new List<int>();
                     temp.Add(PositionsOfWhiteFigures[i]);
-                    foreach(var item in LegalMovesForScopedFigure)
+                    foreach (var item in LegalMovesForScopedFigure)
                     {
                         temp.Add(item);
                     }
@@ -1807,8 +1808,54 @@ namespace Project_ChessWithInterface
             }
             else
             {
-
+                for (int i = 0; i < PositionsOfBlackFigures.Count; i++)
+                {
+                    List<int> LegalMovesForScopedFigure = IndexesOfPossibleMoves(Board[PositionsOfBlackFigures[i]], PositionsOfBlackFigures[i]);
+                    var temp = new List<int>();
+                    temp.Add(PositionsOfBlackFigures[i]);
+                    foreach (var item in LegalMovesForScopedFigure)
+                    {
+                        temp.Add(item);
+                    }
+                    listOfAllMoves.Add(temp);
+                }
             }
+            bool close = false;
+            while (close == false)
+            {
+
+                bool deleted = false;
+                for (int i = 0; i < listOfAllMoves.Count; i++)
+                {
+                    if (listOfAllMoves[i].Count == 1)
+                    {
+                        listOfAllMoves.RemoveAt(i);
+                        deleted = true;
+                        break;
+                    }
+                }
+                if(deleted == false)
+                {
+                    close = true;
+                }
+            }
+            double d = 0.0;
+        }
+
+        
+
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            string color = "";
+            if (Globals.WhitesTurn == true)
+            {
+                color = "W";
+            }
+            else
+            {
+                color = "B";
+            }
+            AiTurn(color, Globals.Board);
         }
     }
 
