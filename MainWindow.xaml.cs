@@ -1748,6 +1748,68 @@ namespace Project_ChessWithInterface
             DisplayBoardOnInterface();
             
         }
+        public static void AiTurn(string color,List<string> Board)
+        {
+            List<List<int>> listOfAllMoves = new List<List<int>>();
+            List<int> PositionsOfWhiteFigures = new List<int>();
+            List<int> PositionsOfBlackFigures = new List<int>();
+            
+            int positionOfWhiteKing = 0;
+            int positionOfBlackKing = 0;
+
+            for (int i = 0; i < Board.Count; i++)
+            {
+                char temp = Board[i][0];
+                if (temp == 'W')
+                {
+                    if (Board[i] == White + King)
+                    {
+                        positionOfWhiteKing = i;
+
+                    }
+                    else
+                    {
+
+
+                        PositionsOfWhiteFigures.Add(i);
+                    }
+
+                }
+                else if (temp == 'B')
+                {
+                    if (Board[i] == Black + King)
+                    {
+                        positionOfBlackKing = i;
+
+                    }
+                    else
+                    {
+
+
+                        PositionsOfBlackFigures.Add(i);
+                    }
+
+                }
+            }
+            if(color == "W")
+            {
+                for(int i = 0; i < PositionsOfWhiteFigures.Count; i++)
+                {
+                    List<int> LegalMovesForScopedFigure = IndexesOfPossibleMoves(Board[PositionsOfWhiteFigures[i]], PositionsOfWhiteFigures[i]);
+                    var temp = new List<int>();
+                    temp.Add(PositionsOfWhiteFigures[i]);
+                    foreach(var item in LegalMovesForScopedFigure)
+                    {
+                        temp.Add(item);
+                    }
+                    listOfAllMoves.Add(temp);
+                }
+            }
+            else
+            {
+
+            }
+        }
     }
 
     public static class Globals
