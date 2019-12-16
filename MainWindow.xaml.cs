@@ -757,7 +757,13 @@ namespace Project_ChessWithInterface
                     }
                 }
             }
-
+            for(int i = 0; i < OutList.Count; i++)
+            {
+                if (OutList[i] == -1)
+                {
+                    OutList.RemoveAt(i);
+                }
+            }
             return OutList;
         }
         public static List<int> GetIndexesOfPossibleMovesRook(int column, int row, bool whitesTurnn, List<string> Board)
@@ -1754,41 +1760,34 @@ namespace Project_ChessWithInterface
             List<List<int>> listOfAllMoves = new List<List<int>>();
             List<int> PositionsOfWhiteFigures = new List<int>();
             List<int> PositionsOfBlackFigures = new List<int>();
+            List<string> LocalCopyOfBoard = new List<string>();
+            foreach (var item in Board)
+            {
+                LocalCopyOfBoard.Add(item);
+            }
 
-            int positionOfWhiteKing = 0;
-            int positionOfBlackKing = 0;
 
             for (int i = 0; i < Board.Count; i++)
             {
                 char temp = Board[i][0];
                 if (temp == 'W')
                 {
-                    if (Board[i] == White + King)
-                    {
-                        positionOfWhiteKing = i;
-
-                    }
-                    else
-                    {
 
 
-                        PositionsOfWhiteFigures.Add(i);
-                    }
+
+
+                    PositionsOfWhiteFigures.Add(i);
+
 
                 }
                 else if (temp == 'B')
                 {
-                    if (Board[i] == Black + King)
-                    {
-                        positionOfBlackKing = i;
-
-                    }
-                    else
-                    {
 
 
-                        PositionsOfBlackFigures.Add(i);
-                    }
+
+
+                    PositionsOfBlackFigures.Add(i);
+
 
                 }
             }
@@ -1839,9 +1838,63 @@ namespace Project_ChessWithInterface
                     close = true;
                 }
             }
-            double d = 0.0;
+            Random rnd = new Random();
+            int FirstRnd = rnd.Next(0, listOfAllMoves.Count - 1);
+            int SecondRnd = rnd.Next(1, listOfAllMoves[FirstRnd].Count);
+            //LocalCopyOfBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(listOfAllMoves[FirstRnd][0]), ConvertAbsoluteToBoardNotation(listOfAllMoves[FirstRnd][SecondRnd]), LocalCopyOfBoard);
+            for(int i = 0; i < Globals.AllButtons.Count; i++)
+            {
+                if(i == listOfAllMoves[FirstRnd][0])
+                {
+                    RoutedEventArgs newEventArgs = new RoutedEventArgs(Button.ClickEvent);
+                    Globals.AllButtons[listOfAllMoves[FirstRnd][0]].RaiseEvent(newEventArgs);
+                    Globals.AllButtons[listOfAllMoves[FirstRnd][SecondRnd]].RaiseEvent(newEventArgs);
+                }
+            }
+            
         }
+        public static List<int> ValuatePosition(List<string> Board)
+        {
+            List<string> LocalCopyOfBoard = new List<string>();
+            foreach(var item in Board)
+            {
+                LocalCopyOfBoard.Add(item);
+            }
+            Dictionary<string, int> ValuationsForPieces = new Dictionary<string, int>
+            {
+                {$"p",1 },
+                {$"n",3 },
+                {$"b",4 },
+                {$"r",8 },
+                {$"q",16 }
 
+            };
+            int ValuationWhite = 0;
+            int ValuationBlack = 0;
+            for(int i = 0;i < LocalCopyOfBoard.Count; i++)
+            {
+                if (LocalCopyOfBoard[i].StartsWith("W"))
+                {
+                    LocalCopyOfBoard[i] = Regex.Replace(LocalCopyOfBoard[i], @"^W", "");
+                    var temp = 0;
+                    ValuationsForPieces.TryGetValue(LocalCopyOfBoard[i], out temp);
+                    ValuationWhite += temp;
+                }
+                else
+                {
+                    LocalCopyOfBoard[i] = Regex.Replace(LocalCopyOfBoard[i], @"^B", "");
+                    var temp = 0;
+                    ValuationsForPieces.TryGetValue(LocalCopyOfBoard[i], out temp);
+                    ValuationBlack += temp;
+                }
+               
+               
+
+
+
+            }
+            return new List<int> {ValuationWhite,ValuationBlack};
+        }
         
 
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
