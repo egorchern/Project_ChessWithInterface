@@ -41,11 +41,9 @@ namespace Project_ChessWithInterface
         {
             
             InitializeComponent();
-
-
-
-           
             
+
+
         }
         public  void InitializeUI()
         {
@@ -178,16 +176,16 @@ namespace Project_ChessWithInterface
             }
             
         }
-        public static int CheckGameEndConditions(bool whitesTurn) //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
+        public static int CheckGameEndConditions(List<string> Board,bool whitesTurn) //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
         {
             List<int> PositionsOfWhiteFigures = new List<int>();
             List<int> PositionsOfBlackFigures = new List<int>();
             List<int> OutList = new List<int>();
 
 
-            for (int i = 0; i < Globals.Board.Count; i++)
+            for (int i = 0; i < Board.Count; i++)
             {
-                char temp = Globals.Board[i][0];
+                char temp = Board[i][0];
                 if (temp == 'W')
                 {
 
@@ -217,7 +215,7 @@ namespace Project_ChessWithInterface
                 List<int> LegalMovesForScopedPiece = new List<int>();
                 for (int i = 0; i < PositionsOfWhiteFigures.Count; i++)
                 {
-                    LegalMovesForScopedPiece = IndexesOfPossibleMoves(Globals.Board[PositionsOfWhiteFigures[i]], PositionsOfWhiteFigures[i]);
+                    LegalMovesForScopedPiece = IndexesOfPossibleMoves(Board,Board[PositionsOfWhiteFigures[i]], PositionsOfWhiteFigures[i]);
                     if (LegalMovesForScopedPiece.Count > 0)
                     {
                         AtLeastOneLegalMove = true;
@@ -226,7 +224,7 @@ namespace Project_ChessWithInterface
                 }
                 if (AtLeastOneLegalMove == false)
                 {
-                    List<int> WhatPiecesCheckingKing = KingInCheckAndByWhichFigures(Globals.Board);
+                    List<int> WhatPiecesCheckingKing = KingInCheckAndByWhichFigures(Board,whitesTurn);
                     if (WhatPiecesCheckingKing.Count == 0)
                     {
                         //DRAW
@@ -245,7 +243,7 @@ namespace Project_ChessWithInterface
                 List<int> LegalMovesForScopedPiece = new List<int>();
                 for (int i = 0; i < PositionsOfBlackFigures.Count; i++)
                 {
-                    LegalMovesForScopedPiece = IndexesOfPossibleMoves(Globals.Board[PositionsOfBlackFigures[i]], PositionsOfBlackFigures[i]);
+                    LegalMovesForScopedPiece = IndexesOfPossibleMoves(Board,Board[PositionsOfBlackFigures[i]], PositionsOfBlackFigures[i]);
                     if (LegalMovesForScopedPiece.Count > 0)
                     {
                         AtLeastOneLegalMove = true;
@@ -254,7 +252,7 @@ namespace Project_ChessWithInterface
                 }
                 if (AtLeastOneLegalMove == false)
                 {
-                    List<int> WhatPiecesCheckingKing = KingInCheckAndByWhichFigures(Globals.Board);
+                    List<int> WhatPiecesCheckingKing = KingInCheckAndByWhichFigures(Board,whitesTurn);
                     if (WhatPiecesCheckingKing.Count == 0)
                     {
                         //DRAW
@@ -303,8 +301,7 @@ namespace Project_ChessWithInterface
                     }
                     Globals.WaitingForSecondClick = true;
                     Globals.FirstClickIndex = indexOfClickedSquare;
-                    //List<int> Moves = IndexesOfPossibleMoves(Globals.Board[indexOfClickedSquare], indexOfClickedSquare);
-                    //HighlightValidSquare(Moves);
+                    
 
 
                 }
@@ -334,7 +331,7 @@ namespace Project_ChessWithInterface
                     Globals.FirstClickIndex = -1;
                     
                     DisplayBoardOnInterface();
-                    int StateOfGame = CheckGameEndConditions(Globals.WhitesTurn); //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
+                    int StateOfGame = CheckGameEndConditions(Globals.Board,Globals.WhitesTurn); //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
                     if (StateOfGame == 1)
                     {
                         TurnIndicator.Text = "White king chechmated\nBlack has won!";
@@ -359,7 +356,7 @@ namespace Project_ChessWithInterface
         }
         public static bool CanProceedWithSecondClick(int startIndex,int endIndex) 
         {
-            List<int> PossibleMovesOfSelectedPiece = IndexesOfPossibleMoves(Globals.Board[startIndex], startIndex);
+            List<int> PossibleMovesOfSelectedPiece = IndexesOfPossibleMoves(Globals.Board,Globals.Board[startIndex], startIndex);
             if(PossibleMovesOfSelectedPiece.Contains(endIndex) == false)
             {
                 MessageBox.Show("ERROR: Ilegal move");
@@ -482,16 +479,16 @@ namespace Project_ChessWithInterface
                 }
             }
         }
-        public static List<int> IndexesOfPossibleMoves(string piece, int position)
+        public static List<int> IndexesOfPossibleMoves(List<string> Board,string piece, int position)
         {
 
             List<int> OutList = new List<int>();
-            List<string> bb = new List<string>();
-            foreach (string item in Globals.Board)
+            List<string> ScopedBoard = new List<string>();
+            foreach (string item in Board)
             {
-                bb.Add(item);
+                ScopedBoard.Add(item);
             }
-            OutList = IndexesOfPossibleMovesKing(piece, position, bb);
+            OutList = IndexesOfPossibleMovesKing(piece, position, ScopedBoard);
             List<string> CopyOf = new List<string>();
 
             List<int> PiecesCheckingKing = new List<int>();
@@ -502,12 +499,17 @@ namespace Project_ChessWithInterface
             }
             for (int i = 0; i < PossibleMoves.Count; i++)
             {
-                foreach (string item in Globals.Board)
+                foreach (string item in Board)
                 {
                     CopyOf.Add(item);
                 }
                 CopyOf = MovePieceLocal(ConvertAbsoluteToBoardNotation(position), ConvertAbsoluteToBoardNotation(PossibleMoves[i]), CopyOf);
-                PiecesCheckingKing = KingInCheckAndByWhichFigures(CopyOf);
+                bool whitesTurn = true;
+                if(piece[0] == 'B')
+                {
+                    whitesTurn = false;
+                }
+                PiecesCheckingKing = KingInCheckAndByWhichFigures(CopyOf,whitesTurn);
                 if (PiecesCheckingKing.Count == 0)
                 {
 
@@ -522,7 +524,7 @@ namespace Project_ChessWithInterface
 
             return OutList;
         }
-        public static List<int> IndexesOfPossibleMovesKing(string piece, int position, List<string> bb)
+        public static List<int> IndexesOfPossibleMovesKing(string piece, int position, List<string> ScopedBoard)
         {
             int column = position % BoardSize;
             int row = position / BoardSize;
@@ -534,7 +536,7 @@ namespace Project_ChessWithInterface
                 whitesTurnn = true;
             }
             List<string> Board = new List<string>();
-            foreach (string item in bb)
+            foreach (string item in ScopedBoard)
             {
                 Board.Add(item);
             }
@@ -1167,7 +1169,7 @@ namespace Project_ChessWithInterface
             int AbsoluteInitialPos = ChessNotationToAbsolute(initialPos);
             int DestinationAbsolute = ChessNotationToAbsolute(destination);
             piece = Globals.Board[AbsoluteInitialPos];
-            List<int> IndexesOfPossibleMovess = IndexesOfPossibleMoves(piece, AbsoluteInitialPos);
+            List<int> IndexesOfPossibleMovess = IndexesOfPossibleMoves(Globals.Board,piece, AbsoluteInitialPos);
 
             if (IndexesOfPossibleMovess.Contains(DestinationAbsolute) == true)
             {
@@ -1376,19 +1378,62 @@ namespace Project_ChessWithInterface
             int AbsoluteInitialPos = ChessNotationToAbsolute(initialPos);
             int DestinationAbsolute = ChessNotationToAbsolute(destination);
             piece = Copu[AbsoluteInitialPos];
+            
 
 
 
 
             if (Copu[DestinationAbsolute] == Empty)
             {
-                Copu[DestinationAbsolute] = piece;
-                Copu[AbsoluteInitialPos] = Empty;
+                if (piece == White + Pawn)
+                {
+                    if (AbsoluteInitialPos <= 55 && AbsoluteInitialPos >= 48 && DestinationAbsolute > 55)
+                    {
+                        Copu[AbsoluteInitialPos] = Empty;
+                        Copu[DestinationAbsolute] = White + Queen;
+                    }
+                }
+                else if (piece == Black + Pawn)
+                {
+                    if (AbsoluteInitialPos >= 8 && AbsoluteInitialPos <= 15 && DestinationAbsolute < 8)
+                    {
+                        Copu[AbsoluteInitialPos] = Empty;
+                        Copu[DestinationAbsolute] = Black + Queen;
+                    }
+                }
+                else
+                {
+
+
+                    Copu[DestinationAbsolute] = piece;
+                    Copu[AbsoluteInitialPos] = Empty;
+                }
             }
             else
             {
-                Copu[DestinationAbsolute] = piece;
-                Copu[AbsoluteInitialPos] = Empty;
+                if (piece == White + Pawn)
+                {
+                    if (AbsoluteInitialPos <= 55 && AbsoluteInitialPos >= 48 && DestinationAbsolute > 55)
+                    {
+                        Copu[AbsoluteInitialPos] = Empty;
+                        Copu[DestinationAbsolute] = White + Queen;
+                    }
+                }
+                else if (piece == Black + Pawn)
+                {
+                    if (AbsoluteInitialPos >= 8 && AbsoluteInitialPos <= 15 && DestinationAbsolute < 8)
+                    {
+                        Copu[AbsoluteInitialPos] = Empty;
+                        Copu[DestinationAbsolute] = Black + Queen;
+                    }
+                }
+                else
+                {
+
+
+                    Copu[DestinationAbsolute] = piece;
+                    Copu[AbsoluteInitialPos] = Empty;
+                }
             }
 
             return Copu;
@@ -1489,17 +1534,17 @@ namespace Project_ChessWithInterface
                         {
                             ScopedBoard.Add(item);
                         }
-                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard,whitesTurnn);
                         if (PiecesCheckingKing.Count == 0)
                         {
 
 
                             ScopedBoard = MovePieceLocal("E1", "F1", ScopedBoard);
-                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                             if (PiecesCheckingKing.Count == 0)
                             {
                                 ScopedBoard = MovePieceLocal("F1", "G1", ScopedBoard);
-                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                                 if (PiecesCheckingKing.Count == 0)
                                 {
 
@@ -1518,19 +1563,19 @@ namespace Project_ChessWithInterface
                         {
                             ScopedBoard.Add(item);
                         }
-                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                         if (PiecesCheckingKing.Count == 0)
                         {
                             ScopedBoard = MovePieceLocal("E1", "D1", ScopedBoard);
-                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                             if (PiecesCheckingKing.Count == 0)
                             {
                                 ScopedBoard = MovePieceLocal("D1", "C1", ScopedBoard);
-                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                                 if (PiecesCheckingKing.Count == 0)
                                 {
                                     ScopedBoard = MovePieceLocal("C1", "B1", ScopedBoard);
-                                    PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                                    PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                                     if (PiecesCheckingKing.Count == 0)
                                     {
                                         ForOut.Add(2);
@@ -1553,15 +1598,15 @@ namespace Project_ChessWithInterface
                         {
                             ScopedBoard.Add(item);
                         }
-                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                         if (PiecesCheckingKing.Count == 0)
                         {
                             ScopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(GetAbolutePosition(column, row)), "F8", ScopedBoard);
-                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                             if (PiecesCheckingKing.Count == 0)
                             {
                                 ScopedBoard = MovePieceLocal("F8", "G8", ScopedBoard);
-                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                                 if (PiecesCheckingKing.Count == 0)
                                 {
                                     ForOut.Add(62);
@@ -1578,19 +1623,19 @@ namespace Project_ChessWithInterface
                         {
                             ScopedBoard.Add(item);
                         }
-                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                         if (PiecesCheckingKing.Count == 0)
                         {
                             ScopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(GetAbolutePosition(column, row)), "D8", ScopedBoard);
-                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                             if (PiecesCheckingKing.Count == 0)
                             {
                                 ScopedBoard = MovePieceLocal("D8", "C8", ScopedBoard);
-                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                                 if (PiecesCheckingKing.Count == 0)
                                 {
                                     ScopedBoard = MovePieceLocal("C8", "B8", ScopedBoard);
-                                    PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard);
+                                    PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                                     if (PiecesCheckingKing.Count == 0)
                                     {
                                         ForOut.Add(58);
@@ -1605,7 +1650,7 @@ namespace Project_ChessWithInterface
 
             return ForOut;
         }
-        public static List<int> KingInCheckAndByWhichFigures(List<string> Board)
+        public static List<int> KingInCheckAndByWhichFigures(List<string> Board,bool whitesTurn)
         {
             List<int> PositionsOfWhiteFigures = new List<int>();
             List<int> PositionsOfBlackFigures = new List<int>();
@@ -1648,7 +1693,7 @@ namespace Project_ChessWithInterface
                 }
             }
 
-            if (Globals.WhitesTurn == true)
+            if (whitesTurn == true)
             {
                 for (int i = 0; i < PositionsOfBlackFigures.Count; i++)
                 {
@@ -1755,18 +1800,193 @@ namespace Project_ChessWithInterface
             DisplayBoardOnInterface();
             
         }
-        public static void AiTurn(string color, List<string> Board)
+        public static List<int> FindBestMoveAI(string color, List<string> Board)
+        {
+            List<List<int>> PossibleMoves = GetAllLegalMovesForSelectedColor(color, Board);
+            List<int> BestMove = new List<int>();
+            int bestScore = -10000000;
+            for(int i = 0; i < PossibleMoves.Count; i++)
+            {
+                var list = PossibleMoves[i];
+                for(int q = 1; q < list.Count; q++)
+                {
+                    var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
+                    int score = minimax(scopedBoard, 0, -10000000, 10000000, false);
+                    double d = 0.0;
+                    if (score > bestScore)
+                    {
+                        BestMove.Clear();
+                        bestScore = score;
+                        BestMove.Add(list[0]);
+                        BestMove.Add(list[q]);
+                        
+                    }
+                }
+            }
+            return BestMove;
+            
+
+           
+            
+        }
+        public static int minimax(List<string> Board, int depth, int alpha, int beta, bool maximizing)
+        {
+            string color = "";
+            if (Globals.AI == White && maximizing == true)
+            {
+                color = White;
+            }
+            else if (Globals.AI == White && maximizing == false)
+            {
+                color = Black;
+            }
+            else if (Globals.AI == Black && maximizing == true)
+            {
+                color = Black;
+            }
+            else if (Globals.AI == Black && maximizing == false)
+            {
+                color = White;
+            }
+            bool whiteTurn = true;
+            if(color == Black)
+            {
+                whiteTurn = false;
+            }
+            int stateOfGame = CheckGameEndConditions(Board,whiteTurn);
+            
+            
+            if (stateOfGame != 0)
+            {
+                double d = 0.0;
+                if (stateOfGame == 1)
+                {
+                    if (Globals.AI == White && maximizing == true)
+                    {
+                        return -100000;
+                    }
+                    else if (Globals.AI == White && maximizing == false)
+                    {
+                        return -100000;
+                    }
+                    else if (Globals.AI == Black && maximizing == true)
+                    {
+                        return 100000;
+                    }
+                    else if (Globals.AI == Black && maximizing == false)
+                    {
+                        return 100000;
+                    }
+                }
+                else if (stateOfGame == 2)
+                {
+                    if (Globals.AI == White && maximizing == true)
+                    {
+                        return 100000;
+                    }
+                    else if (Globals.AI == White && maximizing == false)
+                    {
+                        return 100000;
+                    }
+                    else if (Globals.AI == Black && maximizing == true)
+                    {
+                        return -100000;
+                    }
+                    else if (Globals.AI == Black && maximizing == false)
+                    {
+                        return -100000;
+                    }
+                }
+                else if (stateOfGame == 3)
+                {
+                    return 0;
+                }
+            }
+            if (depth == 2)
+            {
+                return ValuatePosition(Board);
+            }
+            if (maximizing == true)
+            {
+                int bestScore = -10000000;
+                
+                
+                List<List<int>> PossibleMoves = GetAllLegalMovesForSelectedColor(color, Board);
+
+
+                for (int i = 0; i < PossibleMoves.Count; i++)
+                {
+                    var list = PossibleMoves[i];
+                    for (int q = 1; q < list.Count; q++)
+                    {
+                        var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
+                        int score = minimax(scopedBoard, depth + 1, alpha, beta, false);
+                        if (score > bestScore)
+                        {
+
+                            bestScore = score;
+
+                        }
+                        if (score > alpha)
+                        {
+                            alpha = score;
+                        }
+                        if (beta <= alpha)
+                        {
+                            break;
+                        }
+                    }
+
+                }
+                return bestScore;
+
+
+
+            }
+            else
+            {
+                int bestScore = 10000000;
+                
+                
+                List<List<int>> PossibleMoves = GetAllLegalMovesForSelectedColor(color, Board);
+
+
+                for (int i = 0; i < PossibleMoves.Count; i++)
+                {
+                    var list = PossibleMoves[i];
+                    for (int q = 1; q < list.Count; q++)
+                    {
+                        var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
+                        int score = minimax(scopedBoard, depth + 1, alpha, beta, true);
+                        if (score < bestScore)
+                        {
+
+                            bestScore = score;
+
+                        }
+                        if (score < beta)
+                        {
+                            beta = score;
+                        }
+                        if (beta <= alpha)
+                        {
+                            break;
+                        }
+                    }
+
+                }
+                return bestScore;
+            }
+            
+        }
+        
+        
+        public static List<List<int>> GetAllLegalMovesForSelectedColor(string color, List<string> Board)
         {
             List<List<int>> listOfAllMoves = new List<List<int>>();
             List<int> PositionsOfWhiteFigures = new List<int>();
             List<int> PositionsOfBlackFigures = new List<int>();
             List<string> LocalCopyOfBoard = new List<string>();
-            foreach (var item in Board)
-            {
-                LocalCopyOfBoard.Add(item);
-            }
-
-
             for (int i = 0; i < Board.Count; i++)
             {
                 char temp = Board[i][0];
@@ -1795,7 +2015,7 @@ namespace Project_ChessWithInterface
             {
                 for (int i = 0; i < PositionsOfWhiteFigures.Count; i++)
                 {
-                    List<int> LegalMovesForScopedFigure = IndexesOfPossibleMoves(Board[PositionsOfWhiteFigures[i]], PositionsOfWhiteFigures[i]);
+                    List<int> LegalMovesForScopedFigure = IndexesOfPossibleMoves(Board,Board[PositionsOfWhiteFigures[i]], PositionsOfWhiteFigures[i]);
                     var temp = new List<int>();
                     temp.Add(PositionsOfWhiteFigures[i]);
                     foreach (var item in LegalMovesForScopedFigure)
@@ -1809,7 +2029,7 @@ namespace Project_ChessWithInterface
             {
                 for (int i = 0; i < PositionsOfBlackFigures.Count; i++)
                 {
-                    List<int> LegalMovesForScopedFigure = IndexesOfPossibleMoves(Board[PositionsOfBlackFigures[i]], PositionsOfBlackFigures[i]);
+                    List<int> LegalMovesForScopedFigure = IndexesOfPossibleMoves(Board,Board[PositionsOfBlackFigures[i]], PositionsOfBlackFigures[i]);
                     var temp = new List<int>();
                     temp.Add(PositionsOfBlackFigures[i]);
                     foreach (var item in LegalMovesForScopedFigure)
@@ -1833,27 +2053,14 @@ namespace Project_ChessWithInterface
                         break;
                     }
                 }
-                if(deleted == false)
+                if (deleted == false)
                 {
                     close = true;
                 }
             }
-            Random rnd = new Random();
-            int FirstRnd = rnd.Next(0, listOfAllMoves.Count - 1);
-            int SecondRnd = rnd.Next(1, listOfAllMoves[FirstRnd].Count);
-            //LocalCopyOfBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(listOfAllMoves[FirstRnd][0]), ConvertAbsoluteToBoardNotation(listOfAllMoves[FirstRnd][SecondRnd]), LocalCopyOfBoard);
-            for(int i = 0; i < Globals.AllButtons.Count; i++)
-            {
-                if(i == listOfAllMoves[FirstRnd][0])
-                {
-                    RoutedEventArgs newEventArgs = new RoutedEventArgs(Button.ClickEvent);
-                    Globals.AllButtons[listOfAllMoves[FirstRnd][0]].RaiseEvent(newEventArgs);
-                    Globals.AllButtons[listOfAllMoves[FirstRnd][SecondRnd]].RaiseEvent(newEventArgs);
-                }
-            }
-            
+            return listOfAllMoves;
         }
-        public static List<int> ValuatePosition(List<string> Board)
+        public static int ValuatePosition(List<string> Board)
         {
             List<string> LocalCopyOfBoard = new List<string>();
             foreach(var item in Board)
@@ -1893,22 +2100,23 @@ namespace Project_ChessWithInterface
 
 
             }
-            return new List<int> {ValuationWhite,ValuationBlack};
+            return ValuationWhite - ValuationBlack;
         }
         
 
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            string color = "";
-            if (Globals.WhitesTurn == true)
-            {
-                color = "W";
-            }
-            else
-            {
-                color = "B";
-            }
-            AiTurn(color, Globals.Board);
+            List<int> AIMOve = FindBestMoveAI(Globals.AI, Globals.Board);
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(Button.ClickEvent);
+            Globals.AllButtons[AIMOve[0]].RaiseEvent(newEventArgs);
+            Globals.AllButtons[AIMOve[1]].RaiseEvent(newEventArgs);
+            
+            /*var i = CheckGameEndConditions(new List<string> { "Wr","Wn","Wb","00","Wk","00","Wn","Wr","Wp","Wp","Wp","Wp","00","Wp","Wp","Wp","00","00","00","00","00","00","00","00","00","00","Wb","00","Wp","00","00","00","00","00","00","00","Bp","00","00","00","Bp","Bp","00","00","00","00","00","00","00","00","Bp","Bp","00","Wq","Bp","Bp","Br","Bn","Bb","Bq","Bk","Bb","Bn","Br" }, false);
+            
+            double d = 0.0;
+            */
+
+
         }
     }
 
@@ -1937,8 +2145,9 @@ namespace Project_ChessWithInterface
         public static bool WaitingForSecondClick = false;
         public static int FirstClickIndex = -1;
         public static List<int> PositionOfPawnToBePromotedAndPiece = null;
-        
-
+        public static string Human;
+        public static string AI = "W";
+        public static int valuationDifference;
 
 
     }
