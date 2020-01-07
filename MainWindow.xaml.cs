@@ -1669,6 +1669,257 @@ namespace Project_ChessWithInterface
                     }
                 }
             }
+            int whiteKing = board.FindIndex(x => x == White + King);
+            int blackKing = board.FindIndex(x => x == Black + King);
+            int columnOppKing;
+            int rowOppKing;
+            if (whitesTurnn == true)
+            {
+                columnOppKing = blackKing % BoardSize;
+                rowOppKing = blackKing / BoardSize;
+            }
+            else
+            {
+                columnOppKing = whiteKing % BoardSize;
+                rowOppKing = whiteKing / BoardSize;
+            }
+            bool OppKingScopeBoolean = false;
+            if(whitesTurnn == false)
+            {
+                OppKingScopeBoolean = true;
+            }
+            List<int> ScopeOfOppositeKing = GetIndexesOfPossibleMovesKingNoRecursion(columnOppKing, rowOppKing, OppKingScopeBoolean,board);
+            
+            close = false;
+            while(close == false)
+            {
+                bool elementRemoved = false;
+                for(int i = 0; i < ForOut.Count; i++)
+                {
+                    for(int q = 0; q < ScopeOfOppositeKing.Count; q++)
+                    {
+                        if(ForOut[i] == ScopeOfOppositeKing[q])
+                        {
+                            ForOut.RemoveAt(i);
+                            elementRemoved = true;
+                            break;
+                        }
+                    }
+                    if(elementRemoved == false)
+                    {
+                        close = true;
+                    }
+                }
+            }
+
+            return ForOut;
+        }
+        public static List<int> GetIndexesOfPossibleMovesKingNoRecursion(int column, int row, bool whitesTurnn, List<string> board)
+        {
+            bool close = false;
+            List<int> ForOut = new List<int>();
+            ForOut.Add(GetAbolutePosition(column, row + 1));
+            ForOut.Add(GetAbolutePosition(column, row - 1));
+            ForOut.Add(GetAbolutePosition(column - 1, row));
+            ForOut.Add(GetAbolutePosition(column + 1, row));
+            ForOut.Add(GetAbolutePosition(column + 1, row + 1));
+            ForOut.Add(GetAbolutePosition(column + 1, row - 1));
+            ForOut.Add(GetAbolutePosition(column - 1, row + 1));
+            ForOut.Add(GetAbolutePosition(column - 1, row - 1));
+            while (close == false)
+            {
+                bool removed = false;
+                for (int i = 0; i < ForOut.Count; i++)
+                {
+                    if (ForOut[i] == -1)
+                    {
+                        ForOut.RemoveAt(i);
+                        removed = true;
+                        break;
+                    }
+                }
+                if (removed == false)
+                {
+
+
+                    close = true;
+                }
+            }
+            close = false;
+            while (close == false)
+            {
+                bool removed = false;
+                for (int i = 0; i < ForOut.Count; i++)
+                {
+                    if (board[ForOut[i]] == Empty)
+                    {
+
+                    }
+                    else
+                    {
+                        if (whitesTurnn == true)
+                        {
+                            if (board[ForOut[i]][0] == Convert.ToChar(White))
+                            {
+                                ForOut.RemoveAt(i);
+                                removed = true;
+                                break;
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        else
+                        {
+                            if (board[ForOut[i]][0] == Convert.ToChar(Black))
+                            {
+                                ForOut.RemoveAt(i);
+                                removed = true;
+                                break;
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                    }
+
+                }
+                if (removed == false)
+                {
+
+
+                    close = true;
+                }
+            }
+            List<bool> RooksMoved = DetermineIfRooksMovedInOrder();
+            if (whitesTurnn == true)
+            {
+                if (Globals.WhiteKingMoved == false)
+                {
+                    if (board[5] == Empty && board[6] == Empty && RooksMoved[1] == false)
+                    {
+                        List<int> PiecesCheckingKing = new List<int>();
+                        List<string> ScopedBoard = new List<string>();
+                        foreach (string item in board)
+                        {
+                            ScopedBoard.Add(item);
+                        }
+                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                        if (PiecesCheckingKing.Count == 0)
+                        {
+
+
+                            ScopedBoard = MovePieceLocal("E1", "F1", ScopedBoard);
+                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                            if (PiecesCheckingKing.Count == 0)
+                            {
+                                ScopedBoard = MovePieceLocal("F1", "G1", ScopedBoard);
+                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                if (PiecesCheckingKing.Count == 0)
+                                {
+
+                                    ForOut.Add(6);
+                                }
+                            }
+                        }
+
+                    }
+
+                    if (board[1] == Empty && board[2] == Empty && board[3] == Empty && RooksMoved[0] == false)
+                    {
+                        List<int> PiecesCheckingKing = new List<int>();
+                        List<string> ScopedBoard = new List<string>();
+                        foreach (string item in board)
+                        {
+                            ScopedBoard.Add(item);
+                        }
+                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                        if (PiecesCheckingKing.Count == 0)
+                        {
+                            ScopedBoard = MovePieceLocal("E1", "D1", ScopedBoard);
+                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                            if (PiecesCheckingKing.Count == 0)
+                            {
+                                ScopedBoard = MovePieceLocal("D1", "C1", ScopedBoard);
+                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                if (PiecesCheckingKing.Count == 0)
+                                {
+                                    ScopedBoard = MovePieceLocal("C1", "B1", ScopedBoard);
+                                    PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                    if (PiecesCheckingKing.Count == 0)
+                                    {
+                                        ForOut.Add(2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (Globals.BlackKingMoved == false)
+                {
+                    if (board[61] == Empty && board[62] == Empty && RooksMoved[3] == false)
+                    {
+                        List<int> PiecesCheckingKing = new List<int>();
+                        List<string> ScopedBoard = new List<string>();
+                        foreach (string item in board)
+                        {
+                            ScopedBoard.Add(item);
+                        }
+                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                        if (PiecesCheckingKing.Count == 0)
+                        {
+                            ScopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(GetAbolutePosition(column, row)), "F8", ScopedBoard);
+                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                            if (PiecesCheckingKing.Count == 0)
+                            {
+                                ScopedBoard = MovePieceLocal("F8", "G8", ScopedBoard);
+                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                if (PiecesCheckingKing.Count == 0)
+                                {
+                                    ForOut.Add(62);
+                                }
+                            }
+                        }
+
+                    }
+                    if (board[57] == Empty && board[58] == Empty && board[59] == Empty && RooksMoved[2] == false)
+                    {
+                        List<int> PiecesCheckingKing = new List<int>();
+                        List<string> ScopedBoard = new List<string>();
+                        foreach (string item in board)
+                        {
+                            ScopedBoard.Add(item);
+                        }
+                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                        if (PiecesCheckingKing.Count == 0)
+                        {
+                            ScopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(GetAbolutePosition(column, row)), "D8", ScopedBoard);
+                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                            if (PiecesCheckingKing.Count == 0)
+                            {
+                                ScopedBoard = MovePieceLocal("D8", "C8", ScopedBoard);
+                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                if (PiecesCheckingKing.Count == 0)
+                                {
+                                    ScopedBoard = MovePieceLocal("C8", "B8", ScopedBoard);
+                                    PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                    if (PiecesCheckingKing.Count == 0)
+                                    {
+                                        ForOut.Add(58);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+            
 
             return ForOut;
         }
@@ -1714,8 +1965,7 @@ namespace Project_ChessWithInterface
 
                 }
             }
-            PositionsOfWhiteFigures.Add(positionOfWhiteKing);
-            PositionsOfBlackFigures.Add(positionOfBlackKing);
+            
             if (whitesTurn == true)
             {
                 for (int i = 0; i < PositionsOfBlackFigures.Count; i++)
@@ -1857,7 +2107,7 @@ namespace Project_ChessWithInterface
 
             while (t.IsAlive == true)
             {
-                Thread.Sleep(5000);
+                Thread.Sleep(2000);
 
 
                 
