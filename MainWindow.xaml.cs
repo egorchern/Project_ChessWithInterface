@@ -1877,35 +1877,85 @@ namespace Project_ChessWithInterface
             List<List<int>> PossibleMoves = GetAllLegalMovesForSelectedColor(color, Board);
             List<int> BestMove = new List<int>();
 
-            List<object> ForThread1 = new List<object> { Board, PossibleMoves };
+            List<object> ForThread1 = new List<object> ();
+            List<object> ForThread2 = new List<object>();
 
-            Globals.recCountr = 0;
+            
             double bestScore = -10000000;
             int firstPoint = 0;
             firstPoint = PossibleMoves.Count / 3;
             int secondPoint = 0;
-            if(firstPoint * 3 < PossibleMoves.Count)
+            var PossList1 = new List<List<int>>();
+            var PossList2 = new List<List<int>>();
+            var PossListRoot = new List<List<int>>();
+            ForThread1.Add(Board);
+            ForThread2.Add(Board);
+            if (PossibleMoves.Count == 3)
             {
-                secondPoint = firstPoint;
-                firstPoint++;
-                if(firstPoint + secondPoint * 2 < PossibleMoves.Count)
+                PossListRoot.Add(PossibleMoves[0]);
+                PossList1.Add(PossibleMoves[1]);
+                PossList2.Add(PossibleMoves[2]);
+                ForThread1.Add(PossList1);
+                ForThread2.Add(PossList2);
+            }
+            else if(PossibleMoves.Count == 2)
+            {
+                PossListRoot.Add(PossibleMoves[0]);
+                PossList1.Add(PossibleMoves[1]);
+                ForThread1.Add(PossList1);
+
+            }
+            else if(PossibleMoves.Count == 1)
+            {
+                PossListRoot.Add(PossibleMoves[0]);
+            }
+            else
+            {
+
+
+                if (firstPoint * 3 < PossibleMoves.Count)
                 {
-                    secondPoint++;
+                    secondPoint = firstPoint;
+                    firstPoint++;
+                    if (firstPoint + secondPoint * 2 < PossibleMoves.Count)
+                    {
+                        secondPoint++;
+                    }
+                    secondPoint *= 2;
+
                 }
+                else if (PossibleMoves.Count == firstPoint * 3)
+                {
+                    secondPoint = firstPoint * 2;
+                }
+
+                
+               
+                for (int i = firstPoint; i <= secondPoint; i++)
+                {
+                    PossList1.Add(PossibleMoves[i]);
+                }
+                for (int i = secondPoint + 1; i < PossibleMoves.Count; i++)
+                {
+                    PossList2.Add(PossibleMoves[i]);
+                }
+                for (int i = 0; i < firstPoint; i++)
+                {
+                    PossListRoot.Add(PossibleMoves[i]);
+                }
+                ForThread1.Add(PossList1);
+                ForThread2.Add(PossList2);
             }
-            else if(PossibleMoves.Count == firstPoint)
-            {
-                secondPoint = firstPoint * 2;
-            }
-            
-            
-            
+
             ParameterizedThreadStart thr = new ParameterizedThreadStart(ThreadTwo);
             Thread t = new Thread(thr);
             t.Start(ForThread1);
-            for (int i = 0; i <= firstPoint; i++)
+            ParameterizedThreadStart thr1 = new ParameterizedThreadStart(ThreadThree);
+            Thread t1 = new Thread(thr1);
+            t1.Start(ForThread1);
+            for (int i = 0; i < PossListRoot.Count; i++)
             {
-                var list = PossibleMoves[i];
+                var list = PossListRoot[i];
                 for(int q = 1; q < list.Count; q++)
                 {
                     var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
@@ -1923,21 +1973,41 @@ namespace Project_ChessWithInterface
             }
 
 
-            while (t.IsAlive == true)
+            while (t.IsAlive == true || t1.IsAlive == true)
             {
                 Thread.Sleep(2000);
 
 
                 
             }
-            List<object> t1 = Globals.ExitThreadInfo;
-            double scoreForSecondThread = (double)t1[1];
-            if (bestScore <= scoreForSecondThread)
+            if (Globals.ExitThreadInfo.Count != 0)
             {
-                BestMove = (List<int>)t1[0];
+
+
+                List<object> t11 = Globals.ExitThreadInfo;
+                double scoreForSecondThread = (double)t11[1];
+                if (bestScore <= scoreForSecondThread)
+                {
+                    BestMove = (List<int>)t11[0];
+                    bestScore = scoreForSecondThread;
+                }
             }
+            
+                if(Globals.ExitThreadInfo2.Count != 0)
+                {
+                    List<object> t2 = Globals.ExitThreadInfo2;
+                    double scoreForThirdThread = (double)t2[1];
+
+                    if (bestScore <= scoreForThirdThread)
+                    {
+                        BestMove = (List<int>)t2[0];
+
+                    }
+                }
+            
+            
             Globals.ExitThreadInfo.Clear();
-            Globals.recCountr = 0;
+            Globals.ExitThreadInfo2.Clear();
             return BestMove;
             
 
@@ -2106,9 +2176,9 @@ namespace Project_ChessWithInterface
             List<string> Board = Unpack[0] as List<string>;
             List<int> BestMove = new List<int>();
             List<List<int>> PossibleMoves = Unpack[1] as List<List<int>>;
-            int midPoint = PossibleMoves.Count / 2;
+           
             double bestScore = -10000000;
-            for (int i = midPoint  + 1; i < PossibleMoves.Count; i++)
+            for (int i = 0; i < PossibleMoves.Count;i++)
             {
                 var list = PossibleMoves[i];
                 for (int q = 1; q < list.Count; q++)
@@ -2131,7 +2201,39 @@ namespace Project_ChessWithInterface
 
 
         }
-        
+        public static void ThreadThree(object c)
+        {
+
+            List<object> Unpack = c as List<object>;
+            List<string> Board = Unpack[0] as List<string>;
+            List<int> BestMove = new List<int>();
+            List<List<int>> PossibleMoves = Unpack[1] as List<List<int>>;
+
+            double bestScore = -10000000;
+            for (int i = 0; i < PossibleMoves.Count; i++)
+            {
+                var list = PossibleMoves[i];
+                for (int q = 1; q < list.Count; q++)
+                {
+                    var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
+                    double score = minimax(scopedBoard, 0, -10000000, 10000000, false);
+                    double d = 0.0;
+                    if (score > bestScore)
+                    {
+                        BestMove.Clear();
+                        bestScore = score;
+                        BestMove.Add(list[0]);
+                        BestMove.Add(list[q]);
+
+                    }
+                }
+            }
+            Globals.ExitThreadInfo2.Add(BestMove);
+            Globals.ExitThreadInfo2.Add(bestScore);
+
+
+        }
+
         public static List<List<int>> GetAllLegalMovesForSelectedColor(string color, List<string> Board)
         {
             List<List<int>> listOfAllMoves = new List<List<int>>();
@@ -2297,6 +2399,7 @@ namespace Project_ChessWithInterface
         public static int FirstClickIndex = -1;
         public static List<int> PositionOfPawnToBePromotedAndPiece = null;
         public static List<object> ExitThreadInfo = new List<object>();
+        public static List<object> ExitThreadInfo2 = new List<object>();
         public static string AI = "W";
         public static int recCountr;
        
