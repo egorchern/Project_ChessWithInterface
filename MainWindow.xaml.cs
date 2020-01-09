@@ -1876,48 +1876,29 @@ namespace Project_ChessWithInterface
         {
             List<List<int>> PossibleMoves = GetAllLegalMovesForSelectedColor(color, Board);
             List<int> BestMove = new List<int>();
+            List<object> ForThread = new List<object> { Board, PossibleMoves };
 
-            List<object> ForThread1 = new List<object> { Board, PossibleMoves };
 
-            Globals.recCountr = 0;
             double bestScore = -10000000;
-            int firstPoint = 0;
-            firstPoint = PossibleMoves.Count / 3;
-            int secondPoint = 0;
-            if(firstPoint * 3 < PossibleMoves.Count)
-            {
-                secondPoint = firstPoint;
-                firstPoint++;
-                if(firstPoint + secondPoint * 2 < PossibleMoves.Count)
-                {
-                    secondPoint++;
-                }
-            }
-            else if(PossibleMoves.Count == firstPoint)
-            {
-                secondPoint = firstPoint * 2;
-            }
-            
-            
-            
+            int midPoint = PossibleMoves.Count / 2;
             ParameterizedThreadStart thr = new ParameterizedThreadStart(ThreadTwo);
             Thread t = new Thread(thr);
-            t.Start(ForThread1);
-            for (int i = 0; i <= firstPoint; i++)
+            t.Start(ForThread);
+            for (int i = 0; i <= midPoint; i++)
             {
                 var list = PossibleMoves[i];
-                for(int q = 1; q < list.Count; q++)
+                for (int q = 1; q < list.Count; q++)
                 {
                     var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
                     double score = minimax(scopedBoard, 0, -10000000, 10000000, false);
-                    
+
                     if (score > bestScore)
                     {
                         BestMove.Clear();
                         bestScore = score;
                         BestMove.Add(list[0]);
                         BestMove.Add(list[q]);
-                        
+
                     }
                 }
             }
@@ -1928,7 +1909,7 @@ namespace Project_ChessWithInterface
                 Thread.Sleep(2000);
 
 
-                
+
             }
             List<object> t1 = Globals.ExitThreadInfo;
             double scoreForSecondThread = (double)t1[1];
@@ -1937,12 +1918,11 @@ namespace Project_ChessWithInterface
                 BestMove = (List<int>)t1[0];
             }
             Globals.ExitThreadInfo.Clear();
-            Globals.recCountr = 0;
             return BestMove;
-            
 
-           
-            
+
+
+
         }
         public static double minimax(List<string> Board, int depth, double alpha, double beta, bool maximizing)
         {
