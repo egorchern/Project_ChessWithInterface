@@ -1870,27 +1870,41 @@ namespace Project_ChessWithInterface
 
 
             DisplayBoardOnInterface();
+            Globals.AI = "W";
             
         }
         public static List<int> FindBestMoveAI(string color, List<string> Board)
         {
             List<List<int>> PossibleMoves = GetAllLegalMovesForSelectedColor(color, Board);
             List<int> BestMove = new List<int>();
-            List<object> ForThread = new List<object> { Board, PossibleMoves };
-
+            List<object> ForThread = new List<object>() ;
+            ForThread.Add(Board);
+            var PossibleMovesMainThread = new List<List<int>>();
+            var PossibleMovesThread1 = new List<List<int>>();
+            int midPoint = PossibleMoves.Count / 2;
+            for(int i = 0; i < midPoint; i++)
+            {
+                PossibleMovesMainThread.Add(PossibleMoves[i]);
+            }
+            for (int i = midPoint; i < PossibleMoves.Count; i++)
+            {
+                PossibleMovesThread1.Add(PossibleMoves[i]);
+            }
+            ForThread.Add(PossibleMovesThread1);
+            PossibleMoves.Clear();
 
             double bestScore = -10000000;
-            int midPoint = PossibleMoves.Count / 2;
-            ParameterizedThreadStart thr = new ParameterizedThreadStart(ThreadTwo);
-            Thread t = new Thread(thr);
-            t.Start(ForThread);
-            for (int i = 0; i <= midPoint; i++)
+            
+            ParameterizedThreadStart thread1Start = new ParameterizedThreadStart(ThreadTwo);
+            Thread thread1 = new Thread(thread1Start);
+            thread1.Start(ForThread);
+            for (int i = 0; i < PossibleMovesMainThread.Count; i++)
             {
-                var list = PossibleMoves[i];
+                var list = PossibleMovesMainThread[i];
                 for (int q = 1; q < list.Count; q++)
                 {
                     var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
-                    double score = minimax(scopedBoard, 0, -10000000, 10000000, false);
+                    double score = minimax(scopedBoard, 0/*, -10000000, 10000000*/, false);
 
                     if (score > bestScore)
                     {
@@ -1904,18 +1918,18 @@ namespace Project_ChessWithInterface
             }
 
 
-            while (t.IsAlive == true)
+            while (thread1.IsAlive == true)
             {
                 Thread.Sleep(2000);
 
 
 
             }
-            List<object> t1 = Globals.ExitThreadInfo;
-            double scoreForSecondThread = (double)t1[1];
+            List<object> thread1Info = Globals.ExitThreadInfo;
+            double scoreForSecondThread = (double)thread1Info[1];
             if (bestScore <= scoreForSecondThread)
             {
-                BestMove = (List<int>)t1[0];
+                BestMove = (List<int>)thread1Info[0];
             }
             Globals.ExitThreadInfo.Clear();
             return BestMove;
@@ -1924,9 +1938,9 @@ namespace Project_ChessWithInterface
 
 
         }
-        public static double minimax(List<string> Board, int depth, double alpha, double beta, bool maximizing)
+        public static double minimax(List<string> Board, int depth/*, double alpha, double beta*/, bool maximizing)
         {
-            Globals.recCountr++;
+            
             string color = "";
             if (Globals.AI == White && maximizing == true)
             {
@@ -2016,7 +2030,7 @@ namespace Project_ChessWithInterface
                     for (int q = 1; q < list.Count; q++)
                     {
                         var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
-                        double score = minimax(scopedBoard, depth + 1, alpha, beta, false);
+                        double score = minimax(scopedBoard, depth + 1/*, alpha, beta*/, false);
                         if (score > bestScore)
                         {
 
@@ -2055,7 +2069,7 @@ namespace Project_ChessWithInterface
                     for (int q = 1; q < list.Count; q++)
                     {
                         var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
-                        double score = minimax(scopedBoard, depth + 1, alpha, beta, true);
+                        double score = minimax(scopedBoard, depth + 1, /*alpha, beta,*/ true);
                         if (score < bestScore)
                         {
 
@@ -2086,16 +2100,16 @@ namespace Project_ChessWithInterface
             List<string> Board = Unpack[0] as List<string>;
             List<int> BestMove = new List<int>();
             List<List<int>> PossibleMoves = Unpack[1] as List<List<int>>;
-            int midPoint = PossibleMoves.Count / 2;
+            
             double bestScore = -10000000;
-            for (int i = midPoint  + 1; i < PossibleMoves.Count; i++)
+            for (int i = 0; i < PossibleMoves.Count; i++)
             {
                 var list = PossibleMoves[i];
                 for (int q = 1; q < list.Count; q++)
                 {
                     var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
-                    double score = minimax(scopedBoard, 0, -10000000, 10000000, false);
-                    double d = 0.0;
+                    double score = minimax(scopedBoard, 0/*, -10000000, 10000000*/, false);
+                    
                     if (score > bestScore)
                     {
                         BestMove.Clear();
@@ -2278,7 +2292,7 @@ namespace Project_ChessWithInterface
         public static List<int> PositionOfPawnToBePromotedAndPiece = null;
         public static List<object> ExitThreadInfo = new List<object>();
         public static string AI = "W";
-        public static int recCountr;
+        
        
 
     }
