@@ -1904,7 +1904,7 @@ namespace Project_ChessWithInterface
                 for (int q = 1; q < list.Count; q++)
                 {
                     var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
-                    double score = minimax(scopedBoard, 0, -10000000, 10000000, false);
+                    double score = minimax(scopedBoard, 0,/* -10000000, 10000000*/ false);
 
                     if (score > bestScore)
                     {
@@ -1938,7 +1938,7 @@ namespace Project_ChessWithInterface
 
 
         }
-        public static double minimax(List<string> Board, int depth, double alpha, double beta, bool maximizing)
+        public static double minimax(List<string> Board, int depth,/* double alpha, double beta*/ bool maximizing)
         {
             
             string color = "";
@@ -2030,7 +2030,7 @@ namespace Project_ChessWithInterface
                     for (int q = 1; q < list.Count; q++)
                     {
                         var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
-                        double score = minimax(scopedBoard, depth + 1, alpha, beta, false);
+                        double score = minimax(scopedBoard, depth + 1/*, alpha, beta*/, false);
                         if (score > bestScore)
                         {
 
@@ -2069,14 +2069,14 @@ namespace Project_ChessWithInterface
                     for (int q = 1; q < list.Count; q++)
                     {
                         var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
-                        double score = minimax(scopedBoard, depth + 1, alpha, beta, true);
+                        double score = minimax(scopedBoard, depth + 1/*, alpha, beta*/, true);
                         if (score < bestScore)
                         {
 
                             bestScore = score;
 
                         }
-                        
+                        /*
                         if (score < beta)
                         {
                             beta = score;
@@ -2085,7 +2085,7 @@ namespace Project_ChessWithInterface
                         {
                             break;
                         }
-                        
+                        */
                     }
 
                 }
@@ -2108,7 +2108,7 @@ namespace Project_ChessWithInterface
                 for (int q = 1; q < list.Count; q++)
                 {
                     var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
-                    double score = minimax(scopedBoard, 0, -10000000, 10000000, false);
+                    double score = minimax(scopedBoard, 0/*, -10000000, 10000000*/, false);
                     
                     if (score > bestScore)
                     {
