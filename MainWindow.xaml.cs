@@ -16,6 +16,8 @@ using System.Text.RegularExpressions;
 using System.Web.UI.HtmlControls;
 using System.IO;
 using System.Threading;
+using System.Data.Sql;
+using System.Data.SqlClient;
 
 
 
@@ -42,8 +44,27 @@ namespace Project_ChessWithInterface
         {
             
             InitializeComponent();
+            /*
+            //Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=F:\ProjectChessMAIN\Database1.mdf;Integrated Security=True
+            SqlConnection gameArchive = new SqlConnection();
+            SqlCommand command = new SqlCommand();
+            gameArchive.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;" + @"AttachDbFilename=F:\ProjectChessMAIN\Database1.mdf;" + @"Integrated Security=True";
+            gameArchive.Open();
+            command.Connection = gameArchive;
+            command.CommandText = "INSERT INTO PlayedGames(Id,Outcome) VALUES(192,'White')";
+            command.ExecuteNonQuery();
+            command.CommandText = "SELECT * FROM PlayedGames WHERE Outcome = 'White'";
             
-            
+
+            SqlDataReader reader = command.ExecuteReader();
+            string outPutString = "";
+            while (reader.Read())
+            {
+                outPutString += "\n" + $"{reader.GetValue(0)} : {reader.GetValue(1)}";
+            }
+            MessageBox.Show(outPutString);
+            double d = 0.0;
+            */
 
         }
         public  void InitializeUI()
@@ -51,7 +72,7 @@ namespace Project_ChessWithInterface
             GetAllButtonElements();
             SortButtons();
             Globals.FromBoardToPiecePathes = PopulateADictionary();
-            Globals.pathToResources = GetPathToResources();
+           
             GameWindow.Icon = new BitmapImage(new Uri(Globals.pathToResources + "\\ChessIcon.png"));
             Board.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\Board.png"));
             SaveGameImage.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\SaveGameIcon.png"));
@@ -394,20 +415,7 @@ namespace Project_ChessWithInterface
         }
 
 
-        public static string GetPathToResources()
-        {
-            string pathToResources = Environment.CurrentDirectory;
-            pathToResources = Regex.Replace(pathToResources, @"\\", "¬");
-            var temp = pathToResources.Split('¬').ToList();
-            temp.RemoveAt(temp.Count - 1);
-            temp.RemoveAt(temp.Count - 1);
-            for (int i = 0; i < temp.Count; i++)
-            {
-                temp[i] += @"\";
-            }
-            pathToResources = String.Join("", temp) + "Resources";
-            return pathToResources;
-        }
+        
 
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

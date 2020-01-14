@@ -26,6 +26,22 @@ namespace Project_ChessWithInterface
             InitializeComponent();
             button.Click += Button_Click;
             button_Copy.Click += Button_Copy_Click;
+            Globals.pathToResources = GetPathToResources();
+
+        }
+        public static string GetPathToResources()
+        {
+            string pathToResources = Environment.CurrentDirectory;
+            pathToResources = Regex.Replace(pathToResources, @"\\", "¬");
+            var temp = pathToResources.Split('¬').ToList();
+            temp.RemoveAt(temp.Count - 1);
+            temp.RemoveAt(temp.Count - 1);
+            for (int i = 0; i < temp.Count; i++)
+            {
+                temp[i] += @"\";
+            }
+            pathToResources = String.Join("", temp) + "Resources";
+            return pathToResources;
         }
         public static string GetPathToSaves()
         {
@@ -56,11 +72,8 @@ namespace Project_ChessWithInterface
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow instance = new MainWindow();
-            MainWindow.InitializeBoard();
-            Globals.WhitesTurn = true;
-            instance.Show();
-            
+            StartGameParameters startGame = new StartGameParameters();
+            startGame.Show();
             this.Close();
         }
         public static void LoadGame(string path)
