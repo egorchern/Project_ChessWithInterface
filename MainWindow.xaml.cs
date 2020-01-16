@@ -44,27 +44,8 @@ namespace Project_ChessWithInterface
         {
             
             InitializeComponent();
-            /*
-            //Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=F:\ProjectChessMAIN\Database1.mdf;Integrated Security=True
-            SqlConnection gameArchive = new SqlConnection();
-            SqlCommand command = new SqlCommand();
-            gameArchive.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;" + @"AttachDbFilename=F:\ProjectChessMAIN\Database1.mdf;" + @"Integrated Security=True";
-            gameArchive.Open();
-            command.Connection = gameArchive;
-            command.CommandText = "INSERT INTO PlayedGames(Id,Outcome) VALUES(192,'White')";
-            command.ExecuteNonQuery();
-            command.CommandText = "SELECT * FROM PlayedGames WHERE Outcome = 'White'";
             
-
-            SqlDataReader reader = command.ExecuteReader();
-            string outPutString = "";
-            while (reader.Read())
-            {
-                outPutString += "\n" + $"{reader.GetValue(0)} : {reader.GetValue(1)}";
-            }
-            MessageBox.Show(outPutString);
-            double d = 0.0;
-            */
+            
 
         }
         public  void InitializeUI()
@@ -83,12 +64,36 @@ namespace Project_ChessWithInterface
                 btn.Click += UniversalSquareClickEventHandle;
             }
         }
+        public static string GetConnectionStringForDatabase()
+        {
+            string pathToResources = Globals.pathToResources;
+            string pathToMainFolder = Regex.Replace(pathToResources, @"\\[^\\]+$", "");
+            string ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;" + $"AttachDbFilename={pathToMainFolder+"\\PlayedGamesDB.mdf"};" + @"Integrated Security=True";
+            /*SqlConnection gameArchive = new SqlConnection();
+            SqlCommand command = new SqlCommand();
+            gameArchive.ConnectionString = ConnectionString;
+            gameArchive.Open();
+            command.Connection = gameArchive;
+            
+            command.CommandText = "SELECT * FROM PlayedGames WHERE Id > 1";
+
+
+            SqlDataReader reader = command.ExecuteReader();
+            string outPutString = "";
+            while (reader.Read())
+            {
+                outPutString += "\n" + $"{reader.GetValue(0)} : {reader.GetValue(1)}";
+            }
+            MessageBox.Show(outPutString);
+            */
+            return ConnectionString;
+        }
         private void SaveGameImage_MouseDown(object sender, MouseButtonEventArgs e)
         {
             SaveGameDialog save = new SaveGameDialog();
             save.ShowDialog();
         }
-
+        
         public static bool CanProceedWithTurn(int index)
         {
             string CurrentPieceOnSquare = Globals.Board[index];
@@ -353,6 +358,7 @@ namespace Project_ChessWithInterface
                     Globals.FirstClickIndex = -1;
                     
                     DisplayBoardOnInterface();
+                    
                     int StateOfGame = CheckGameEndConditions(Globals.Board,Globals.WhitesTurn); //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
                     if (StateOfGame == 1)
                     {
@@ -369,12 +375,35 @@ namespace Project_ChessWithInterface
                         TurnIndicator.Text = "Stalemate\nGame has been drawn!";
                         DisableAllButtons();
                     }
+                    else if(StateOfGame == 0)
+                    {
+                        
+                        if (Globals.WhitesTurn == true && Globals.AI == White)
+                        {
+
+                            MakeAIMove();
+                        }
+                        else if(Globals.WhitesTurn == false && Globals.AI == Black)
+                        {
+                            MakeAIMove();
+                            
+                        }
+                    }
+
+                    
                 }
             }
 
 
            
             
+        }
+        public static void MakeAIMove()
+        {
+            List<int> AIMOve = FindBestMoveAI(Globals.AI, Globals.Board);
+            RoutedEventArgs newEventArgs = new RoutedEventArgs(Button.ClickEvent);
+            Globals.AllButtons[AIMOve[0]].RaiseEvent(newEventArgs);
+            Globals.AllButtons[AIMOve[1]].RaiseEvent(newEventArgs);
         }
         public static bool CanProceedWithSecondClick(int startIndex,int endIndex) 
         {
@@ -417,10 +446,7 @@ namespace Project_ChessWithInterface
 
         
 
-        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
+        
         public static void InitializeBoard()
         {
             for (int i = 0; i < BoardSize * BoardSize; i++)
@@ -1878,8 +1904,11 @@ namespace Project_ChessWithInterface
 
 
             DisplayBoardOnInterface();
-            Globals.AI = "B";
             
+            if(Globals.AI == White)
+            {
+                MakeAIMove();
+            }
         }
         public static List<int> FindBestMoveAI(string color, List<string> Board)
         {
@@ -2309,7 +2338,7 @@ namespace Project_ChessWithInterface
         public static int FirstClickIndex = -1;
         public static List<int> PositionOfPawnToBePromotedAndPiece = null;
         public static List<object> ExitThreadInfo = new List<object>();
-        public static string AI = "W";
+        public static string AI;
         
        
 

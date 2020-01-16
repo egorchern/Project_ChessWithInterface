@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="RootWindow" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="Manual">
+        Title="RootWindow" Height="504.463" Width="366.599" ResizeMode="NoResize" WindowStartupLocation="Manual">
     <Grid>
-        <Button x:Name="button" Content="New Game" HorizontalAlignment="Left" Margin="13,12,0,0" VerticalAlignment="Top" Width="165" Height="106" FontWeight="Bold" FontSize="30"/>
-        <Button x:Name="button_Copy" Content="Load Game" HorizontalAlignment="Left" Margin="210,16,0,0" VerticalAlignment="Top" Width="165" Height="106" FontWeight="Bold" FontSize="30"/>
+        <Button x:Name="button" Content="New Game" HorizontalAlignment="Left" Margin="79,27,0,0" VerticalAlignment="Top" Width="202" Height="116" FontWeight="Bold" FontSize="30"/>
+        <Button x:Name="button_Copy" Content="Load Game" HorizontalAlignment="Left" Margin="79,176,0,0" VerticalAlignment="Top" Width="202" Height="116" FontWeight="Bold" FontSize="30" RenderTransformOrigin="0.467,0.493"/>
+        <Button x:Name="button_Copy1" Content="Game Archive" HorizontalAlignment="Left" Margin="79,322,0,0" VerticalAlignment="Top" Width="202" Height="116" FontWeight="Bold" FontSize="30" RenderTransformOrigin="0.467,0.493"/>
 
     </Grid>
 </Window>

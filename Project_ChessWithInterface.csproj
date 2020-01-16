@@ -79,6 +79,9 @@
     <Compile Include="PawnPromotion.xaml.cs">
       <DependentUpon>PawnPromotion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlayerColorSelectionDialog.xaml.cs">
+      <DependentUpon>PlayerColorSelectionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RootWindow.xaml.cs">
       <DependentUpon>RootWindow.xaml</DependentUpon>
     </Compile>
@@ -105,6 +108,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PawnPromotion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PlayerColorSelectionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -148,12 +155,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Database1.mdf">
+    <Content Include="PlayedGamesDB.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Database1_log.ldf">
+    <Content Include="PlayedGamesDB_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>Database1.mdf</DependentUpon>
+      <DependentUpon>PlayedGamesDB.mdf</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>

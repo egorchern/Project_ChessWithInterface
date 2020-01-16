@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="GameStartParametersWindow" Height="670" Width="758" ResizeMode="NoResize">
+        Title="GameStartParametersWindow" Height="614" Width="817" ResizeMode="NoResize">
     <Grid>
-        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="310" Margin="14,66,0,0" VerticalAlignment="Top" Width="287"/>
-        <Label x:Name="label" Content="Who do you want to play against?" HorizontalAlignment="Left" Margin="30,24,0,0" VerticalAlignment="Top" FontWeight ="Bold" FontSize="15"/>
-        <Button x:Name="submit_btn" Content="Start" HorizontalAlignment="Left" Margin="319,515,0,0" VerticalAlignment="Top" Width="121" FontWeight="Bold" FontSize="30" Height="66"/>
+        <ListBox x:Name="OpponentSelection_list" HorizontalAlignment="Left" Height="300" Margin="55,80,0,0" VerticalAlignment="Top" Width="287"/>
+        <Label x:Name="label" Content="Who do you want to play against?" HorizontalAlignment="Left" Margin="7,19,0,0" VerticalAlignment="Top" FontWeight ="Bold" FontSize="25"/>
+        <Button x:Name="submit_btn" Content="Start" HorizontalAlignment="Left" Margin="314,437,0,0" VerticalAlignment="Top" Width="163" FontWeight="Bold" FontSize="30" Height="124"/>
+        <Label x:Name="label1" Content="Choose a game mode" HorizontalAlignment="Left" Margin="501,22,0,0" VerticalAlignment="Top"  FontWeight ="Bold" FontSize="25"/>
+        <ListBox x:Name="GameModeSelection_list" HorizontalAlignment="Left" Height="300" Margin="487,80,0,0" VerticalAlignment="Top" Width="287"/>
 
     </Grid>
 </Window>

@@ -24,10 +24,43 @@ namespace Project_ChessWithInterface
             InitializeComponent();
            
             ParametersWindow.Icon = new BitmapImage(new Uri(Globals.pathToResources + "\\ChessIcon.png"));
-            listBox.FontSize = 18;
-            listBox.FontWeight = FontWeights.Bold;
-            listBox.Items.Add("AI");
-            listBox.Items.Add("Local play(both sides playable)");
+            OpponentSelection_list.FontSize = 18;
+            OpponentSelection_list.FontWeight = FontWeights.Bold;
+            OpponentSelection_list.Items.Add("AI");
+            OpponentSelection_list.Items.Add("Local play(both sides playable)");
+            GameModeSelection_list.Items.Add("Classical chess");
+            GameModeSelection_list.FontSize = 18;
+            GameModeSelection_list.FontWeight = FontWeights.Bold;
+            submit_btn.Click += Submit_btn_Click;
+            
+        }
+
+        private void Submit_btn_Click(object sender, RoutedEventArgs e)
+        {
+            if(OpponentSelection_list.SelectedItem != null && GameModeSelection_list.SelectedItem != null)
+            {
+                if(OpponentSelection_list.SelectedItem.ToString() == "AI")
+                {
+                    PlayerColorSelectionDialog playerColorSelection = new PlayerColorSelectionDialog();
+                    playerColorSelection.ShowDialog();
+
+                }
+                else
+                {
+                    Globals.AI = null;
+                }
+                MainWindow.InitializeBoard();
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close();
+
+
+            }
+            else
+            {
+                MessageBox.Show("Not all setting were selected.");
+            }
+            
         }
     }
 }
