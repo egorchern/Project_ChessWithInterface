@@ -18,8 +18,8 @@ using System.IO;
 using System.Threading;
 using System.Data.Sql;
 using System.Data.SqlClient;
-
-
+using System.Timers;
+using System.Windows.Threading;
 
 namespace Project_ChessWithInterface
 {
@@ -44,8 +44,8 @@ namespace Project_ChessWithInterface
         {
             
             InitializeComponent();
-            
-            
+
+            GetConnectionStringForDatabase();
 
         }
         public  void InitializeUI()
@@ -69,13 +69,14 @@ namespace Project_ChessWithInterface
             string pathToResources = Globals.pathToResources;
             string pathToMainFolder = Regex.Replace(pathToResources, @"\\[^\\]+$", "");
             string ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;" + $"AttachDbFilename={pathToMainFolder+"\\PlayedGamesDB.mdf"};" + @"Integrated Security=True";
-            /*SqlConnection gameArchive = new SqlConnection();
+            /*
+            SqlConnection gameArchive = new SqlConnection();
             SqlCommand command = new SqlCommand();
             gameArchive.ConnectionString = ConnectionString;
             gameArchive.Open();
             command.Connection = gameArchive;
             
-            command.CommandText = "SELECT * FROM PlayedGames WHERE Id > 1";
+            command.CommandText = "SELECT * FROM PlayedGames WHERE 1=1";
 
 
             SqlDataReader reader = command.ExecuteReader();
@@ -380,12 +381,13 @@ namespace Project_ChessWithInterface
                         
                         if (Globals.WhitesTurn == true && Globals.AI == White)
                         {
-
-                            MakeAIMove();
+                            DelayAction(500, new Action(() => { MakeAIMove(); }));
+                            //MakeAIMove();
                         }
                         else if(Globals.WhitesTurn == false && Globals.AI == Black)
                         {
-                            MakeAIMove();
+                            DelayAction(500, new Action(() => { MakeAIMove(); }));
+                            //MakeAIMove();
                             
                         }
                     }
@@ -444,9 +446,21 @@ namespace Project_ChessWithInterface
         }
 
 
-        
+        public static void DelayAction(int millisecond, Action action)
+        {
+            var timer = new DispatcherTimer();
+            timer.Tick += delegate
 
-        
+            {
+                action.Invoke();
+                timer.Stop();
+            };
+
+            timer.Interval = TimeSpan.FromMilliseconds(millisecond);
+            timer.Start();
+        }
+
+
         public static void InitializeBoard()
         {
             for (int i = 0; i < BoardSize * BoardSize; i++)
@@ -1904,10 +1918,10 @@ namespace Project_ChessWithInterface
 
 
             DisplayBoardOnInterface();
-            
+            Globals.MoveCounter = Globals.MoveRecord.Count + 1;
             if(Globals.AI == White)
             {
-                MakeAIMove();
+                DelayAction(500, new Action(() => { MakeAIMove(); }));
             }
         }
         public static List<int> FindBestMoveAI(string color, List<string> Board)
@@ -2314,7 +2328,7 @@ namespace Project_ChessWithInterface
 
     public static class Globals
     {
-        public static int MoveCounter = 1;
+        public static int MoveCounter;
         public static string PathToSave = "";
         public static string pathToResources = "";
         public static List<Button> AllButtons = new List<Button>();

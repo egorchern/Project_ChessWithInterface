@@ -111,7 +111,7 @@ namespace Project_ChessWithInterface
                 string temp = l[i];
                 temp = Regex.Replace(temp, @"\d*=", "");
                 Globals.Board[i] = temp;
-                double d = 0.0;
+                
             }
             if (l[64] == "true")
             {
