@@ -58,12 +58,82 @@ namespace Project_ChessWithInterface
             Board.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\Board.png"));
             SaveGameImage.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\SaveGameIcon.png"));
             SaveGameImage.MouseDown += SaveGameImage_MouseDown;
-            image.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\ChessIcon.png"));
+            Player1TimerLabelUpdate();
+            Player2TimerLabelUpdate();
+            if(Globals.AI == null)
+            {
+                PlayerTimer2_label.Visibility = Visibility.Visible;
+                Globals.Player2Timer.Interval = TimeSpan.FromSeconds(1);
+                Globals.Player2Timer.Tick += Player2Timer_Tick;
+                Globals.Player2Timer.Start();
+            }
+           
+            Globals.PlayerTimer.Interval = TimeSpan.FromSeconds(1);
+            Globals.PlayerTimer.Tick += PlayerTimer_Tick;
+            Globals.PlayerTimer.Start();
+
             foreach (Button btn in Globals.AllButtons)
             {
                 btn.Click += UniversalSquareClickEventHandle;
             }
         }
+
+        private void Player2Timer_Tick(object sender, EventArgs e)
+        {
+            if (Globals.Player2TimerTimeSeconds == 0)
+            {
+                Globals.Player2Timer.Stop();
+                MessageBox.Show("You have ran out of time!");
+                PlayerTimedOut();
+            }
+            else
+            {
+
+
+                Globals.Player2TimerTimeSeconds--;
+                Player2TimerLabelUpdate();
+            }
+        }
+
+        public  void Player1TimerLabelUpdate()
+        {
+            var minutes = Globals.Player1TimerTimeSeconds / 60;
+            string seconds = Convert.ToString(Globals.Player1TimerTimeSeconds - minutes * 60);
+            
+            if(Convert.ToInt32(seconds) < 10)
+            {
+               seconds = seconds.Insert(0, "0");
+            }
+            PlayerTimer_label.Content = $"{minutes}:{seconds}";
+        }
+        public void Player2TimerLabelUpdate()
+        {
+            var minutes = Globals.Player2TimerTimeSeconds / 60;
+            string seconds = Convert.ToString(Globals.Player2TimerTimeSeconds - minutes * 60);
+
+            if (Convert.ToInt32(seconds) < 10)
+            {
+                seconds = seconds.Insert(0, "0");
+            }
+            PlayerTimer2_label.Content = $"{minutes}:{seconds}";
+        }
+        private void PlayerTimer_Tick(object sender, EventArgs e)
+        {
+            if (Globals.Player1TimerTimeSeconds == 0)
+            {
+                Globals.PlayerTimer.Stop();
+                MessageBox.Show("You have ran out of time!");
+                PlayerTimedOut();
+            }
+            else
+            {
+
+
+                Globals.Player1TimerTimeSeconds--;
+                Player1TimerLabelUpdate();
+            }
+        }
+
         public static string GetConnectionStringForDatabase()
         {
             string pathToResources = Globals.pathToResources;
@@ -402,10 +472,12 @@ namespace Project_ChessWithInterface
         }
         public static void MakeAIMove()
         {
+            Globals.PlayerTimer.IsEnabled = false;
             List<int> AIMOve = FindBestMoveAI(Globals.AI, Globals.Board);
             RoutedEventArgs newEventArgs = new RoutedEventArgs(Button.ClickEvent);
             Globals.AllButtons[AIMOve[0]].RaiseEvent(newEventArgs);
             Globals.AllButtons[AIMOve[1]].RaiseEvent(newEventArgs);
+            Globals.PlayerTimer.IsEnabled = true;
         }
         public static bool CanProceedWithSecondClick(int startIndex,int endIndex) 
         {
@@ -444,8 +516,30 @@ namespace Project_ChessWithInterface
                
             }
         }
-
-
+        public void PlayerTimedOut()
+        {
+            if(Globals.AI != null)
+            {
+                string playerColor = "";
+                
+                string computerColor = "";
+                switch (Globals.AI)
+                {
+                    case White:
+                        playerColor = "Black";
+                        computerColor = "White";
+                        break;
+                    case Black:
+                        playerColor = "White";
+                        computerColor = "Black";
+                        break;
+                }
+                TurnIndicator.Text = $"{playerColor} has run out of time\n{computerColor} has won!";
+            }
+            
+            DisableAllButtons();
+        }
+        
         public static void DelayAction(int millisecond, Action action)
         {
             var timer = new DispatcherTimer();
@@ -2353,8 +2447,12 @@ namespace Project_ChessWithInterface
         public static List<int> PositionOfPawnToBePromotedAndPiece = null;
         public static List<object> ExitThreadInfo = new List<object>();
         public static string AI;
-        
-       
+        public static int Player1TimerTimeSeconds = 20;
+        public static int Player2TimerTimeSeconds = 20;
+        public static DispatcherTimer  PlayerTimer = new DispatcherTimer();
+        public static DispatcherTimer  Player2Timer = new DispatcherTimer();
+
+
 
     }
     

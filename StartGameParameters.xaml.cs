@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Project_ChessWithInterface
 {
@@ -33,7 +34,10 @@ namespace Project_ChessWithInterface
             GameModeSelection_list.FontWeight = FontWeights.Bold;
             submit_btn.Click += Submit_btn_Click;
             
+            
         }
+
+        
 
         private void Submit_btn_Click(object sender, RoutedEventArgs e)
         {
