@@ -46,6 +46,7 @@ namespace Project_ChessWithInterface
             
             InitializeComponent();
             
+            
             //GetConnectionStringForDatabase();
 
         }
@@ -417,6 +418,7 @@ namespace Project_ChessWithInterface
                 else
                 {
                     MovePiece(ConvertAbsoluteToBoardNotation(Globals.FirstClickIndex), ConvertAbsoluteToBoardNotation(indexOfClickedSquare), Globals.MoveCounter);
+                    
                     Globals.MoveCounter++;
                     if (Globals.WhitesTurn == true)
                     {
@@ -431,6 +433,8 @@ namespace Project_ChessWithInterface
                     
                     DisplayBoardOnInterface();
                     
+                    Globals.PlacePieceSoundEffect.Open(new Uri(Globals.pathToResources + "\\PlacePieceSound.mp3"));
+                    Globals.PlacePieceSoundEffect.Play();
                     int StateOfGame = CheckGameEndConditions(Globals.Board,Globals.WhitesTurn); //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
                     if (StateOfGame == 1)
                     {
@@ -2546,7 +2550,7 @@ namespace Project_ChessWithInterface
         public static int Player2TimerTimeSeconds = 500;
         public static DispatcherTimer  PlayerTimer = new DispatcherTimer();
         public static DispatcherTimer  Player2Timer = new DispatcherTimer();
-
+        public static MediaPlayer PlacePieceSoundEffect = new MediaPlayer();
 
 
     }
