@@ -20,6 +20,7 @@ using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Timers;
 using System.Windows.Threading;
+using System.Media;
 
 namespace Project_ChessWithInterface
 {
@@ -44,8 +45,8 @@ namespace Project_ChessWithInterface
         {
             
             InitializeComponent();
-
-            GetConnectionStringForDatabase();
+            
+            //GetConnectionStringForDatabase();
 
         }
         public  void InitializeUI()
@@ -1419,8 +1420,16 @@ namespace Project_ChessWithInterface
                                 {
                                     string color = Convert.ToString(piece[0]);
                                     Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { DestinationAbsolute, -1 };
-                                    PawnPromotion promotion = new PawnPromotion();
-                                    promotion.ShowDialog();
+                                    if(color == Globals.AI)
+                                    {
+                                        Globals.PositionOfPawnToBePromotedAndPiece[1] = 0;
+                                    }
+                                    else
+                                    {
+                                        PawnPromotion promotion = new PawnPromotion();
+                                        promotion.ShowDialog();
+                                    }
+                                    
                                     string PromotePieceTo = "";
                                     switch (Globals.PositionOfPawnToBePromotedAndPiece[1])
                                     {
@@ -1467,8 +1476,15 @@ namespace Project_ChessWithInterface
                                 {
                                     string color = Convert.ToString(piece[0]);
                                     Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { DestinationAbsolute, -1 };
-                                    PawnPromotion promotion = new PawnPromotion();
-                                    promotion.ShowDialog();
+                                    if (color == Globals.AI)
+                                    {
+                                        Globals.PositionOfPawnToBePromotedAndPiece[1] = 0;
+                                    }
+                                    else
+                                    {
+                                        PawnPromotion promotion = new PawnPromotion();
+                                        promotion.ShowDialog();
+                                    }
                                     string PromotePieceTo = "";
                                     switch (Globals.PositionOfPawnToBePromotedAndPiece[1])
                                     {
@@ -1513,54 +1529,132 @@ namespace Project_ChessWithInterface
         }
         public static List<string> MovePieceLocal(string initialPos, string destination, List<string> arr)
         {
-            List<string> Copu = new List<string>();
+            List<string> ScopedBoard = new List<string>();
             foreach (string item in arr)
             {
-                Copu.Add(item);
+                ScopedBoard.Add(item);
             }
             string piece = "";
             int AbsoluteInitialPos = ChessNotationToAbsolute(initialPos);
             int DestinationAbsolute = ChessNotationToAbsolute(destination);
-            piece = Copu[AbsoluteInitialPos];
+            piece = ScopedBoard[AbsoluteInitialPos];
             
 
 
 
 
-            if (Copu[DestinationAbsolute] == Empty)
+            if (ScopedBoard[DestinationAbsolute] == Empty)
             {
-                if (piece == White + Pawn)
+                if (ConvertAbsoluteToBoardNotation(Globals.EnPessantDestination) == destination && piece[1] == 'p')
                 {
-                    if (AbsoluteInitialPos <= 55 && AbsoluteInitialPos >= 48 && DestinationAbsolute > 55)
-                    {
-                        Copu[AbsoluteInitialPos] = Empty;
-                        Copu[DestinationAbsolute] = White + Queen;
-                    }
-                    else
-                    {
-                        Copu[DestinationAbsolute] = piece;
-                        Copu[AbsoluteInitialPos] = Empty;
-                    }
-                }
-                else if (piece == Black + Pawn)
-                {
-                    if (AbsoluteInitialPos >= 8 && AbsoluteInitialPos <= 15 && DestinationAbsolute < 8)
-                    {
-                        Copu[AbsoluteInitialPos] = Empty;
-                        Copu[DestinationAbsolute] = Black + Queen;
-                    }
-                    else
-                    {
-                        Copu[DestinationAbsolute] = piece;
-                        Copu[AbsoluteInitialPos] = Empty;
-                    }
+                    ScopedBoard[AbsoluteInitialPos] = Empty;
+                    ScopedBoard[DestinationAbsolute] = piece;
+                    ScopedBoard[Globals.CapturedInEnPessant] = Empty;
+
+                    Globals.CapturedInEnPessant = -1;
+                    Globals.EnPessantDestination = -1;
                 }
                 else
                 {
 
 
-                    Copu[DestinationAbsolute] = piece;
-                    Copu[AbsoluteInitialPos] = Empty;
+
+                    if (initialPos == "E1")
+                    {
+                        if (piece[1] == Convert.ToChar(King))
+                        {
+
+
+
+                            if (destination == "G1")
+                            {
+                                ScopedBoard[ChessNotationToAbsolute("E1")] = Empty;
+                                ScopedBoard[ChessNotationToAbsolute("G1")] = White + King;
+                                ScopedBoard[ChessNotationToAbsolute("H1")] = Empty;
+                                ScopedBoard[ChessNotationToAbsolute("F1")] = White + Rook;
+
+
+
+
+                            }
+                            if (destination == "C1")
+                            {
+                                ScopedBoard[ChessNotationToAbsolute("E1")] = Empty;
+                                ScopedBoard[ChessNotationToAbsolute("C1")] = White + King;
+                                ScopedBoard[ChessNotationToAbsolute("A1")] = Empty;
+                                ScopedBoard[ChessNotationToAbsolute("D1")] = White + Rook;
+
+
+
+                            }
+                        }
+
+                    }
+
+
+                    if (initialPos == "E8")
+                    {
+                        if (piece[1] == Convert.ToChar(King))
+                        {
+                            if (destination == "G8")
+                            {
+
+
+
+                                ScopedBoard[ChessNotationToAbsolute("E8")] = Empty;
+                                ScopedBoard[ChessNotationToAbsolute("G8")] = Black + King;
+                                ScopedBoard[ChessNotationToAbsolute("H8")] = Empty;
+                                ScopedBoard[ChessNotationToAbsolute("F8")] = Black + Rook;
+
+
+
+
+                            }
+                            if (destination == "C8")
+                            {
+                                ScopedBoard[ChessNotationToAbsolute("E8")] = Empty;
+                                ScopedBoard[ChessNotationToAbsolute("C8")] = Black + King;
+                                ScopedBoard[ChessNotationToAbsolute("A8")] = Empty;
+                                ScopedBoard[ChessNotationToAbsolute("D8")] = Black + Rook;
+
+
+
+                            }
+                        }
+                    }
+                    if (piece == White + Pawn)
+                    {
+                        if (AbsoluteInitialPos <= 55 && AbsoluteInitialPos >= 48 && DestinationAbsolute > 55)
+                        {
+                            ScopedBoard[AbsoluteInitialPos] = Empty;
+                            ScopedBoard[DestinationAbsolute] = White + Queen;
+                        }
+                        else
+                        {
+                            ScopedBoard[DestinationAbsolute] = piece;
+                            ScopedBoard[AbsoluteInitialPos] = Empty;
+                        }
+                    }
+                    else if (piece == Black + Pawn)
+                    {
+                        if (AbsoluteInitialPos >= 8 && AbsoluteInitialPos <= 15 && DestinationAbsolute < 8)
+                        {
+                            ScopedBoard[AbsoluteInitialPos] = Empty;
+                            ScopedBoard[DestinationAbsolute] = Black + Queen;
+                        }
+                        else
+                        {
+                            ScopedBoard[DestinationAbsolute] = piece;
+                            ScopedBoard[AbsoluteInitialPos] = Empty;
+                        }
+                    }
+                    else
+                    {
+
+
+                        ScopedBoard[DestinationAbsolute] = piece;
+                        ScopedBoard[AbsoluteInitialPos] = Empty;
+                    }
                 }
             }
             else
@@ -1569,38 +1663,39 @@ namespace Project_ChessWithInterface
                 {
                     if (AbsoluteInitialPos <= 55 && AbsoluteInitialPos >= 48 && DestinationAbsolute > 55)
                     {
-                        Copu[AbsoluteInitialPos] = Empty;
-                        Copu[DestinationAbsolute] = White + Queen;
+                        ScopedBoard[AbsoluteInitialPos] = Empty;
+                        ScopedBoard[DestinationAbsolute] = White + Queen;
                     }
                     else
                     {
-                        Copu[DestinationAbsolute] = piece;
-                        Copu[AbsoluteInitialPos] = Empty;
+                        ScopedBoard[DestinationAbsolute] = piece;
+                        ScopedBoard[AbsoluteInitialPos] = Empty;
                     }
                 }
                 else if (piece == Black + Pawn)
                 {
                     if (AbsoluteInitialPos >= 8 && AbsoluteInitialPos <= 15 && DestinationAbsolute < 8)
                     {
-                        Copu[AbsoluteInitialPos] = Empty;
-                        Copu[DestinationAbsolute] = Black + Queen;
+                        ScopedBoard[AbsoluteInitialPos] = Empty;
+                        ScopedBoard[DestinationAbsolute] = Black + Queen;
                     }
                     else
                     {
-                        Copu[DestinationAbsolute] = piece;
-                        Copu[AbsoluteInitialPos] = Empty;
+                        ScopedBoard[DestinationAbsolute] = piece;
+                        ScopedBoard[AbsoluteInitialPos] = Empty;
                     }
                 }
                 else
                 {
 
 
-                    Copu[DestinationAbsolute] = piece;
-                    Copu[AbsoluteInitialPos] = Empty;
+                    ScopedBoard[DestinationAbsolute] = piece;
+                    ScopedBoard[AbsoluteInitialPos] = Empty;
                 }
             }
+           
 
-            return Copu;
+            return ScopedBoard;
 
 
 
@@ -2447,8 +2542,8 @@ namespace Project_ChessWithInterface
         public static List<int> PositionOfPawnToBePromotedAndPiece = null;
         public static List<object> ExitThreadInfo = new List<object>();
         public static string AI;
-        public static int Player1TimerTimeSeconds = 20;
-        public static int Player2TimerTimeSeconds = 20;
+        public static int Player1TimerTimeSeconds = 500;
+        public static int Player2TimerTimeSeconds = 500;
         public static DispatcherTimer  PlayerTimer = new DispatcherTimer();
         public static DispatcherTimer  Player2Timer = new DispatcherTimer();
 
