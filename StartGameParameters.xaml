@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="GameStartParametersWindow" Height="614" Width="817" ResizeMode="NoResize">
+        Title="GameStartParametersWindow" Height="610" Width="822" ResizeMode="NoResize">
     <Grid>
-        <ListBox x:Name="OpponentSelection_list" HorizontalAlignment="Left" Height="300" Margin="55,80,0,0" VerticalAlignment="Top" Width="287"/>
-        <Label x:Name="label" Content="Who do you want to play against?" HorizontalAlignment="Left" Margin="7,19,0,0" VerticalAlignment="Top" FontWeight ="Bold" FontSize="25"/>
-        <Button x:Name="submit_btn" Content="Start" HorizontalAlignment="Left" Margin="314,437,0,0" VerticalAlignment="Top" Width="163" FontWeight="Bold" FontSize="30" Height="124"/>
-        <Label x:Name="label1" Content="Choose a game mode" HorizontalAlignment="Left" Margin="501,22,0,0" VerticalAlignment="Top"  FontWeight ="Bold" FontSize="25"/>
-        <ListBox x:Name="GameModeSelection_list" HorizontalAlignment="Left" Height="300" Margin="487,80,0,0" VerticalAlignment="Top" Width="287"/>
+        <ListBox x:Name="OpponentSelection_list" HorizontalAlignment="Left" Height="300" Margin="55,86,0,0" VerticalAlignment="Top" Width="287"/>
+        <Label x:Name="label" Content="Who do you want to play against?" HorizontalAlignment="Left" Margin="12,30,0,0" VerticalAlignment="Top" FontWeight ="Bold" FontSize="25"/>
+        <Button x:Name="submit_btn" Content="Submit" HorizontalAlignment="Left" Margin="311,424,0,0" VerticalAlignment="Top" Width="163" FontWeight="Bold" FontSize="30" Height="124"/>
+        <Label x:Name="label1" Content="Choose a game mode" HorizontalAlignment="Left" Margin="478,34,0,0" VerticalAlignment="Top"  FontWeight ="Bold" FontSize="25"/>
+        <ListBox x:Name="GameModeSelection_list" HorizontalAlignment="Left" Height="300" Margin="473,87,0,0" VerticalAlignment="Top" Width="287"/>
 
     </Grid>
 </Window>

@@ -98,8 +98,10 @@
 
         <TextBlock x:Name="TurnIndicator" Grid.Column="2" HorizontalAlignment="Center" Margin="6,13,16,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="161" Width="319" FontWeight="Bold" FontSize="40" Foreground="Red" TextAlignment="Center"/>
         <Image x:Name="SaveGameImage" Grid.Column="2" HorizontalAlignment="Left" Height="72" Margin="27,180,0,0" VerticalAlignment="Top" Width="65"/>
-        <Label x:Name="PlayerTimer_label" Content="Label" Grid.Column="2" HorizontalAlignment="Left" Margin="209,190,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="38" Foreground="Red" />
-        <Label x:Name="PlayerTimer2_label" Content="Label" Grid.Column="2" HorizontalAlignment="Left" Margin="107,189,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="38" Foreground="Red" Visibility="Hidden"  />
+        <Label x:Name="PrimePlayerTimer_label" Content="Label" Grid.Column="2" HorizontalAlignment="Left" Margin="110,190,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="38" Foreground="Red" Visibility="Hidden" />
+        <Label x:Name="OtherPlayer_label" Content="Label" Grid.Column="2" HorizontalAlignment="Left" Margin="209,189,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="38" Foreground="Red" Visibility="Hidden"  />
+        <Label x:Name="TimerIndicator" Content="White" Grid.Column="2" HorizontalAlignment="Left" Margin="121,170,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.053,-0.038" Foreground="Red" FontWeight="Bold"/>
+        <Label x:Name="TimerIndicator2" Content="Black" Grid.Column="2" HorizontalAlignment="Left" Margin="237,170,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold"/>
 
 
     </Grid>

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Text.RegularExpressions;
 
 namespace Project_ChessWithInterface
 {
@@ -53,6 +54,8 @@ namespace Project_ChessWithInterface
                 {
                     Globals.AI = null;
                 }
+                TimerDialog timerDialog = new TimerDialog();
+                timerDialog.ShowDialog();
                 MainWindow.InitializeBoard();
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
@@ -66,5 +69,7 @@ namespace Project_ChessWithInterface
             }
             
         }
+
+       
     }
 }

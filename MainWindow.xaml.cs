@@ -45,7 +45,7 @@ namespace Project_ChessWithInterface
         {
             
             InitializeComponent();
-            
+           
             
             //GetConnectionStringForDatabase();
 
@@ -60,19 +60,45 @@ namespace Project_ChessWithInterface
             Board.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\Board.png"));
             SaveGameImage.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\SaveGameIcon.png"));
             SaveGameImage.MouseDown += SaveGameImage_MouseDown;
-            Player1TimerLabelUpdate();
-            Player2TimerLabelUpdate();
+            PrimePlayerTimerLabelUpdate();
+            OtherPlayerTimerLabelUpdate();
+            if(Globals.AI != null)
+            {
+                TimerIndicator.Content = "Human";
+                TimerIndicator2.Visibility = Visibility.Hidden;
+            }
             if(Globals.AI == null)
             {
-                PlayerTimer2_label.Visibility = Visibility.Visible;
-                Globals.Player2Timer.Interval = TimeSpan.FromSeconds(1);
-                Globals.Player2Timer.Tick += Player2Timer_Tick;
-                Globals.Player2Timer.Start();
+                if (Globals.OtherPlayerTimerTimeSeconds != -1)
+                {
+
+
+                    OtherPlayer_label.Visibility = Visibility.Visible;
+                    Globals.OtherPlayerTimer.Interval = TimeSpan.FromSeconds(1);
+                    Globals.OtherPlayerTimer.Tick += OtherPlayerTimer_Tick;
+                    Globals.OtherPlayerTimer.Start();
+                }
+                else
+                {
+                    TimerIndicator2.Visibility = Visibility.Hidden;
+                }
             }
-           
-            Globals.PlayerTimer.Interval = TimeSpan.FromSeconds(1);
-            Globals.PlayerTimer.Tick += PlayerTimer_Tick;
-            Globals.PlayerTimer.Start();
+            if (Globals.PrimePlayerTimerTimeSeconds != -1)
+            {
+                
+                PrimePlayerTimer_label.Visibility = Visibility.Visible;
+                Globals.PrimalPlayerTimer.Interval = TimeSpan.FromSeconds(1);
+                Globals.PrimalPlayerTimer.Tick += PrimePlayerTimer_Tick;
+                Globals.PrimalPlayerTimer.Start();
+            }
+            else
+            {
+                TimerIndicator.Visibility = Visibility.Hidden;
+            }
+            if(OtherPlayer_label.Visibility == Visibility.Visible)
+            {
+                Globals.OtherPlayerTimer.IsEnabled = false;
+            }
 
             foreach (Button btn in Globals.AllButtons)
             {
@@ -80,59 +106,59 @@ namespace Project_ChessWithInterface
             }
         }
 
-        private void Player2Timer_Tick(object sender, EventArgs e)
+        private void OtherPlayerTimer_Tick(object sender, EventArgs e)
         {
-            if (Globals.Player2TimerTimeSeconds == 0)
+            if (Globals.OtherPlayerTimerTimeSeconds == 0)
             {
-                Globals.Player2Timer.Stop();
+                Globals.OtherPlayerTimer.Stop();
                 MessageBox.Show("You have ran out of time!");
-                PlayerTimedOut();
+                SomeTimerTimedOut();
             }
             else
             {
 
 
-                Globals.Player2TimerTimeSeconds--;
-                Player2TimerLabelUpdate();
+                Globals.OtherPlayerTimerTimeSeconds--;
+                OtherPlayerTimerLabelUpdate();
             }
         }
 
-        public  void Player1TimerLabelUpdate()
+        public  void PrimePlayerTimerLabelUpdate()
         {
-            var minutes = Globals.Player1TimerTimeSeconds / 60;
-            string seconds = Convert.ToString(Globals.Player1TimerTimeSeconds - minutes * 60);
+            var minutes = Globals.PrimePlayerTimerTimeSeconds / 60;
+            string seconds = Convert.ToString(Globals.PrimePlayerTimerTimeSeconds - minutes * 60);
             
             if(Convert.ToInt32(seconds) < 10)
             {
                seconds = seconds.Insert(0, "0");
             }
-            PlayerTimer_label.Content = $"{minutes}:{seconds}";
+            PrimePlayerTimer_label.Content = $"{minutes}:{seconds}";
         }
-        public void Player2TimerLabelUpdate()
+        public void OtherPlayerTimerLabelUpdate()
         {
-            var minutes = Globals.Player2TimerTimeSeconds / 60;
-            string seconds = Convert.ToString(Globals.Player2TimerTimeSeconds - minutes * 60);
+            var minutes = Globals.OtherPlayerTimerTimeSeconds / 60;
+            string seconds = Convert.ToString(Globals.OtherPlayerTimerTimeSeconds - minutes * 60);
 
             if (Convert.ToInt32(seconds) < 10)
             {
                 seconds = seconds.Insert(0, "0");
             }
-            PlayerTimer2_label.Content = $"{minutes}:{seconds}";
+            OtherPlayer_label.Content = $"{minutes}:{seconds}";
         }
-        private void PlayerTimer_Tick(object sender, EventArgs e)
+        private void PrimePlayerTimer_Tick(object sender, EventArgs e)
         {
-            if (Globals.Player1TimerTimeSeconds == 0)
+            if (Globals.PrimePlayerTimerTimeSeconds == 0)
             {
-                Globals.PlayerTimer.Stop();
+                Globals.PrimalPlayerTimer.Stop();
                 MessageBox.Show("You have ran out of time!");
-                PlayerTimedOut();
+                SomeTimerTimedOut();
             }
             else
             {
 
 
-                Globals.Player1TimerTimeSeconds--;
-                Player1TimerLabelUpdate();
+                Globals.PrimePlayerTimerTimeSeconds--;
+                PrimePlayerTimerLabelUpdate();
             }
         }
 
@@ -435,6 +461,16 @@ namespace Project_ChessWithInterface
                     
                     Globals.PlacePieceSoundEffect.Open(new Uri(Globals.pathToResources + "\\PlacePieceSound.mp3"));
                     Globals.PlacePieceSoundEffect.Play();
+                    if (Globals.WhitesTurn == false)
+                    {
+                        Globals.OtherPlayerTimer.IsEnabled = true;
+                        Globals.PrimalPlayerTimer.IsEnabled = false;
+                    }
+                    else
+                    {
+                        Globals.OtherPlayerTimer.IsEnabled = false;
+                        Globals.PrimalPlayerTimer.IsEnabled = true;
+                    }
                     int StateOfGame = CheckGameEndConditions(Globals.Board,Globals.WhitesTurn); //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
                     if (StateOfGame == 1)
                     {
@@ -457,12 +493,12 @@ namespace Project_ChessWithInterface
                         if (Globals.WhitesTurn == true && Globals.AI == White)
                         {
                             DelayAction(500, new Action(() => { MakeAIMove(); }));
-                            //MakeAIMove();
+                            
                         }
                         else if(Globals.WhitesTurn == false && Globals.AI == Black)
                         {
                             DelayAction(500, new Action(() => { MakeAIMove(); }));
-                            //MakeAIMove();
+                            
                             
                         }
                     }
@@ -477,12 +513,12 @@ namespace Project_ChessWithInterface
         }
         public static void MakeAIMove()
         {
-            Globals.PlayerTimer.IsEnabled = false;
+            Globals.PrimalPlayerTimer.IsEnabled = false;
             List<int> AIMOve = FindBestMoveAI(Globals.AI, Globals.Board);
             RoutedEventArgs newEventArgs = new RoutedEventArgs(Button.ClickEvent);
             Globals.AllButtons[AIMOve[0]].RaiseEvent(newEventArgs);
             Globals.AllButtons[AIMOve[1]].RaiseEvent(newEventArgs);
-            Globals.PlayerTimer.IsEnabled = true;
+            Globals.PrimalPlayerTimer.IsEnabled = true;
         }
         public static bool CanProceedWithSecondClick(int startIndex,int endIndex) 
         {
@@ -521,7 +557,7 @@ namespace Project_ChessWithInterface
                
             }
         }
-        public void PlayerTimedOut()
+        public void SomeTimerTimedOut()
         {
             if(Globals.AI != null)
             {
@@ -540,6 +576,17 @@ namespace Project_ChessWithInterface
                         break;
                 }
                 TurnIndicator.Text = $"{playerColor} has run out of time\n{computerColor} has won!";
+            }
+            else
+            {
+                if(Globals.PrimePlayerTimerTimeSeconds == 0)
+                {
+                    TurnIndicator.Text = $"White has run out of time\nBlack has won!";
+                }
+                else if(Globals.OtherPlayerTimerTimeSeconds == 0)
+                {
+                    TurnIndicator.Text = $"Black has run out of time\nWhite has won!";
+                }
             }
             
             DisableAllButtons();
@@ -2546,10 +2593,10 @@ namespace Project_ChessWithInterface
         public static List<int> PositionOfPawnToBePromotedAndPiece = null;
         public static List<object> ExitThreadInfo = new List<object>();
         public static string AI;
-        public static int Player1TimerTimeSeconds = 500;
-        public static int Player2TimerTimeSeconds = 500;
-        public static DispatcherTimer  PlayerTimer = new DispatcherTimer();
-        public static DispatcherTimer  Player2Timer = new DispatcherTimer();
+        public static int PrimePlayerTimerTimeSeconds = 2;
+        public static int OtherPlayerTimerTimeSeconds = 2;
+        public static DispatcherTimer  PrimalPlayerTimer = new DispatcherTimer();
+        public static DispatcherTimer  OtherPlayerTimer = new DispatcherTimer();
         public static MediaPlayer PlacePieceSoundEffect = new MediaPlayer();
 
 
