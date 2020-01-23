@@ -2166,7 +2166,7 @@ namespace Project_ChessWithInterface
         }
         public static List<int> FindBestMoveAI(string color, List<string> Board)
         {
-            List<List<int>> PossibleMoves = GetAllLegalMovesForSelectedColor(color, Board);
+            List<List<int>> PossibleMoves = GetAllLegalMovesForSelectedColor(color, Board); //Get all possible moves for a particular color in a particular board
             List<int> BestMove = new List<int>();
             List<object> ForThread = new List<object>() ;
             ForThread.Add(Board);
@@ -2183,19 +2183,22 @@ namespace Project_ChessWithInterface
             }
             ForThread.Add(PossibleMovesThread1);
             PossibleMoves.Clear();
+            //Split the possible moves into two parts, second part will be processed on another thread
 
             double bestScore = -10000000;
             
             ParameterizedThreadStart thread1Start = new ParameterizedThreadStart(ThreadTwo);
             Thread thread1 = new Thread(thread1Start);
             thread1.Start(ForThread);
+            //Start second core
             for (int i = 0; i < PossibleMovesMainThread.Count; i++)
             {
                 var list = PossibleMovesMainThread[i];
                 for (int q = 1; q < list.Count; q++)
                 {
                     var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
-                    double score = minimax(scopedBoard, 0,/* -10000000, 10000000*/ false);
+                    double score = minimax(scopedBoard, 0,false);
+                    
 
                     if (score > bestScore)
                     {
@@ -2205,6 +2208,7 @@ namespace Project_ChessWithInterface
                         BestMove.Add(list[q]);
 
                     }
+                    //Apply minimax algorithm and determine move with the best score
                 }
             }
 
@@ -2212,7 +2216,7 @@ namespace Project_ChessWithInterface
             while (thread1.IsAlive == true)
             {
                 Thread.Sleep(2000);
-
+                //If second thread hasn't finished, wait 2 seconds
 
 
             }
@@ -2224,12 +2228,13 @@ namespace Project_ChessWithInterface
             }
             Globals.ExitThreadInfo.Clear();
             return BestMove;
+            //Choose the move with the best score choosing from mainThread move and secondThread move
 
 
 
 
         }
-        public static double minimax(List<string> Board, int depth,/* double alpha, double beta*/ bool maximizing)
+        public static double minimax(List<string> Board, int depth,bool maximizing)
         {
             
             string color = "";
@@ -2257,7 +2262,7 @@ namespace Project_ChessWithInterface
             int stateOfGame = CheckGameEndConditions(Board,whiteTurn);
             
             
-            if (stateOfGame != 0)
+            if (stateOfGame != 0) // Determine if Board is in Terminal state
             {
                 
                 if (stateOfGame == 1)
@@ -2303,7 +2308,7 @@ namespace Project_ChessWithInterface
                     return 0;
                 }
             }
-            if (depth == 2)
+            if (depth == 2) //Depth limit reached - Return static valuation
             {
                 return ValuatePosition(Board);
             }
@@ -2321,23 +2326,15 @@ namespace Project_ChessWithInterface
                     for (int q = 1; q < list.Count; q++)
                     {
                         var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
-                        double score = minimax(scopedBoard, depth + 1/*, alpha, beta*/, false);
+                        double score = minimax(scopedBoard, depth + 1, false);
+                        //Recursivly apply minimax to score the node
                         if (score > bestScore)
                         {
 
                             bestScore = score;
 
                         }
-                        /*
-                        if (score > alpha)
-                        {
-                            alpha = score;
-                        }
-                        if (beta <= alpha)
-                        {
-                            break;
-                        }
-                        */
+                        
                     }
 
                 }
@@ -2360,23 +2357,15 @@ namespace Project_ChessWithInterface
                     for (int q = 1; q < list.Count; q++)
                     {
                         var scopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(list[0]), ConvertAbsoluteToBoardNotation(list[q]), Board);
-                        double score = minimax(scopedBoard, depth + 1/*, alpha, beta*/, true);
+                        double score = minimax(scopedBoard, depth + 1, true);
+                        //Recursivly apply minimax to score the node
                         if (score < bestScore)
                         {
 
                             bestScore = score;
 
                         }
-                        /*
-                        if (score < beta)
-                        {
-                            beta = score;
-                        }
-                        if (beta <= alpha)
-                        {
-                            break;
-                        }
-                        */
+                        
                     }
 
                 }
@@ -2496,7 +2485,7 @@ namespace Project_ChessWithInterface
             }
             return listOfAllMoves;
         }
-        public static double ValuatePosition(List<string> Board)
+        public static double ValuatePosition(List<string> Board) // A very simple static evaluation of board
         {
             List<string> LocalCopyOfBoard = new List<string>();
             foreach(var item in Board)
@@ -2505,11 +2494,11 @@ namespace Project_ChessWithInterface
             }
             Dictionary<string, double> ValuationsForPieces = new Dictionary<string, double>
             {
-                {$"p",1 },
-                {$"n",3 },
-                {$"b",3.2 },
-                {$"r",8 },
-                {$"q",16 }
+                {"p",1 },
+                {"n",3 },
+                {"b",3.2 },
+                {"r",8 },
+                {"q",16 }
 
             };
             double ValuationWhite = 0;
