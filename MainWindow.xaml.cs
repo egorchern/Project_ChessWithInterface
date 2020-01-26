@@ -45,7 +45,7 @@ namespace Project_ChessWithInterface
         {
             
             InitializeComponent();
-           
+            
             
             //GetConnectionStringForDatabase();
 
@@ -104,6 +104,38 @@ namespace Project_ChessWithInterface
             {
                 btn.Click += UniversalSquareClickEventHandle;
             }
+        }
+        public static void InsertPlayedGameIntoDatabase(string Winner)
+        {
+            string connectionString = GetConnectionStringForDatabase();
+            SqlConnection gameArchive = new SqlConnection();
+            SqlCommand command = new SqlCommand();
+            gameArchive.ConnectionString = connectionString;
+            gameArchive.Open();
+            command.Connection = gameArchive;
+
+            command.CommandText = "SELECT TOP 1 Id FROM PlayedGames ORDER BY Id DESC";
+            int lastId = 0;
+            
+
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+
+
+                lastId = Convert.ToInt32(reader.GetValue(0));
+            }
+            
+           
+            
+            int currentId = lastId + 1;
+            reader.Close();
+            string datePlayed = DateTime.Today.ToString("dd/MM/yyyy");
+            command.CommandText = $"INSERT INTO PlayedGames VALUES({currentId},'{Winner}','{datePlayed}','faf',{Globals.MoveCounter})";
+            command.ExecuteNonQuery();
+            
         }
 
         private void OtherPlayerTimer_Tick(object sender, EventArgs e)
@@ -167,24 +199,7 @@ namespace Project_ChessWithInterface
             string pathToResources = Globals.pathToResources;
             string pathToMainFolder = Regex.Replace(pathToResources, @"\\[^\\]+$", "");
             string ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;" + $"AttachDbFilename={pathToMainFolder+"\\PlayedGamesDB.mdf"};" + @"Integrated Security=True";
-            /*
-            SqlConnection gameArchive = new SqlConnection();
-            SqlCommand command = new SqlCommand();
-            gameArchive.ConnectionString = ConnectionString;
-            gameArchive.Open();
-            command.Connection = gameArchive;
-            
-            command.CommandText = "SELECT * FROM PlayedGames WHERE 1=1";
-
-
-            SqlDataReader reader = command.ExecuteReader();
-            string outPutString = "";
-            while (reader.Read())
-            {
-                outPutString += "\n" + $"{reader.GetValue(0)} : {reader.GetValue(1)}";
-            }
-            MessageBox.Show(outPutString);
-            */
+           
             return ConnectionString;
         }
         private void SaveGameImage_MouseDown(object sender, MouseButtonEventArgs e)
@@ -475,16 +490,51 @@ namespace Project_ChessWithInterface
                     if (StateOfGame == 1)
                     {
                         TurnIndicator.Text = "White king chechmated\nBlack has won!";
+                        DisableTimers();
+                        if (Globals.AI == White)
+                        {
+                            string color = "Black";
+                            InsertPlayedGameIntoDatabase( color + $"(Human)");
+
+                        }
+                        else if(Globals.AI == Black)
+                        {
+                            string color = "White";
+                            InsertPlayedGameIntoDatabase(color + $"(AI)");
+                        }
+                        else if(Globals.AI == null)
+                        {
+                            string color = "Black";
+                            InsertPlayedGameIntoDatabase(color);
+                        }
                         DisableAllButtons();
                     }
                     else if (StateOfGame == 2)
                     {
                         TurnIndicator.Text = "Black king checkmated\nWhite has won!";
+                        DisableTimers();
+                        if (Globals.AI == White)
+                        {
+                            string color = "Black";
+                            InsertPlayedGameIntoDatabase(color + $"(AI)");
+                        }
+                        else if (Globals.AI == Black)
+                        {
+                            string color = "White";
+                            InsertPlayedGameIntoDatabase(color + $"(Human)");
+                        }
+                        else if (Globals.AI == null)
+                        {
+                            string color = "White";
+                            InsertPlayedGameIntoDatabase(color);
+                        }
                         DisableAllButtons();
                     }
                     else if(StateOfGame == 3)
                     {
                         TurnIndicator.Text = "Stalemate\nGame has been drawn!";
+                        DisableTimers();
+                        InsertPlayedGameIntoDatabase("Draw");
                         DisableAllButtons();
                     }
                     else if(StateOfGame == 0)
@@ -576,20 +626,28 @@ namespace Project_ChessWithInterface
                         break;
                 }
                 TurnIndicator.Text = $"{playerColor} has run out of time\n{computerColor} has won!";
+                InsertPlayedGameIntoDatabase(computerColor + $"(AI)");
             }
             else
             {
                 if(Globals.PrimePlayerTimerTimeSeconds == 0)
                 {
                     TurnIndicator.Text = $"White has run out of time\nBlack has won!";
+                    InsertPlayedGameIntoDatabase("Black");
                 }
                 else if(Globals.OtherPlayerTimerTimeSeconds == 0)
                 {
                     TurnIndicator.Text = $"Black has run out of time\nWhite has won!";
+                    InsertPlayedGameIntoDatabase("Black");
                 }
             }
             
             DisableAllButtons();
+        }
+        public static void DisableTimers()
+        {
+            Globals.PrimalPlayerTimer.Stop();
+            Globals.OtherPlayerTimer.Stop();
         }
         
         public static void DelayAction(int millisecond, Action action)
