@@ -25,7 +25,7 @@ namespace Project_ChessWithInterface
         {
             InitializeComponent();
            
-            ParametersWindow.Icon = new BitmapImage(new Uri(Globals.pathToResources + "\\ChessIcon.png"));
+            ParametersWindow.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
             OpponentSelection_list.FontSize = 18;
             OpponentSelection_list.FontWeight = FontWeights.Bold;
             OpponentSelection_list.Items.Add("AI");

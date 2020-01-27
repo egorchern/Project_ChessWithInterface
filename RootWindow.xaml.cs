@@ -26,7 +26,7 @@ namespace Project_ChessWithInterface
             InitializeComponent();
             button.Click += Button_Click;
             button_Copy.Click += Button_Copy_Click;
-            Globals.pathToResources = GetPathToResources();
+            Globals.PathToResources = GetPathToResources();
 
         }
         public static string GetPathToResources()

@@ -33,22 +33,22 @@ namespace Project_ChessWithInterface
             }
             btn0.Content = new Image
             {
-                Source = new BitmapImage(new Uri(Globals.pathToResources + "\\" + colorSubString + "Queen.png")),
+                Source = new BitmapImage(new Uri(Globals.PathToResources + "\\" + colorSubString + "Queen.png")),
                 VerticalAlignment = VerticalAlignment.Center
             };
             btn1.Content = new Image
             {
-                Source = new BitmapImage(new Uri(Globals.pathToResources + "\\" + colorSubString + "Rook.png")),
+                Source = new BitmapImage(new Uri(Globals.PathToResources + "\\" + colorSubString + "Rook.png")),
                 VerticalAlignment = VerticalAlignment.Center
             };
             btn2.Content = new Image
             {
-                Source = new BitmapImage(new Uri(Globals.pathToResources + "\\" + colorSubString + "Bishop.png")),
+                Source = new BitmapImage(new Uri(Globals.PathToResources + "\\" + colorSubString + "Bishop.png")),
                 VerticalAlignment = VerticalAlignment.Center
             };
             btn3.Content = new Image
             {
-                Source = new BitmapImage(new Uri(Globals.pathToResources + "\\" + colorSubString + "Knight.png")),
+                Source = new BitmapImage(new Uri(Globals.PathToResources + "\\" + colorSubString + "Knight.png")),
                 VerticalAlignment = VerticalAlignment.Center
             };
             btn0.Click += Btn0_Click;

@@ -24,12 +24,12 @@ namespace Project_ChessWithInterface
             InitializeComponent();
             WhiteKing_btn.Content = new Image
             {
-                Source = new BitmapImage(new Uri(Globals.pathToResources + "\\" + "WhiteKing.png")),
+                Source = new BitmapImage(new Uri(Globals.PathToResources + "\\" + "WhiteKing.png")),
                 VerticalAlignment = VerticalAlignment.Center
             };
             BlackKing_btn.Content = new Image
             {
-                Source = new BitmapImage(new Uri(Globals.pathToResources + "\\" + "BlackKing.png")),
+                Source = new BitmapImage(new Uri(Globals.PathToResources + "\\" + "BlackKing.png")),
                 VerticalAlignment = VerticalAlignment.Center
             };
             WhiteKing_btn.Click += WhiteKing_btn_Click;

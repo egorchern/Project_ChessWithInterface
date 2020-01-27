@@ -56,9 +56,9 @@ namespace Project_ChessWithInterface
             SortButtons();
             Globals.FromBoardToPiecePathes = PopulateADictionary();
            
-            GameWindow.Icon = new BitmapImage(new Uri(Globals.pathToResources + "\\ChessIcon.png"));
-            Board.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\Board.png"));
-            SaveGameImage.Source = new BitmapImage(new Uri(Globals.pathToResources + "\\SaveGameIcon.png"));
+            GameWindow.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
+            Board.Source = new BitmapImage(new Uri(Globals.PathToResources + "\\Board.png"));
+            SaveGameImage.Source = new BitmapImage(new Uri(Globals.PathToResources + "\\SaveGameIcon.png"));
             SaveGameImage.MouseDown += SaveGameImage_MouseDown;
             PrimePlayerTimerLabelUpdate();
             OtherPlayerTimerLabelUpdate();
@@ -196,7 +196,7 @@ namespace Project_ChessWithInterface
 
         public static string GetConnectionStringForDatabase()
         {
-            string pathToResources = Globals.pathToResources;
+            string pathToResources = Globals.PathToResources;
             string pathToMainFolder = Regex.Replace(pathToResources, @"\\[^\\]+$", "");
             string ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;" + $"AttachDbFilename={pathToMainFolder+"\\PlayedGamesDB.mdf"};" + @"Integrated Security=True";
            
@@ -270,7 +270,7 @@ namespace Project_ChessWithInterface
                     string pathToPiece = temp;
                     Globals.AllButtons[i].Content = new Image
                     {
-                        Source = new BitmapImage(new Uri(Globals.pathToResources + pathToPiece)),
+                        Source = new BitmapImage(new Uri(Globals.PathToResources + pathToPiece)),
                         VerticalAlignment = VerticalAlignment.Center
 
                     };
@@ -474,7 +474,7 @@ namespace Project_ChessWithInterface
                     
                     DisplayBoardOnInterface();
                     
-                    Globals.PlacePieceSoundEffect.Open(new Uri(Globals.pathToResources + "\\PlacePieceSound.mp3"));
+                    Globals.PlacePieceSoundEffect.Open(new Uri(Globals.PathToResources + "\\PlacePieceSound.mp3"));
                     Globals.PlacePieceSoundEffect.Play();
                     if (Globals.WhitesTurn == false)
                     {
@@ -2615,11 +2615,11 @@ namespace Project_ChessWithInterface
 
     public static class Globals
     {
-        public static int MoveCounter;
-        public static string PathToSave = "";
-        public static string pathToResources = "";
-        public static List<Button> AllButtons = new List<Button>();
-        public static int CurrentSquareClicked = -1;
+        private static int moveCounter;
+        private static string pathToSave = "";
+        private static string pathToResources = "";
+        private static List<Button> allButtons = new List<Button>();
+        
         private static List<string> board = new List<string>();
 
         private static bool whitesTurn = true;
@@ -2632,19 +2632,38 @@ namespace Project_ChessWithInterface
         public static bool WhiteKingMoved { get => whiteKingMoved; set => whiteKingMoved = value; }
         public static bool BlackKingMoved { get => blackKingMoved; set => blackKingMoved = value; }
         public static List<string> MoveRecord { get => moveRecord; set => moveRecord = value; }
-        public static int CapturedInEnPessant = -1;
-        public static int EnPessantDestination = -1;
-        public static Dictionary<string, string> FromBoardToPiecePathes;
-        public static bool WaitingForSecondClick = false;
-        public static int FirstClickIndex = -1;
-        public static List<int> PositionOfPawnToBePromotedAndPiece = null;
-        public static List<object> ExitThreadInfo = new List<object>();
-        public static string AI;
-        public static int PrimePlayerTimerTimeSeconds = 2;
-        public static int OtherPlayerTimerTimeSeconds = 2;
-        public static DispatcherTimer  PrimalPlayerTimer = new DispatcherTimer();
-        public static DispatcherTimer  OtherPlayerTimer = new DispatcherTimer();
-        public static MediaPlayer PlacePieceSoundEffect = new MediaPlayer();
+        public static int MoveCounter { get => moveCounter; set => moveCounter = value; }
+        public static string PathToSave { get => pathToSave; set => pathToSave = value; }
+        public static string PathToResources { get => pathToResources; set => pathToResources = value; }
+        public static List<Button> AllButtons { get => allButtons; set => allButtons = value; }
+       
+        public static int CapturedInEnPessant { get => capturedInEnPessant; set => capturedInEnPessant = value; }
+        public static int EnPessantDestination { get => enPessantDestination; set => enPessantDestination = value; }
+        public static Dictionary<string, string> FromBoardToPiecePathes { get => fromBoardToPiecePathes; set => fromBoardToPiecePathes = value; }
+        public static bool WaitingForSecondClick { get => waitingForSecondClick; set => waitingForSecondClick = value; }
+        public static int FirstClickIndex { get => firstClickIndex; set => firstClickIndex = value; }
+        public static List<int> PositionOfPawnToBePromotedAndPiece { get => positionOfPawnToBePromotedAndPiece; set => positionOfPawnToBePromotedAndPiece = value; }
+        public static List<object> ExitThreadInfo { get => exitThreadInfo; set => exitThreadInfo = value; }
+        public static string AI { get => aI; set => aI = value; }
+        public static int PrimePlayerTimerTimeSeconds { get => primePlayerTimerTimeSeconds; set => primePlayerTimerTimeSeconds = value; }
+        public static int OtherPlayerTimerTimeSeconds { get => otherPlayerTimerTimeSeconds; set => otherPlayerTimerTimeSeconds = value; }
+        public static DispatcherTimer PrimalPlayerTimer { get => primalPlayerTimer; set => primalPlayerTimer = value; }
+        public static DispatcherTimer OtherPlayerTimer { get => otherPlayerTimer; set => otherPlayerTimer = value; }
+        public static MediaPlayer PlacePieceSoundEffect { get => placePieceSoundEffect; set => placePieceSoundEffect = value; }
+
+        private static int capturedInEnPessant = -1;
+        private static int enPessantDestination = -1;
+        private static Dictionary<string, string> fromBoardToPiecePathes;
+        private static bool waitingForSecondClick = false;
+        private static int firstClickIndex = -1;
+        private static List<int> positionOfPawnToBePromotedAndPiece = null;
+        private static List<object> exitThreadInfo = new List<object>();
+        private static string aI;
+        private static int primePlayerTimerTimeSeconds = 2;
+        private static int otherPlayerTimerTimeSeconds = 2;
+        private static DispatcherTimer primalPlayerTimer = new DispatcherTimer();
+        private static DispatcherTimer otherPlayerTimer = new DispatcherTimer();
+        private static MediaPlayer placePieceSoundEffect = new MediaPlayer();
 
 
     }
