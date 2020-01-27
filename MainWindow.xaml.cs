@@ -208,7 +208,7 @@ namespace Project_ChessWithInterface
             save.ShowDialog();
         }
         
-        public static bool CanProceedWithTurn(int index)
+        public static bool CanProceedWithTurn(int index) // A procedure that determines if first click was valid, for example if it's black's turn if white piece is clicked, then error message will be displayed
         {
             string CurrentPieceOnSquare = Globals.Board[index];
             if(CurrentPieceOnSquare == Empty)
@@ -231,27 +231,7 @@ namespace Project_ChessWithInterface
             }
             return true;
         }
-        /*public static void HighlightValidSquare(List<int> Moves)
-        {
-            for (int i = 0; i < Moves.Count; i++)
-            {
-                if(Moves.Count != 0)
-                {
-                    int position = Moves[i];
-                    Globals.AllButtons[position].Background = Brushes.Blue;
-                }
-            }
-        }
-        */
-        /*public static void ResetBackgrounds()
-        {
-            foreach (Button btn in Globals.AllButtons)
-            {
-                
-                btn.Background = default;
-            }
-        }
-        */
+       
         public void DisplayBoardOnInterface()
         {
             foreach(Button btn in Globals.AllButtons)
@@ -316,7 +296,7 @@ namespace Project_ChessWithInterface
                 Globals.AllButtons[i] = NamesOfButtons[i];
             }
             
-        }
+        }// Uses bubble sort to sort elements of Globals.AllButtons list in order to allow easier indexing
         public static int CheckGameEndConditions(List<string> Board,bool whitesTurn) //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
         {
             List<int> PositionsOfWhiteFigures = new List<int>();
@@ -584,29 +564,29 @@ namespace Project_ChessWithInterface
 
         public  void GetAllButtonElements()
         {
-            /// casting the content into panel
+            
             Panel mainContainer = (Panel)this.Content;
 
-            /// GetAll UIElement
+            
             UIElementCollection element = mainContainer.Children;
 
-            /// casting the UIElementCollection into List
+            
             List<FrameworkElement> lstElement = element.Cast<FrameworkElement>().ToList();
 
-            /// Geting all Control from list
-            var lstControl = lstElement.OfType<Control>();
+            
+            var ListOfAllControls = lstElement.OfType<Control>();
 
-            foreach (Control control in lstControl)
+            foreach (Control control in ListOfAllControls)
             {
-                Type s = control.GetType();
-                if(s.Name == "Button")
+                Type type = control.GetType();
+                if(type.Name == "Button")
                 {
                     Globals.AllButtons.Add(control as Button);
                     
                 }
                
             }
-        }
+        } //Used to initialize Global variable AllButtons
         public void SomeTimerTimedOut()
         {
             if(Globals.AI != null)
@@ -731,7 +711,7 @@ namespace Project_ChessWithInterface
                     Globals.Board[i] = $"{Black}{Pawn}";
                 }
             }
-        }
+        } //If default game mode selected, Set up Globals.Board according to standard initial position in chess.
         public static List<int> IndexesOfPossibleMoves(List<string> Board,string piece, int position)
         {
 
@@ -1392,7 +1372,7 @@ namespace Project_ChessWithInterface
                 row--;
             }
             return forOut;
-        }
+        } //Transforms column,row notation of position to an absolute position on the Board
         public static int ChessNotationToAbsolute(string n)
         {
             Dictionary<string, int> ColumnTable = new Dictionary<string, int>
@@ -2221,7 +2201,7 @@ namespace Project_ChessWithInterface
             {
                 DelayAction(500, new Action(() => { MakeAIMove(); }));
             }
-        }
+        } //Entry point of the window, used to call other important code
         public static List<int> FindBestMoveAI(string color, List<string> Board)
         {
             List<List<int>> PossibleMoves = GetAllLegalMovesForSelectedColor(color, Board); //Get all possible moves for a particular color in a particular board
@@ -2597,20 +2577,7 @@ namespace Project_ChessWithInterface
         }
         
 
-        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            List<int> AIMOve = FindBestMoveAI(Globals.AI, Globals.Board);
-            RoutedEventArgs newEventArgs = new RoutedEventArgs(Button.ClickEvent);
-            Globals.AllButtons[AIMOve[0]].RaiseEvent(newEventArgs);
-            Globals.AllButtons[AIMOve[1]].RaiseEvent(newEventArgs);
-            
-            /*var i = CheckGameEndConditions(new List<string> { "Wr","Wn","Wb","00","Wk","00","Wn","Wr","Wp","Wp","Wp","Wp","00","Wp","Wp","Wp","00","00","00","00","00","00","00","00","00","00","Wb","00","Wp","00","00","00","00","00","00","00","Bp","00","00","00","Bp","Bp","00","00","00","00","00","00","00","00","Bp","Bp","00","Wq","Bp","Bp","Br","Bn","Bb","Bq","Bk","Bb","Bn","Br" }, false);
-            
-            double d = 0.0;
-            */
-
-
-        }
+        
     }
 
     public static class Globals
