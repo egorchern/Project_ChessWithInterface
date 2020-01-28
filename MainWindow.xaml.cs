@@ -107,6 +107,17 @@ namespace Project_ChessWithInterface
         }
         public static void InsertPlayedGameIntoDatabase(string Winner)
         {
+            
+            if (Winner != "Draw" && Winner != "AI")
+            {
+
+                string NickName = "";
+                NameForDatabaseDialog nameDialog = new NameForDatabaseDialog(Winner);
+                nameDialog.ShowDialog();
+                NickName = nameDialog.NicknameChosen;
+                Winner += $"({NickName})";
+            }
+            
             string connectionString = GetConnectionStringForDatabase();
             SqlConnection gameArchive = new SqlConnection();
             SqlCommand command = new SqlCommand();
@@ -132,9 +143,10 @@ namespace Project_ChessWithInterface
             
             int currentId = lastId + 1;
             reader.Close();
-            string datePlayed = DateTime.Today.ToString("dd/MM/yyyy");
+            string datePlayed = DateTime.Today.ToString("yyyy-MM-dd");
             command.CommandText = $"INSERT INTO PlayedGames VALUES({currentId},'{Winner}','{datePlayed}','faf',{Globals.MoveCounter})";
             command.ExecuteNonQuery();
+            MessageBox.Show("Database entry successfuly inserted!");
             
         }
 
@@ -474,13 +486,13 @@ namespace Project_ChessWithInterface
                         if (Globals.AI == White)
                         {
                             string color = "Black";
-                            InsertPlayedGameIntoDatabase( color + $"(Human)");
+                            InsertPlayedGameIntoDatabase($"Human");
 
                         }
                         else if(Globals.AI == Black)
                         {
                             string color = "White";
-                            InsertPlayedGameIntoDatabase(color + $"(AI)");
+                            InsertPlayedGameIntoDatabase($"AI");
                         }
                         else if(Globals.AI == null)
                         {
@@ -496,12 +508,12 @@ namespace Project_ChessWithInterface
                         if (Globals.AI == White)
                         {
                             string color = "Black";
-                            InsertPlayedGameIntoDatabase(color + $"(AI)");
+                            InsertPlayedGameIntoDatabase($"AI");
                         }
                         else if (Globals.AI == Black)
                         {
                             string color = "White";
-                            InsertPlayedGameIntoDatabase(color + $"(Human)");
+                            InsertPlayedGameIntoDatabase($"Human");
                         }
                         else if (Globals.AI == null)
                         {
@@ -606,7 +618,7 @@ namespace Project_ChessWithInterface
                         break;
                 }
                 TurnIndicator.Text = $"{playerColor} has run out of time\n{computerColor} has won!";
-                InsertPlayedGameIntoDatabase(computerColor + $"(AI)");
+                InsertPlayedGameIntoDatabase($"AI");
             }
             else
             {
@@ -618,7 +630,7 @@ namespace Project_ChessWithInterface
                 else if(Globals.OtherPlayerTimerTimeSeconds == 0)
                 {
                     TurnIndicator.Text = $"Black has run out of time\nWhite has won!";
-                    InsertPlayedGameIntoDatabase("Black");
+                    InsertPlayedGameIntoDatabase("White");
                 }
             }
             
