@@ -144,7 +144,7 @@ namespace Project_ChessWithInterface
             int currentId = lastId + 1;
             reader.Close();
             string datePlayed = DateTime.Today.ToString("yyyy-MM-dd");
-            command.CommandText = $"INSERT INTO PlayedGames VALUES({currentId},'{Winner}','{datePlayed}','faf',{Globals.MoveCounter})";
+            command.CommandText = $"INSERT INTO PlayedGames VALUES({currentId},'{Winner}','{datePlayed}','{"\\ID" + currentId + ".txt"}',{Globals.MoveCounter})";
             string referenceFolder = GameArchive.GetPathToReferenceFolder();
             string fullFilePath = referenceFolder + "\\ID" + currentId + ".txt";
             File.Create(fullFilePath).Close();
@@ -956,6 +956,7 @@ namespace Project_ChessWithInterface
                     }
                 }
             }
+            
             string lastMove = "";
             if (Globals.MoveRecord.Count != 0)
             {
@@ -972,14 +973,12 @@ namespace Project_ChessWithInterface
                         if (AbsolutePostionOfEnPessant == AbsolutePostionOfPiece + 1)
                         {
                             OutList.Add(GetAbolutePosition(column + 1, row + 1));
-                            Globals.EnPessantDestination = GetAbolutePosition(column + 1, row + 1);
-                            Globals.CapturedInEnPessant = AbsolutePostionOfEnPessant;
+                            
                         }
                         else if (AbsolutePostionOfEnPessant == AbsolutePostionOfPiece - 1)
                         {
                             OutList.Add(GetAbolutePosition(column - 1, row + 1));
-                            Globals.CapturedInEnPessant = AbsolutePostionOfEnPessant;
-                            Globals.EnPessantDestination = GetAbolutePosition(column - 1, row + 1);
+                            
                         }
 
                     }
@@ -996,19 +995,18 @@ namespace Project_ChessWithInterface
                         if (AbsolutePostionOfEnPessant == AbsolutePostionOfPiece + 1)
                         {
                             OutList.Add(GetAbolutePosition(column + 1, row - 1));
-                            Globals.EnPessantDestination = GetAbolutePosition(column + 1, row - 1);
-                            Globals.CapturedInEnPessant = AbsolutePostionOfEnPessant;
+                            
                         }
                         else if (AbsolutePostionOfEnPessant == AbsolutePostionOfPiece - 1)
                         {
                             OutList.Add(GetAbolutePosition(column - 1, row - 1));
-                            Globals.EnPessantDestination = GetAbolutePosition(column - 1, row - 1);
-                            Globals.CapturedInEnPessant = AbsolutePostionOfEnPessant;
+                            
                         }
 
                     }
                 }
             }
+            
             for(int i = 0; i < OutList.Count; i++)
             {
                 if (OutList[i] == -1)
@@ -1420,7 +1418,74 @@ namespace Project_ChessWithInterface
             int DestinationAbsolute = ChessNotationToAbsolute(destination);
             piece = Globals.Board[AbsoluteInitialPos];
             List<int> IndexesOfPossibleMovess = IndexesOfPossibleMoves(Globals.Board,piece, AbsoluteInitialPos);
+            string lastMove = "";
+            int column = AbsoluteInitialPos % BoardSize;
+            int row = AbsoluteInitialPos / BoardSize;
+            int EnPessantDestination = -1;
+            int CapturedInEnPessant = -1;
 
+
+            if (Globals.MoveRecord.Count != 0)
+            {
+                if (piece[1] == 'p')
+                {
+
+
+                    lastMove = Globals.MoveRecord.Last();
+                    if (Globals.WhitesTurn == true)
+                    {
+                        Match matchForDestination = Regex.Match(lastMove, @"^\d+: Bp.7 => (?<capture>.5)$");
+                        
+                        if (matchForDestination.Success == true)
+                        {
+                            lastMove = matchForDestination.Groups["capture"].Value;
+                            int AbsolutePostionOfEnPessant = ChessNotationToAbsolute(lastMove);
+                            int AbsolutePostionOfPiece = GetAbolutePosition(column, row);
+                            if (AbsolutePostionOfEnPessant == AbsolutePostionOfPiece + 1)
+                            {
+
+                                EnPessantDestination = GetAbolutePosition(column + 1, row + 1);
+                                CapturedInEnPessant = AbsolutePostionOfEnPessant;
+                                
+                            }
+                            else if (AbsolutePostionOfEnPessant == AbsolutePostionOfPiece - 1)
+                            {
+
+                                CapturedInEnPessant = AbsolutePostionOfEnPessant;
+                                EnPessantDestination = GetAbolutePosition(column - 1, row + 1);
+                               
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        Match matchForDestination = Regex.Match(lastMove, @"^\d+: Wp.2 => (?<capture>.4)$");
+                        if (matchForDestination.Success == true)
+                        {
+                            lastMove = matchForDestination.Groups["capture"].Value;
+                            int AbsolutePostionOfEnPessant = ChessNotationToAbsolute(lastMove);
+                            int AbsolutePostionOfPiece = GetAbolutePosition(column, row);
+                            if (AbsolutePostionOfEnPessant == AbsolutePostionOfPiece + 1)
+                            {
+                               
+                                EnPessantDestination = GetAbolutePosition(column + 1, row - 1);
+                                CapturedInEnPessant = AbsolutePostionOfEnPessant;
+                                
+                            }
+                            else if (AbsolutePostionOfEnPessant == AbsolutePostionOfPiece - 1)
+                            {
+                                
+                                EnPessantDestination = GetAbolutePosition(column - 1, row - 1);
+                                CapturedInEnPessant = AbsolutePostionOfEnPessant;
+                                
+                            }
+
+                        }
+                    }
+                }
+            }
             if (IndexesOfPossibleMovess.Contains(DestinationAbsolute) == true)
             {
                 
@@ -1490,14 +1555,13 @@ namespace Project_ChessWithInterface
 
                 if (kingCastling == false)
                 {
-                    if (ConvertAbsoluteToBoardNotation(Globals.EnPessantDestination) == destination && piece[1] == 'p')
+                    if (ConvertAbsoluteToBoardNotation(EnPessantDestination) == destination && piece[1] == 'p')
                     {
                         Globals.Board[AbsoluteInitialPos] = Empty;
                         Globals.Board[DestinationAbsolute] = piece;
-                        Globals.Board[Globals.CapturedInEnPessant] = Empty;
-                        Globals.MoveRecord.Add($"{counter}: {piece}{initialPos} => {destination}(En Pessant {ConvertAbsoluteToBoardNotation(Globals.CapturedInEnPessant)})");
-                        Globals.CapturedInEnPessant = -1;
-                        Globals.EnPessantDestination = -1;
+                        Globals.Board[CapturedInEnPessant] = Empty;
+                        Globals.MoveRecord.Add($"{counter}: {piece}{initialPos} => {destination}(En Pessant {ConvertAbsoluteToBoardNotation(CapturedInEnPessant)})");
+                        
                     }
                     else
                     {
@@ -1650,17 +1714,7 @@ namespace Project_ChessWithInterface
 
             if (ScopedBoard[DestinationAbsolute] == Empty)
             {
-                if (ConvertAbsoluteToBoardNotation(Globals.EnPessantDestination) == destination && piece[1] == 'p')
-                {
-                    ScopedBoard[AbsoluteInitialPos] = Empty;
-                    ScopedBoard[DestinationAbsolute] = piece;
-                    ScopedBoard[Globals.CapturedInEnPessant] = Empty;
-
-                    Globals.CapturedInEnPessant = -1;
-                    Globals.EnPessantDestination = -1;
-                }
-                else
-                {
+                
 
 
 
@@ -1760,7 +1814,7 @@ namespace Project_ChessWithInterface
                         ScopedBoard[DestinationAbsolute] = piece;
                         ScopedBoard[AbsoluteInitialPos] = Empty;
                     }
-                }
+                
             }
             else
             {
@@ -2620,8 +2674,7 @@ namespace Project_ChessWithInterface
         public static string PathToResources { get => pathToResources; set => pathToResources = value; }
         public static List<Button> AllButtons { get => allButtons; set => allButtons = value; }
        
-        public static int CapturedInEnPessant { get => capturedInEnPessant; set => capturedInEnPessant = value; }
-        public static int EnPessantDestination { get => enPessantDestination; set => enPessantDestination = value; }
+       
         public static Dictionary<string, string> FromBoardToPiecePathes { get => fromBoardToPiecePathes; set => fromBoardToPiecePathes = value; }
         public static bool WaitingForSecondClick { get => waitingForSecondClick; set => waitingForSecondClick = value; }
         public static int FirstClickIndex { get => firstClickIndex; set => firstClickIndex = value; }
@@ -2634,8 +2687,7 @@ namespace Project_ChessWithInterface
         public static DispatcherTimer OtherPlayerTimer { get => otherPlayerTimer; set => otherPlayerTimer = value; }
         public static MediaPlayer PlacePieceSoundEffect { get => placePieceSoundEffect; set => placePieceSoundEffect = value; }
 
-        private static int capturedInEnPessant = -1;
-        private static int enPessantDestination = -1;
+       
         private static Dictionary<string, string> fromBoardToPiecePathes;
         private static bool waitingForSecondClick = false;
         private static int firstClickIndex = -1;
@@ -2647,8 +2699,7 @@ namespace Project_ChessWithInterface
         private static DispatcherTimer primalPlayerTimer = new DispatcherTimer();
         private static DispatcherTimer otherPlayerTimer = new DispatcherTimer();
         private static MediaPlayer placePieceSoundEffect = new MediaPlayer();
-
-
+        internal static bool whitesTurnn;
     }
     
 

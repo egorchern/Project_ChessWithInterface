@@ -1,0 +1,10 @@
+1: WpE2 => E4
+2: BpE7 => E5
+3: WqD1 => G4
+4: BbF8 => C5
+5: WqG4 => D1
+6: BqD8 => H4
+7: WqD1 => H5
+8: BqH4 => F2(Bq x Wp)
+9: WkE1 => D1
+10: BqF2 => F1(Bq x Wb)

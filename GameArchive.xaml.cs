@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace Project_ChessWithInterface
 {
@@ -42,7 +43,7 @@ namespace Project_ChessWithInterface
             {
                 string gameText = $"Game {reader.GetValue(0)}: Move Count = {reader.GetValue(4)}; Winner = {reader.GetValue(1)}\nDate Played = {reader.GetValue(2)} ";
                 gameText = Regex.Replace(gameText, @"00:00:00", "");
-                referenceList.Add(pathToReferenceFolder + Convert.ToString(reader.GetValue(3)));
+                referenceList.Add(Convert.ToString(reader.GetValue(3)));
                 SqlToList.Add(gameText);
             }
             Games_lst.ItemsSource = SqlToList;
@@ -68,8 +69,32 @@ namespace Project_ChessWithInterface
             path += "\\MoveRecord";
             return path;
         }
+
         
-            
-        
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DisplayRecord_btn.Content = new TextBlock
+            {
+                TextAlignment = TextAlignment.Center,
+                TextWrapping = TextWrapping.Wrap,
+                Text = $"Display\nrecord"
+
+            };
+        }
+
+        private void DisplayRecord_btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (Games_lst.SelectedIndex != -1)
+            {
+
+
+                int indexOfSelectedItem = Games_lst.SelectedIndex;
+                string pathToRecord = GetPathToReferenceFolder() + referenceList[indexOfSelectedItem];
+                Process.Start(pathToRecord);
+            }
+
+
+        }
     }
 }
