@@ -489,13 +489,13 @@ namespace Project_ChessWithInterface
                         DisableTimers();
                         if (Globals.AI == White)
                         {
-                            string color = "Black";
+                            
                             InsertPlayedGameIntoDatabase($"Human");
 
                         }
                         else if(Globals.AI == Black)
                         {
-                            string color = "White";
+                            
                             InsertPlayedGameIntoDatabase($"AI");
                         }
                         else if(Globals.AI == null)
@@ -511,12 +511,12 @@ namespace Project_ChessWithInterface
                         DisableTimers();
                         if (Globals.AI == White)
                         {
-                            string color = "Black";
+                            
                             InsertPlayedGameIntoDatabase($"AI");
                         }
                         else if (Globals.AI == Black)
                         {
-                            string color = "White";
+                            
                             InsertPlayedGameIntoDatabase($"Human");
                         }
                         else if (Globals.AI == null)
@@ -2699,7 +2699,7 @@ namespace Project_ChessWithInterface
         private static DispatcherTimer primalPlayerTimer = new DispatcherTimer();
         private static DispatcherTimer otherPlayerTimer = new DispatcherTimer();
         private static MediaPlayer placePieceSoundEffect = new MediaPlayer();
-        internal static bool whitesTurnn;
+        
     }
     
 

@@ -41,7 +41,7 @@ namespace Project_ChessWithInterface
             SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                string gameText = $"Game {reader.GetValue(0)}: Move Count = {reader.GetValue(4)}; Winner = {reader.GetValue(1)}\nDate Played = {reader.GetValue(2)} ";
+                string gameText = $"Game {reader.GetValue(0)}: Move Count = {Convert.ToInt32(reader.GetValue(4)) - 1}; Winner = {reader.GetValue(1)}\nDate Played = {reader.GetValue(2)} ";
                 gameText = Regex.Replace(gameText, @"00:00:00", "");
                 referenceList.Add(Convert.ToString(reader.GetValue(3)));
                 SqlToList.Add(gameText);
