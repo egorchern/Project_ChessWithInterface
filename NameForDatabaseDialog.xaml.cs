@@ -23,15 +23,16 @@ namespace Project_ChessWithInterface
         {
             InitializeComponent();
             string inquire = Winner;
+            
             if(inquire == "Human")
             {
-
+                Nickname_lbl.Content = "Yours nickname:";
             }
-            else if(inquire == "B")
+            else if(inquire == "Black")
             {
                 Nickname_lbl.Content = "Black player's nickname:";
             }
-            else if(inquire == "W")
+            else if(inquire == "White")
             {
                 Nickname_lbl.Content = "White player's nickname:";
             }

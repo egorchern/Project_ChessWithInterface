@@ -24,8 +24,9 @@ namespace Project_ChessWithInterface
         public RootWindow()
         {
             InitializeComponent();
-            button.Click += Button_Click;
-            button_Copy.Click += Button_Copy_Click;
+            newGame_btn.Click += newGameBtn_Click;
+            loadGame_btn.Click += LoadGameBtn_Click;
+            gameArchive_btn.Click += GameArchiveBtn_Click;
             Globals.PathToResources = GetPathToResources();
 
         }
@@ -57,7 +58,7 @@ namespace Project_ChessWithInterface
             return path;
         }
 
-        private void Button_Copy_Click(object sender, RoutedEventArgs e)
+        private void LoadGameBtn_Click(object sender, RoutedEventArgs e)
         {
             LoadGameDialog loadDialog = new LoadGameDialog();
             loadDialog.ShowDialog();
@@ -70,7 +71,7 @@ namespace Project_ChessWithInterface
             
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void newGameBtn_Click(object sender, RoutedEventArgs e)
         {
             StartGameParameters startGame = new StartGameParameters();
             startGame.Show();
@@ -159,6 +160,13 @@ namespace Project_ChessWithInterface
             }
 
 
+        }
+
+        private void GameArchiveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            GameArchive archive = new GameArchive();
+            archive.Show();
+            this.Close();
         }
     }
 }

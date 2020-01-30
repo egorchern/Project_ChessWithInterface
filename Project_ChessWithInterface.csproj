@@ -75,6 +75,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GameArchive.xaml.cs">
+      <DependentUpon>GameArchive.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoadGameDialog.xaml.cs">
       <DependentUpon>LoadGameDialog.xaml</DependentUpon>
     </Compile>
@@ -99,6 +102,10 @@
     <Compile Include="TimerDialog.xaml.cs">
       <DependentUpon>TimerDialog.xaml</DependentUpon>
     </Compile>
+    <Page Include="GameArchive.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoadGameDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

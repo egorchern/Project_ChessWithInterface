@@ -7,9 +7,9 @@
         mc:Ignorable="d"
         Title="RootWindow" Height="491" Width="366.599" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid>
-        <Button x:Name="button" Content="New Game" HorizontalAlignment="Left" Margin="75,25,0,0" VerticalAlignment="Top" Width="202" Height="116" FontWeight="Bold" FontSize="30"/>
-        <Button x:Name="button_Copy" Content="Load Game" HorizontalAlignment="Left" Margin="75,172,0,0" VerticalAlignment="Top" Width="202" Height="116" FontWeight="Bold" FontSize="30" RenderTransformOrigin="0.467,0.493"/>
-        <Button x:Name="button_Copy1" Content="Game Archive" HorizontalAlignment="Left" Margin="75,317,0,0" VerticalAlignment="Top" Width="202" Height="116" FontWeight="Bold" FontSize="30" RenderTransformOrigin="0.467,0.493"/>
+        <Button x:Name="newGame_btn" Content="New Game" HorizontalAlignment="Left" Margin="75,25,0,0" VerticalAlignment="Top" Width="202" Height="116" FontWeight="Bold" FontSize="30"/>
+        <Button x:Name="loadGame_btn" Content="Load Game" HorizontalAlignment="Left" Margin="75,172,0,0" VerticalAlignment="Top" Width="202" Height="116" FontWeight="Bold" FontSize="30" RenderTransformOrigin="0.467,0.493"/>
+        <Button x:Name="gameArchive_btn" Content="Game Archive" HorizontalAlignment="Left" Margin="75,317,0,0" VerticalAlignment="Top" Width="202" Height="116" FontWeight="Bold" FontSize="30" RenderTransformOrigin="0.467,0.493"/>
 
     </Grid>
 </Window>

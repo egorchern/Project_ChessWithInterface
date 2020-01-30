@@ -145,6 +145,10 @@ namespace Project_ChessWithInterface
             reader.Close();
             string datePlayed = DateTime.Today.ToString("yyyy-MM-dd");
             command.CommandText = $"INSERT INTO PlayedGames VALUES({currentId},'{Winner}','{datePlayed}','faf',{Globals.MoveCounter})";
+            string referenceFolder = GameArchive.GetPathToReferenceFolder();
+            string fullFilePath = referenceFolder + "\\ID" + currentId + ".txt";
+            File.Create(fullFilePath).Close();
+            File.WriteAllLines(fullFilePath, Globals.MoveRecord);
             command.ExecuteNonQuery();
             MessageBox.Show("Database entry successfuly inserted!");
             
