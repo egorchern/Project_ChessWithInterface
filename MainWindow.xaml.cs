@@ -144,7 +144,7 @@ namespace Project_ChessWithInterface
             int currentId = lastId + 1;
             reader.Close();
             string datePlayed = DateTime.Today.ToString("yyyy-MM-dd");
-            command.CommandText = $"INSERT INTO PlayedGames VALUES({currentId},'{Winner}','{datePlayed}','{"\\ID" + currentId + ".txt"}',{Globals.MoveCounter})";
+            command.CommandText = $"INSERT INTO PlayedGames VALUES({currentId},'{Winner}','{datePlayed}','{"\\ID" + currentId + ".txt"}',{Globals.MoveCounter - 1})";
             string referenceFolder = GameArchive.GetPathToReferenceFolder();
             string fullFilePath = referenceFolder + "\\ID" + currentId + ".txt";
             File.Create(fullFilePath).Close();

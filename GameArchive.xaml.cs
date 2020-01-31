@@ -29,27 +29,18 @@ namespace Project_ChessWithInterface
 
         private void Games_list_Loaded(object sender, RoutedEventArgs e)
         {
+            /*
             string connectionString = MainWindow.GetConnectionStringForDatabase();
             SqlConnection gameArchive = new SqlConnection();
             SqlCommand command = new SqlCommand();
             gameArchive.ConnectionString = connectionString;
             gameArchive.Open();
             command.Connection = gameArchive;
-            command.CommandText = "SELECT * FROM PlayedGames ORDER BY DatePlayed DESC";
-            List<string> SqlToList = new List<string>();
-            string pathToReferenceFolder = GetPathToReferenceFolder();
-            SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                string gameText = $"Game {reader.GetValue(0)}: Move Count = {Convert.ToInt32(reader.GetValue(4)) - 1}; Winner = {reader.GetValue(1)}\nDate Played = {reader.GetValue(2)} ";
-                gameText = Regex.Replace(gameText, @"00:00:00", "");
-                referenceList.Add(Convert.ToString(reader.GetValue(3)));
-                SqlToList.Add(gameText);
-            }
-            Games_lst.ItemsSource = SqlToList;
-            
-            
-            
+            command.CommandText = "UPDATE PlayedGames SET DatePlayed = '2018-08-23' WHERE Id = 7 ";
+            command.ExecuteNonQuery();
+            */
+            DisplayAllRecords();
+
         }
         /*public List<string> ReferenceList
         {
@@ -69,7 +60,28 @@ namespace Project_ChessWithInterface
             path += "\\MoveRecord";
             return path;
         }
-
+        public  void DisplayAllRecords()
+        {
+            referenceList.Clear();
+            string connectionString = MainWindow.GetConnectionStringForDatabase();
+            SqlConnection gameArchive = new SqlConnection();
+            SqlCommand command = new SqlCommand();
+            gameArchive.ConnectionString = connectionString;
+            gameArchive.Open();
+            command.Connection = gameArchive;
+            command.CommandText = "SELECT * FROM PlayedGames ORDER BY DatePlayed DESC";
+            List<string> SqlToList = new List<string>();
+            
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                string gameText = $"Game {reader.GetValue(0)}: Move Count = {Convert.ToInt32(reader.GetValue(4))}; Winner = {reader.GetValue(1)}\nDate Played = {reader.GetValue(2)} ";
+                gameText = Regex.Replace(gameText, @"00:00:00", "");
+                referenceList.Add(Convert.ToString(reader.GetValue(3)));
+                SqlToList.Add(gameText);
+            }
+            Games_lst.ItemsSource = SqlToList;
+        }
         
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -95,6 +107,60 @@ namespace Project_ChessWithInterface
             }
 
 
+        }
+
+        private void Reset_btn_Click(object sender, RoutedEventArgs e)
+        {
+            DisplayAllRecords();
+        }
+
+        private void Search_btn_Click(object sender, RoutedEventArgs e)
+        {
+            string NickNameSearch = NameSearch_txt.Text;
+            string DateSearch = DateSearch_txt.Text;
+            string MoveCountSearch = MoveCountSearch_txt.Text;
+            referenceList.Clear();
+            string connectionString = MainWindow.GetConnectionStringForDatabase();
+            SqlConnection gameArchive = new SqlConnection();
+            SqlCommand command = new SqlCommand();
+            gameArchive.ConnectionString = connectionString;
+            gameArchive.Open();
+            command.Connection = gameArchive;
+            string dateQueryIfNeeded = "";
+            string MoveCountQueryIfNeeded = "";
+            if(DateSearch != String.Empty)
+            {
+                
+                dateQueryIfNeeded = $"AND DatePlayed = '{DateSearch}'";
+            }
+            if (MoveCountSearch != String.Empty)
+            {
+
+
+                MoveCountQueryIfNeeded = $"AND MoveCount {MoveCountSearch}";
+            }
+            
+            try
+            {
+
+
+                command.CommandText = $"SELECT * FROM PlayedGames WHERE Winner LIKE '%{NickNameSearch}%' {dateQueryIfNeeded} {MoveCountQueryIfNeeded}";
+                List<string> SqlToList = new List<string>();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    string gameText = $"Game {reader.GetValue(0)}: Move Count = {Convert.ToInt32(reader.GetValue(4))}; Winner = {reader.GetValue(1)}\nDate Played = {reader.GetValue(2)} ";
+                    gameText = Regex.Replace(gameText, @"00:00:00", "");
+                    referenceList.Add(Convert.ToString(reader.GetValue(3)));
+                    SqlToList.Add(gameText);
+                }
+                Games_lst.ItemsSource = SqlToList;
+            }
+            catch(Exception E)
+            {
+                MessageBox.Show(E.Message);
+            }
         }
     }
 }
