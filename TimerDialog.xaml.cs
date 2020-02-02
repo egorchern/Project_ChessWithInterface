@@ -42,6 +42,7 @@ namespace Project_ChessWithInterface
 
             if (BlackTime_txt.Visibility == Visibility.Hidden)
             {
+                Globals.OtherPlayerTimerTimeSeconds = -1;
                 if (WhiteTime_txt.Text != "null")
                 {
 

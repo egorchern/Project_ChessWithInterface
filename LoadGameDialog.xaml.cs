@@ -24,24 +24,24 @@ namespace Project_ChessWithInterface
         public LoadGameDialog()
         {
             InitializeComponent();
-            
-            
+
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string saveSelected = ListBox_AvailableSaves.SelectedItem.ToString();
             saveSelected = Regex.Replace(saveSelected, @"\n.+$", "");
-            res.PathChosen += "\\" + saveSelected;
+            PathChosen += "\\" + saveSelected;
             this.Close();
         }
-        
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             string PathToSaves = RootWindow.GetPathToSaves();
             DirectoryInfo r = new DirectoryInfo(PathToSaves);
-            FileInfo[] s = r.GetFiles("*.bin");
+            FileInfo[] s = r.GetFiles("*.txt");
             List<string> NamesOfSaves = new List<string>();
             foreach (FileInfo file in s)
             {
@@ -50,12 +50,16 @@ namespace Project_ChessWithInterface
             ListBox_AvailableSaves.ItemsSource = NamesOfSaves;
             ListBox_AvailableSaves.FontSize = 20;
             ListBox_AvailableSaves.FontWeight = FontWeights.Bold;
-            res.PathChosen = PathToSaves;
+            PathChosen = PathToSaves;
             button.Click += Button_Click;
         }
+        public  string PathChosen
+        {
+            get { return pathChosen; }
+            set { pathChosen = value; }
+        }
+        private string pathChosen;
+        
     }
-    class res
-    {
-        public static string PathChosen = "";
-    }
+    
 }

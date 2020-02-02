@@ -60,45 +60,7 @@ namespace Project_ChessWithInterface
             Board.Source = new BitmapImage(new Uri(Globals.PathToResources + "\\Board.png"));
             SaveGameImage.Source = new BitmapImage(new Uri(Globals.PathToResources + "\\SaveGameIcon.png"));
             SaveGameImage.MouseDown += SaveGameImage_MouseDown;
-            PrimePlayerTimerLabelUpdate();
-            OtherPlayerTimerLabelUpdate();
-            if(Globals.AI != null)
-            {
-                TimerIndicator.Content = "Human";
-                TimerIndicator2.Visibility = Visibility.Hidden;
-            }
-            if(Globals.AI == null)
-            {
-                if (Globals.OtherPlayerTimerTimeSeconds != -1)
-                {
-
-
-                    OtherPlayer_label.Visibility = Visibility.Visible;
-                    Globals.OtherPlayerTimer.Interval = TimeSpan.FromSeconds(1);
-                    Globals.OtherPlayerTimer.Tick += OtherPlayerTimer_Tick;
-                    Globals.OtherPlayerTimer.Start();
-                }
-                else
-                {
-                    TimerIndicator2.Visibility = Visibility.Hidden;
-                }
-            }
-            if (Globals.PrimePlayerTimerTimeSeconds != -1)
-            {
-                
-                PrimePlayerTimer_label.Visibility = Visibility.Visible;
-                Globals.PrimalPlayerTimer.Interval = TimeSpan.FromSeconds(1);
-                Globals.PrimalPlayerTimer.Tick += PrimePlayerTimer_Tick;
-                Globals.PrimalPlayerTimer.Start();
-            }
-            else
-            {
-                TimerIndicator.Visibility = Visibility.Hidden;
-            }
-            if(OtherPlayer_label.Visibility == Visibility.Visible)
-            {
-                Globals.OtherPlayerTimer.IsEnabled = false;
-            }
+            InitializeTimers();
 
             foreach (Button btn in Globals.AllButtons)
             {
@@ -153,6 +115,64 @@ namespace Project_ChessWithInterface
             MessageBox.Show("Database entry successfuly inserted!");
             
         }
+        public void InitializeTimers()
+        {
+            PrimePlayerTimerLabelUpdate();
+            OtherPlayerTimerLabelUpdate();
+            if (Globals.AI != null)
+            {
+                TimerIndicator.Content = "Human";
+                TimerIndicator2.Visibility = Visibility.Hidden;
+            }
+            if (Globals.AI == null)
+            {
+                if (Globals.OtherPlayerTimerTimeSeconds != -1)
+                {
+
+
+                    OtherPlayer_label.Visibility = Visibility.Visible;
+                    Globals.OtherPlayerTimer.Interval = TimeSpan.FromSeconds(1);
+                    Globals.OtherPlayerTimer.Tick += OtherPlayerTimer_Tick;
+                    Globals.OtherPlayerTimer.Start();
+                    if(Globals.WhitesTurn == true)
+                    {
+                        Globals.OtherPlayerTimer.IsEnabled = false;
+                    }
+                    else
+                    {
+                        Globals.OtherPlayerTimer.IsEnabled = true;
+                    }
+                    
+                }
+                else
+                {
+                    TimerIndicator2.Visibility = Visibility.Hidden;
+                }
+            }
+            if (Globals.PrimePlayerTimerTimeSeconds != -1)
+            {
+
+                PrimePlayerTimer_label.Visibility = Visibility.Visible;
+                Globals.PrimePlayerTimer.Interval = TimeSpan.FromSeconds(1);
+                Globals.PrimePlayerTimer.Tick += PrimePlayerTimer_Tick;
+                Globals.PrimePlayerTimer.Start();
+                if(Globals.AI == null && Globals.WhitesTurn == false)
+                {
+                    Globals.PrimePlayerTimer.IsEnabled = false;
+                }
+                else if(Globals.AI == null && Globals.WhitesTurn == true)
+                {
+                    Globals.PrimePlayerTimer.IsEnabled = true;
+                }
+
+            }
+            else
+            {
+                TimerIndicator.Visibility = Visibility.Hidden;
+            }
+            
+            
+        }
 
         private void OtherPlayerTimer_Tick(object sender, EventArgs e)
         {
@@ -197,7 +217,7 @@ namespace Project_ChessWithInterface
         {
             if (Globals.PrimePlayerTimerTimeSeconds == 0)
             {
-                Globals.PrimalPlayerTimer.Stop();
+                Globals.PrimePlayerTimer.Stop();
                 MessageBox.Show("You have ran out of time!");
                 SomeTimerTimedOut();
             }
@@ -475,12 +495,12 @@ namespace Project_ChessWithInterface
                     if (Globals.WhitesTurn == false)
                     {
                         Globals.OtherPlayerTimer.IsEnabled = true;
-                        Globals.PrimalPlayerTimer.IsEnabled = false;
+                        Globals.PrimePlayerTimer.IsEnabled = false;
                     }
                     else
                     {
                         Globals.OtherPlayerTimer.IsEnabled = false;
-                        Globals.PrimalPlayerTimer.IsEnabled = true;
+                        Globals.PrimePlayerTimer.IsEnabled = true;
                     }
                     int StateOfGame = CheckGameEndConditions(Globals.Board,Globals.WhitesTurn); //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
                     if (StateOfGame == 1)
@@ -559,12 +579,12 @@ namespace Project_ChessWithInterface
         }
         public static void MakeAIMove()
         {
-            Globals.PrimalPlayerTimer.IsEnabled = false;
+            Globals.PrimePlayerTimer.IsEnabled = false;
             List<int> AIMOve = FindBestMoveAI(Globals.AI, Globals.Board);
             RoutedEventArgs newEventArgs = new RoutedEventArgs(Button.ClickEvent);
             Globals.AllButtons[AIMOve[0]].RaiseEvent(newEventArgs);
             Globals.AllButtons[AIMOve[1]].RaiseEvent(newEventArgs);
-            Globals.PrimalPlayerTimer.IsEnabled = true;
+            Globals.PrimePlayerTimer.IsEnabled = true;
         }
         public static bool CanProceedWithSecondClick(int startIndex,int endIndex) 
         {
@@ -642,7 +662,7 @@ namespace Project_ChessWithInterface
         }
         public static void DisableTimers()
         {
-            Globals.PrimalPlayerTimer.Stop();
+            Globals.PrimePlayerTimer.Stop();
             Globals.OtherPlayerTimer.Stop();
         }
         
@@ -1944,7 +1964,7 @@ namespace Project_ChessWithInterface
             {
                 if (Globals.WhiteKingMoved == false)
                 {
-                    if (board[5] == Empty && board[6] == Empty && RooksMoved[1] == false)
+                    if (board[5] == Empty && board[6] == Empty && RooksMoved[1] == false && board[7] == White + Rook)
                     {
                         List<int> PiecesCheckingKing = new List<int>();
                         List<string> ScopedBoard = new List<string>();
@@ -1973,7 +1993,7 @@ namespace Project_ChessWithInterface
 
                     }
 
-                    if (board[1] == Empty && board[2] == Empty && board[3] == Empty && RooksMoved[0] == false)
+                    if (board[1] == Empty && board[2] == Empty && board[3] == Empty && RooksMoved[0] == false && board[0] == White + Rook)
                     {
                         List<int> PiecesCheckingKing = new List<int>();
                         List<string> ScopedBoard = new List<string>();
@@ -2008,7 +2028,7 @@ namespace Project_ChessWithInterface
             {
                 if (Globals.BlackKingMoved == false)
                 {
-                    if (board[61] == Empty && board[62] == Empty && RooksMoved[3] == false)
+                    if (board[61] == Empty && board[62] == Empty && RooksMoved[3] == false && board[63] == Black + Rook)
                     {
                         List<int> PiecesCheckingKing = new List<int>();
                         List<string> ScopedBoard = new List<string>();
@@ -2033,7 +2053,7 @@ namespace Project_ChessWithInterface
                         }
 
                     }
-                    if (board[57] == Empty && board[58] == Empty && board[59] == Empty && RooksMoved[2] == false)
+                    if (board[57] == Empty && board[58] == Empty && board[59] == Empty && RooksMoved[2] == false && board[56] == Black + Rook)
                     {
                         List<int> PiecesCheckingKing = new List<int>();
                         List<string> ScopedBoard = new List<string>();
@@ -2267,7 +2287,7 @@ namespace Project_ChessWithInterface
 
             DisplayBoardOnInterface();
             Globals.MoveCounter = Globals.MoveRecord.Count + 1;
-            if(Globals.AI == White)
+            if(Globals.AI == White && Globals.WhitesTurn == true)
             {
                 DelayAction(500, new Action(() => { MakeAIMove(); }));
             }
@@ -2683,7 +2703,7 @@ namespace Project_ChessWithInterface
         public static string AI { get => aI; set => aI = value; }
         public static int PrimePlayerTimerTimeSeconds { get => primePlayerTimerTimeSeconds; set => primePlayerTimerTimeSeconds = value; }
         public static int OtherPlayerTimerTimeSeconds { get => otherPlayerTimerTimeSeconds; set => otherPlayerTimerTimeSeconds = value; }
-        public static DispatcherTimer PrimalPlayerTimer { get => primalPlayerTimer; set => primalPlayerTimer = value; }
+        public static DispatcherTimer PrimePlayerTimer { get => primalPlayerTimer; set => primalPlayerTimer = value; }
         public static DispatcherTimer OtherPlayerTimer { get => otherPlayerTimer; set => otherPlayerTimer = value; }
         public static MediaPlayer PlacePieceSoundEffect { get => placePieceSoundEffect; set => placePieceSoundEffect = value; }
 

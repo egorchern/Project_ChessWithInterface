@@ -42,7 +42,7 @@ namespace Project_ChessWithInterface
                 temp.RemoveAt(temp.Count - 1);
                 temp.RemoveAt(temp.Count - 1);
                 path = String.Join("\\", temp);
-                path += $"\\Saves\\{ans}.bin";
+                path += $"\\Saves\\{ans}.txt";
                 bool FileExists = File.Exists(path);
                 Globals.PathToSave = path;
                 if (FileExists == true)
@@ -55,29 +55,39 @@ namespace Project_ChessWithInterface
                     t.Close();
 
 
-                    using (FileStream stream = new FileStream(path, FileMode.Open))
-                    {
-                        using (BinaryWriter writer = new BinaryWriter(stream))
-                        {
-                            for (int i = 0; i < 64; i++)
-                            {
-                                writer.Write($"{i}={Globals.Board[i]}");
-                            }
-                            if (Globals.WhitesTurn == true)
-                            {
-                                writer.Write("true");
-                            }
-                            else
-                            {
-                                writer.Write("false");
-                            }
-                            for (int i = 0; i < Globals.MoveRecord.Count; i++)
-                            {
-                                writer.Write(Globals.MoveRecord[i]);
-                            }
 
-                        }
+                    List<string> ToWrite = new List<string>();
+                    for (int i = 0; i < 64; i++)
+                    {
+                        ToWrite.Add($"{i}={Globals.Board[i]}");
                     }
+                    if (Globals.WhitesTurn == true)
+                    {
+                        ToWrite.Add("true");
+                    }
+                    else
+                    {
+                        ToWrite.Add("false");
+                    }
+                    for (int i = 0; i < Globals.MoveRecord.Count; i++)
+                    {
+                        ToWrite.Add(Globals.MoveRecord[i]);
+                    }
+                    string AI = "";
+                    if (Globals.AI == null)
+                    {
+                        AI = "null";
+                    }
+                    else
+                    {
+                        AI = Globals.AI;
+                    }
+                    ToWrite.Add(AI);
+                    ToWrite.Add(Convert.ToString(Globals.PrimePlayerTimerTimeSeconds));
+                    ToWrite.Add(Convert.ToString(Globals.OtherPlayerTimerTimeSeconds));
+                    File.WriteAllLines(path, ToWrite);
+
+
                     MessageBox.Show("Save file was successfuly created");
                     this.Close();
                 }

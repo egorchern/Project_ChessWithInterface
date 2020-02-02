@@ -63,7 +63,10 @@ namespace Project_ChessWithInterface
             LoadGameDialog loadDialog = new LoadGameDialog();
             loadDialog.ShowDialog();
             string SaveChosen = "";
-            SaveChosen = res.PathChosen;
+            
+            SaveChosen = loadDialog.PathChosen;
+            
+            
             LoadGame(SaveChosen);
             MainWindow instance = new MainWindow();
             instance.Show();
@@ -79,29 +82,12 @@ namespace Project_ChessWithInterface
         }
         public static void LoadGame(string path)
         {
-            byte[] fileBytes = File.ReadAllBytes(path);
-
-            string ter = "";
-            foreach (byte b in fileBytes)
-            {
-                ter += (char)b;
-            }
-
-            List<string> arr = new List<string>();
-            arr = ter.Split('\u0005', '\u0004').ToList();
-            string temp = arr.Last();
-            var p = temp.Split('\r', '\u0016', '\u0017', '\u000E').ToList();
-            arr.RemoveAt(0);
-            arr.RemoveAt(arr.Count - 1);
-            foreach (string element in p)
-            {
-                arr.Add(element);
-            }
-            InitializeBoardLoad(arr);
-
+            
+            List<string> SaveLines = File.ReadAllLines(path).ToList();
+            InitializeBoardLoad(SaveLines);
 
         }
-        public static void InitializeBoardLoad(List<string> l)
+        public static void InitializeBoardLoad(List<string> list)
         {
             for (int i = 0; i < 8 * 8; i++)
             {
@@ -109,12 +95,12 @@ namespace Project_ChessWithInterface
             }
             for (int i = 0; i < Globals.Board.Count; i++)
             {
-                string temp = l[i];
+                string temp = list[i];
                 temp = Regex.Replace(temp, @"\d*=", "");
                 Globals.Board[i] = temp;
                 
             }
-            if (l[64] == "true")
+            if (list[64] == "true")
             {
                 Globals.WhitesTurn = true;
             }
@@ -122,12 +108,33 @@ namespace Project_ChessWithInterface
             {
                 Globals.WhitesTurn = false;
             }
-            if (l.Count > 64)
+            if (list.Count > 64)
             {
-                for (int i = 65; i < l.Count; i++)
+                int counter = 65;
+                while(1 == 1) 
                 {
-                    Globals.MoveRecord.Add(l[i]);
+                    
+                    Globals.MoveRecord.Add(list[counter]);
+                    counter++;
+                    if (list[counter] == "null" || list[counter] == "B" || list[counter] == "W")
+                    {
+                        break;
+                    }
                 }
+                string AI = null;
+                if(list[counter] == "B")
+                {
+                    AI = "B";
+                }
+                else if(list[counter] == "W")
+                {
+                    AI = "W";
+                }
+
+                Globals.AI = AI;
+                Globals.PrimePlayerTimerTimeSeconds = Convert.ToInt32(list[counter + 1]);
+                Globals.OtherPlayerTimerTimeSeconds = Convert.ToInt32(list[counter + 2]);
+                
             }
             bool whiteKingMoved = false;
             bool blackKingMoved = false;
@@ -158,6 +165,7 @@ namespace Project_ChessWithInterface
             {
                 Globals.BlackKingMoved = true;
             }
+            double d = 0.0;
 
 
         }
