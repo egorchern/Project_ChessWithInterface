@@ -926,7 +926,7 @@ namespace Project_ChessWithInterface
 
             }
             return ScopedPotentialPositions;
-        }
+        }//Returns indexes of possible moves of a knight on a certain position in a certain board
         public static List<int> GetIndexesOfPossibleMovesPawn(int column, int row, bool whitesTurnn, List<string> Board)
         {
             List<int> OutList = new List<int>();
@@ -1054,7 +1054,7 @@ namespace Project_ChessWithInterface
                 }
             }
             return OutList;
-        }
+        }//Returns indexes of possible moves of a pawn on a certain position in a certain board
         public static List<int> GetIndexesOfPossibleMovesRook(int column, int row, bool whitesTurnn, List<string> Board)
         {
             List<int> OutList = new List<int>();
@@ -1202,7 +1202,7 @@ namespace Project_ChessWithInterface
             }
 
             return OutList;
-        }
+        }//Returns indexes of possible moves of a rook on a certain position in a certain board
         public static List<int> GetIndexesOfPossibleMovesBishop(int column, int row, bool whitesTurnn, List<string> Board)
         {
             List<int> OutList = new List<int>();
@@ -1372,8 +1372,8 @@ namespace Project_ChessWithInterface
                 }
             }
             return OutList;
-        }
-        public static string ConvertAbsoluteToBoardNotation(int index)
+        }//Returns indexes of possible moves of a bishop on a certain position in a certain board
+        public static string ConvertAbsoluteToBoardNotation(int index) //Converts absolute List position to a human readable format
         {
             string ForOut = "";
             int column = index % BoardSize;
@@ -1396,7 +1396,7 @@ namespace Project_ChessWithInterface
             return ForOut;
 
         }
-        public static List<int> GetIndexesOfPossibleMovesQueen(int column, int row, bool whitesTurnn, List<string> Board)
+        public static List<int> GetIndexesOfPossibleMovesQueen(int column, int row, bool whitesTurnn, List<string> Board)//Returns indexes of possible moves of a queen on a certain position in a certain board
         {
             List<int> ForOut = new List<int>();
             List<int> RookMoves = GetIndexesOfPossibleMovesRook(column, row, whitesTurnn, Board);
@@ -1426,7 +1426,7 @@ namespace Project_ChessWithInterface
             }
             return forOut;
         } //Transforms column,row notation of position to an absolute position on the Board
-        public static int ChessNotationToAbsolute(string n)
+        public static int ChessNotationToAbsolute(string n)// Transforms human readable position to absolute position
         {
             Dictionary<string, int> ColumnTable = new Dictionary<string, int>
             {
