@@ -23,6 +23,7 @@ namespace Project_ChessWithInterface
         public SaveGameDialog()
         {
             InitializeComponent();
+            SaveGameWindow.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
         }
         
         private void btn_Submit_Click(object sender, RoutedEventArgs e)

@@ -60,13 +60,36 @@ namespace Project_ChessWithInterface
             Board.Source = new BitmapImage(new Uri(Globals.PathToResources + "\\Board.png"));
             SaveGameImage.Source = new BitmapImage(new Uri(Globals.PathToResources + "\\SaveGameIcon.png"));
             SaveGameImage.MouseDown += SaveGameImage_MouseDown;
+            SuggestMove_img.MouseDown += SuggestMove_img_MouseDown;
+            SuggestMove_img.Source = new BitmapImage(new Uri(Globals.PathToResources + "\\LightBulbIcon.png"));
+
             InitializeTimers();
 
             foreach (Button btn in Globals.AllButtons)
             {
                 btn.Click += UniversalSquareClickEventHandle;
             }
+        } // Initializes visual UI elements
+
+        private void SuggestMove_img_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            string valueOfAIBefore = Globals.AI;
+            if(Globals.WhitesTurn == true)
+            {
+                Globals.AI = "W";
+            }
+            else
+            {
+                Globals.AI = "B";
+            }
+            List<int> SuggestedMove = FindBestMoveAI(Globals.AI, Globals.Board);
+            string initialPosition = ConvertAbsoluteToBoardNotation(SuggestedMove[0]);
+            string finalPosition = ConvertAbsoluteToBoardNotation(SuggestedMove[1]);
+            MessageBox.Show($"Suggested move:\n{initialPosition} => {finalPosition}");
+            Globals.AI = valueOfAIBefore;
+
         }
+
         public static void InsertPlayedGameIntoDatabase(string Winner)
         {
             
@@ -121,8 +144,8 @@ namespace Project_ChessWithInterface
             OtherPlayerTimerLabelUpdate();
             if (Globals.AI != null)
             {
-                TimerIndicator.Content = "Human";
-                TimerIndicator2.Visibility = Visibility.Hidden;
+                TimerLabel.Content = "Human";
+                TimerLabel2.Visibility = Visibility.Hidden;
             }
             if (Globals.AI == null)
             {
@@ -146,7 +169,7 @@ namespace Project_ChessWithInterface
                 }
                 else
                 {
-                    TimerIndicator2.Visibility = Visibility.Hidden;
+                    TimerLabel2.Visibility = Visibility.Hidden;
                 }
             }
             if (Globals.PrimePlayerTimerTimeSeconds != -1)
@@ -168,7 +191,7 @@ namespace Project_ChessWithInterface
             }
             else
             {
-                TimerIndicator.Visibility = Visibility.Hidden;
+                TimerLabel.Visibility = Visibility.Hidden;
             }
             
             
@@ -333,7 +356,7 @@ namespace Project_ChessWithInterface
             }
             
         }// Uses bubble sort to sort elements of Globals.AllButtons list in order to allow easier indexing
-        public static int CheckGameEndConditions(List<string> Board,bool whitesTurn) //0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
+        public static int CheckGameEndConditions(List<string> Board,bool whitesTurn) //Checks if any of the kings is in checkmate or if there is a draw; 0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
         {
             List<int> PositionsOfWhiteFigures = new List<int>();
             List<int> PositionsOfBlackFigures = new List<int>();
@@ -752,13 +775,9 @@ namespace Project_ChessWithInterface
         {
 
             List<int> OutList = new List<int>();
+            
+            OutList = IndexesOfPossibleMovesNoReccursion(piece, position, Board);
             List<string> ScopedBoard = new List<string>();
-            foreach (string item in Board)
-            {
-                ScopedBoard.Add(item);
-            }
-            OutList = IndexesOfPossibleMovesKing(piece, position, ScopedBoard);
-            List<string> CopyOf = new List<string>();
 
             List<int> PiecesCheckingKing = new List<int>();
             List<int> PossibleMoves = new List<int>();
@@ -766,20 +785,20 @@ namespace Project_ChessWithInterface
             {
                 PossibleMoves.Add(item);
             }
-            double d = 0.0;
+            
             for (int i = 0; i < PossibleMoves.Count; i++)
             {
                 foreach (string item in Board)
                 {
-                    CopyOf.Add(item);
+                    ScopedBoard.Add(item);
                 }
-                CopyOf = MovePieceLocal(ConvertAbsoluteToBoardNotation(position), ConvertAbsoluteToBoardNotation(PossibleMoves[i]), CopyOf);
+                ScopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(position), ConvertAbsoluteToBoardNotation(PossibleMoves[i]), ScopedBoard);
                 bool whitesTurn = true;
                 if(piece[0] == 'B')
                 {
                     whitesTurn = false;
                 }
-                PiecesCheckingKing = KingInCheckAndByWhichFigures(CopyOf,whitesTurn);
+                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard,whitesTurn);
                 if (PiecesCheckingKing.Count == 0)
                 {
 
@@ -788,13 +807,13 @@ namespace Project_ChessWithInterface
                 {
                     OutList.Remove(PossibleMoves[i]);
                 }
-                CopyOf.Clear();
+                ScopedBoard.Clear();
             }
 
 
             return OutList;
-        }
-        public static List<int> IndexesOfPossibleMovesKing(string piece, int position, List<string> ScopedBoard)
+        } //Parent function that calls IndexesOfPossibleMovesNoReccursion and then checks if this move will result in king being in check.
+        public static List<int> IndexesOfPossibleMovesNoReccursion(string piece, int position, List<string> ScopedBoard)
         {
             int column = position % BoardSize;
             int row = position / BoardSize;
@@ -836,7 +855,7 @@ namespace Project_ChessWithInterface
                 OutList = GetIndexesOfPossibleMovesKing(column, row, whitesTurnn, Board);
             }
             return OutList;
-        }
+        } //A method that calls GetIndexesOfPossibleMoves(piece)
         public static List<int> GetIndexesOfPossibleMovesKnight(int column, int row, bool whitesTurnn, List<string> Board)
         {
             List<int> ScopedPotentialPositions = new List<int>();
@@ -2187,7 +2206,7 @@ namespace Project_ChessWithInterface
                 {
                     List<int> IndexesOfLegalMoves = new List<int>();
                     string piece = Board[PositionsOfBlackFigures[i]];
-                    IndexesOfLegalMoves = IndexesOfPossibleMovesKing(piece, PositionsOfBlackFigures[i], Board);
+                    IndexesOfLegalMoves = IndexesOfPossibleMovesNoReccursion(piece, PositionsOfBlackFigures[i], Board);
                     if (IndexesOfLegalMoves.Contains(positionOfWhiteKing))
                     {
                         OutList.Add(PositionsOfBlackFigures[i]);
@@ -2201,7 +2220,7 @@ namespace Project_ChessWithInterface
                 {
                     List<int> IndexesOfLegalMoves = new List<int>();
                     string piece = Board[PositionsOfWhiteFigures[i]];
-                    IndexesOfLegalMoves = IndexesOfPossibleMovesKing(piece, PositionsOfWhiteFigures[i], Board);
+                    IndexesOfLegalMoves = IndexesOfPossibleMovesNoReccursion(piece, PositionsOfWhiteFigures[i], Board);
                     if (IndexesOfLegalMoves.Contains(positionOfBlackKing))
                     {
                         OutList.Add(PositionsOfWhiteFigures[i]);

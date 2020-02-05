@@ -24,6 +24,7 @@ namespace Project_ChessWithInterface
         public LoadGameDialog()
         {
             InitializeComponent();
+            LoadGameWindow.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png")); 
 
 
         }

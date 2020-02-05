@@ -1,22 +1,23 @@
-﻿<Window x:Class="Project_ChessWithInterface.GameArchive"
+﻿<Window x:Name="GameArchiveWindow" x:Class="Project_ChessWithInterface.GameArchive"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="GameArchive" Height="622.459" Width="848.196" Loaded="Window_Loaded">
+        Title="GameArchive" Height="622" Width="893" Loaded="Window_Loaded" ResizeMode="NoResize">
     <Grid>
-        <ListBox x:Name="Games_lst" HorizontalAlignment="Left" Height="561" Margin="11,11,0,0" VerticalAlignment="Top" Width="427" FontSize="16" FontWeight="Bold" Loaded="Games_list_Loaded"/>
-        <Button x:Name="Reset_btn" Content="Reset" HorizontalAlignment="Left" Margin="452,11,0,0" VerticalAlignment="Top" Width="131" FontWeight="Bold" FontSize="30" Height="79" Click="Reset_btn_Click"/>
-        <Label x:Name="label" Content="Search by nickname&#xD;&#xA;(or color):" HorizontalAlignment="Left" Margin="450,112,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.368,0.577" FontWeight ="Bold" FontSize="20" />
-        <TextBox x:Name="NameSearch_txt" HorizontalAlignment="Left" Height="27" Margin="666,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="152" FontSize="18" FontWeight="Bold"/>
-        <Label x:Name="label_Copy" Content="Search by date:&#xD;&#xA;(YYYY-MM-DD)&#xD;&#xA;" HorizontalAlignment="Left" Margin="451,184,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.368,0.577" FontWeight ="Bold" FontSize="20"/>
-        <TextBox x:Name="DateSearch_txt" HorizontalAlignment="Left" Height="27" Margin="666,200,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="152" FontSize="18" FontWeight="Bold"/>
-        <Label x:Name="label_Copy1" Content="Search by move &#xA;count (&gt;10):&#xA;&#xA;" HorizontalAlignment="Left" Margin="447,251,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.368,0.577" FontWeight ="Bold" FontSize="20" Width="188" Height="72" />
-        <TextBox x:Name="MoveCountSearch_txt" HorizontalAlignment="Left" Height="27" Margin="666,271,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="152" FontSize="18" FontWeight="Bold"/>
-        <Button x:Name="Search_btn" Content="Search" HorizontalAlignment="Left" Margin="570,359,0,0" VerticalAlignment="Top" Width="137" FontWeight="Bold" FontSize="30" Height="118" Click="Search_btn_Click"/>
-        <Button x:Name="DisplayRecord_btn" Content="" HorizontalAlignment="Left" Margin="690,13,0,0" VerticalAlignment="Top" Width="129" FontWeight="Bold" FontSize="30" Height="78" Click="DisplayRecord_btn_Click"  />
+        <ListBox x:Name="Games_lst" HorizontalAlignment="Left" Height="570" Margin="5,5,0,0" VerticalAlignment="Top" Width="430" FontSize="16" FontWeight="Bold" Loaded="Games_list_Loaded"/>
+        <Button x:Name="Reset_btn" Content="Reset" HorizontalAlignment="Left" Margin="591,15,0,0" VerticalAlignment="Top" Width="131" FontWeight="Bold" FontSize="30" Height="79" Click="Reset_btn_Click"/>
+        <Label x:Name="label" Content="Search by nickname&#xD;&#xA;(or color):" HorizontalAlignment="Left" Margin="490,111,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.368,0.577" FontWeight ="Bold" FontSize="20" />
+        <TextBox x:Name="NameSearch_txt" HorizontalAlignment="Left" Height="27" Margin="706,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="152" FontSize="18" FontWeight="Bold"/>
+        <Label x:Name="label_Copy" Content="Search by date:&#xD;&#xA;(YYYY-MM-DD)&#xD;&#xA;" HorizontalAlignment="Left" Margin="491,183,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.368,0.577" FontWeight ="Bold" FontSize="20"/>
+        <TextBox x:Name="DateSearch_txt" HorizontalAlignment="Left" Height="27" Margin="706,199,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="152" FontSize="18" FontWeight="Bold"/>
+        <Label x:Name="label_Copy1" Content="Search by move &#xA;count (&gt;10):&#xA;&#xA;" HorizontalAlignment="Left" Margin="487,250,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.368,0.577" FontWeight ="Bold" FontSize="20" Width="188" Height="72" />
+        <TextBox x:Name="MoveCountSearch_txt" HorizontalAlignment="Left" Height="27" Margin="706,270,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="152" FontSize="18" FontWeight="Bold"/>
+        <Button x:Name="Search_btn" Content="Search" HorizontalAlignment="Left" Margin="610,358,0,0" VerticalAlignment="Top" Width="137" FontWeight="Bold" FontSize="30" Height="118" Click="Search_btn_Click"/>
+        <Button x:Name="DisplayRecord_btn" Content="" HorizontalAlignment="Left" Margin="735,15,0,0" VerticalAlignment="Top" Width="129" FontWeight="Bold" FontSize="30" Height="78" Click="DisplayRecord_btn_Click"  />
+        <Button x:Name="Back_btn" Content="Back" HorizontalAlignment="Left" Margin="448,15,0,0" VerticalAlignment="Top" Width="130" FontWeight="Bold" FontSize="30" Height="80" Click="Back_btn_Click"/>
 
     </Grid>
 </Window>

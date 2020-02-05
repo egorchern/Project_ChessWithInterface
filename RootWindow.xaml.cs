@@ -28,6 +28,8 @@ namespace Project_ChessWithInterface
             loadGame_btn.Click += LoadGameBtn_Click;
             gameArchive_btn.Click += GameArchiveBtn_Click;
             Globals.PathToResources = GetPathToResources();
+            RootMenu.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
+            
 
         }
         public static string GetPathToResources()

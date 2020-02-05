@@ -23,7 +23,8 @@ namespace Project_ChessWithInterface
         public TimerDialog()
         {
             InitializeComponent();
-            if(Globals.AI == null)
+            TimersWindow.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
+            if (Globals.AI == null)
             {
 
             }

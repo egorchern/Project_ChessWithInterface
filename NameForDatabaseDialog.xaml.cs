@@ -22,6 +22,7 @@ namespace Project_ChessWithInterface
         public NameForDatabaseDialog(string Winner)
         {
             InitializeComponent();
+            DataBaseDialog.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
             string inquire = Winner;
             
             if(inquire == "Human")

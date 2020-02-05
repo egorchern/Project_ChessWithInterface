@@ -25,6 +25,7 @@ namespace Project_ChessWithInterface
         public GameArchive()
         {
             InitializeComponent();
+            GameArchiveWindow.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
         }
 
         private void Games_list_Loaded(object sender, RoutedEventArgs e)
@@ -161,6 +162,14 @@ namespace Project_ChessWithInterface
             {
                 MessageBox.Show(E.Message);
             }
+        }
+
+        private void Back_btn_Click(object sender, RoutedEventArgs e)
+        {
+            RootWindow instance = new RootWindow();
+            instance.Show();
+            this.Close();
+
         }
     }
 }

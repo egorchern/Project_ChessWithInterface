@@ -22,6 +22,7 @@ namespace Project_ChessWithInterface
         public PlayerColorSelectionDialog()
         {
             InitializeComponent();
+            ColorSelectionDialog.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
             WhiteKing_btn.Content = new Image
             {
                 Source = new BitmapImage(new Uri(Globals.PathToResources + "\\" + "WhiteKing.png")),
