@@ -50,7 +50,7 @@ namespace Project_ChessWithInterface
             //GetConnectionStringForDatabase();
 
         }
-        public  void InitializeUI()
+        public  void InitializeUI()// Initializes visual UI elements
         {
             GetAllButtonElements();
             SortButtons();
@@ -69,7 +69,7 @@ namespace Project_ChessWithInterface
             {
                 btn.Click += UniversalSquareClickEventHandle;
             }
-        } // Initializes visual UI elements
+        } 
 
         private void SuggestMove_img_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -138,7 +138,7 @@ namespace Project_ChessWithInterface
             MessageBox.Show("Database entry successfuly inserted!");
             
         }
-        public void InitializeTimers()
+        public void InitializeTimers()//Initializes timers based on Global variables PrimePlayerTimerSeconds and OtherPlayerTimerSeconds which are set in TimerDialog window
         {
             PrimePlayerTimerLabelUpdate();
             OtherPlayerTimerLabelUpdate();
@@ -197,7 +197,7 @@ namespace Project_ChessWithInterface
             
         }
 
-        private void OtherPlayerTimer_Tick(object sender, EventArgs e)
+        private void OtherPlayerTimer_Tick(object sender, EventArgs e)//Decrements the other player’s remaining time
         {
             if (Globals.OtherPlayerTimerTimeSeconds == 0)
             {
@@ -236,7 +236,7 @@ namespace Project_ChessWithInterface
             }
             OtherPlayer_label.Content = $"{minutes}:{seconds}";
         }
-        private void PrimePlayerTimer_Tick(object sender, EventArgs e)
+        private void PrimePlayerTimer_Tick(object sender, EventArgs e)//Decrements the prime player’s remaining time
         {
             if (Globals.PrimePlayerTimerTimeSeconds == 0)
             {
@@ -267,7 +267,7 @@ namespace Project_ChessWithInterface
             save.ShowDialog();
         }
         
-        public static bool CanProceedWithTurn(int index) // A procedure that determines if first click was valid, for example if it's black's turn if white piece is clicked, then error message will be displayed
+        public static bool CanProceedWithFirstClick(int index) // A procedure that determines if first click was valid, for example if it's black's turn if white piece is clicked, then error message will be displayed
         {
             string CurrentPieceOnSquare = Globals.Board[index];
             if(CurrentPieceOnSquare == Empty)
@@ -326,7 +326,7 @@ namespace Project_ChessWithInterface
             MoveRecordWhite.Document.Blocks.Clear();
             MoveRecordWhite.Document.Blocks.Add(new Paragraph(new Run(String.Join("\n", Globals.MoveRecord))));
         }
-        public void SortButtons()
+        public void SortButtons()// Uses bubble sort to sort elements of Globals.AllButtons list in order to allow easier indexing
         {
             List<Button> NamesOfButtons = new List<Button>();
             foreach(Button btn in Globals.AllButtons)
@@ -355,7 +355,7 @@ namespace Project_ChessWithInterface
                 Globals.AllButtons[i] = NamesOfButtons[i];
             }
             
-        }// Uses bubble sort to sort elements of Globals.AllButtons list in order to allow easier indexing
+        }
         public static int CheckGameEndConditions(List<string> Board,bool whitesTurn) //Checks if any of the kings is in checkmate or if there is a draw; 0-Nothing; 1-White Checkmated; 2-Black Checkmated; 3-Stalemate
         {
             List<int> PositionsOfWhiteFigures = new List<int>();
@@ -457,14 +457,14 @@ namespace Project_ChessWithInterface
         private void UniversalSquareClickEventHandle(object sender, RoutedEventArgs e)
         {
             
-            string name = ((Button)sender).Name;
-            string subStringForIndex = Regex.Replace(name, @"^btn", "");
+            string nameOfButton = ((Button)sender).Name;
+            string subStringForIndex = Regex.Replace(nameOfButton, @"^btn", "");
             int indexOfClickedSquare = Convert.ToInt32(subStringForIndex);
             if (Globals.WaitingForSecondClick == false)
             {
 
 
-                bool Verified = CanProceedWithTurn(indexOfClickedSquare);
+                bool Verified = CanProceedWithFirstClick(indexOfClickedSquare);
                 if (Verified == true)
                 {
 
@@ -473,7 +473,7 @@ namespace Project_ChessWithInterface
                     for (int i = 0; i < Globals.AllButtons.Count; i++)
                     {
                         string scopedName = Globals.AllButtons[i].Name;
-                        if (scopedName == name)
+                        if (scopedName == nameOfButton)
                         {
                             index = i;
                             break;
@@ -603,10 +603,10 @@ namespace Project_ChessWithInterface
         public static void MakeAIMove()
         {
             Globals.PrimePlayerTimer.IsEnabled = false;
-            List<int> AIMOve = FindBestMoveAI(Globals.AI, Globals.Board);
+            List<int> AIMove = FindBestMoveAI(Globals.AI, Globals.Board);
             RoutedEventArgs newEventArgs = new RoutedEventArgs(Button.ClickEvent);
-            Globals.AllButtons[AIMOve[0]].RaiseEvent(newEventArgs);
-            Globals.AllButtons[AIMOve[1]].RaiseEvent(newEventArgs);
+            Globals.AllButtons[AIMove[0]].RaiseEvent(newEventArgs);
+            Globals.AllButtons[AIMove[1]].RaiseEvent(newEventArgs);
             Globals.PrimePlayerTimer.IsEnabled = true;
         }
         public static bool CanProceedWithSecondClick(int startIndex,int endIndex) 
@@ -621,7 +621,7 @@ namespace Project_ChessWithInterface
             return true;
         }
 
-        public  void GetAllButtonElements()
+        public  void GetAllButtonElements()//Used to initialize Global variable AllButtons
         {
             
             Panel mainContainer = (Panel)this.Content;
@@ -645,7 +645,7 @@ namespace Project_ChessWithInterface
                 }
                
             }
-        } //Used to initialize Global variable AllButtons
+        } 
         public void SomeTimerTimedOut()
         {
             if(Globals.AI != null)
@@ -704,7 +704,7 @@ namespace Project_ChessWithInterface
         }
 
 
-        public static void InitializeBoard()
+        public static void InitializeBoard()//If default game mode selected, Set up Globals.Board according to standard initial position in chess.
         {
             for (int i = 0; i < BoardSize * BoardSize; i++)
             {
@@ -770,8 +770,8 @@ namespace Project_ChessWithInterface
                     Globals.Board[i] = $"{Black}{Pawn}";
                 }
             }
-        } //If default game mode selected, Set up Globals.Board according to standard initial position in chess.
-        public static List<int> IndexesOfPossibleMoves(List<string> Board,string piece, int position)
+        } 
+        public static List<int> IndexesOfPossibleMoves(List<string> Board,string piece, int position)//Parent function that calls IndexesOfPossibleMovesNoReccursion and then checks if this move will result in king being in check.
         {
 
             List<int> OutList = new List<int>();
@@ -812,8 +812,8 @@ namespace Project_ChessWithInterface
 
 
             return OutList;
-        } //Parent function that calls IndexesOfPossibleMovesNoReccursion and then checks if this move will result in king being in check.
-        public static List<int> IndexesOfPossibleMovesNoReccursion(string piece, int position, List<string> ScopedBoard)
+        } 
+        public static List<int> IndexesOfPossibleMovesNoReccursion(string piece, int position, List<string> ScopedBoard)//A method that calls GetIndexesOfPossibleMoves(piece)
         {
             int column = position % BoardSize;
             int row = position / BoardSize;
@@ -855,8 +855,8 @@ namespace Project_ChessWithInterface
                 OutList = GetIndexesOfPossibleMovesKing(column, row, whitesTurnn, Board);
             }
             return OutList;
-        } //A method that calls GetIndexesOfPossibleMoves(piece)
-        public static List<int> GetIndexesOfPossibleMovesKnight(int column, int row, bool whitesTurnn, List<string> Board)
+        } 
+        public static List<int> GetIndexesOfPossibleMovesKnight(int column, int row, bool whitesTurnn, List<string> Board)//Returns indexes of possible moves of a knight on a certain position in a certain board
         {
             List<int> ScopedPotentialPositions = new List<int>();
             ScopedPotentialPositions.Add(GetAbolutePosition(column - 1, row + 2));
@@ -926,8 +926,8 @@ namespace Project_ChessWithInterface
 
             }
             return ScopedPotentialPositions;
-        }//Returns indexes of possible moves of a knight on a certain position in a certain board
-        public static List<int> GetIndexesOfPossibleMovesPawn(int column, int row, bool whitesTurnn, List<string> Board)
+        }
+        public static List<int> GetIndexesOfPossibleMovesPawn(int column, int row, bool whitesTurnn, List<string> Board)//Returns indexes of possible moves of a pawn on a certain position in a certain board
         {
             List<int> OutList = new List<int>();
             string piece = Globals.Board[GetAbolutePosition(column, row)];
@@ -1054,8 +1054,8 @@ namespace Project_ChessWithInterface
                 }
             }
             return OutList;
-        }//Returns indexes of possible moves of a pawn on a certain position in a certain board
-        public static List<int> GetIndexesOfPossibleMovesRook(int column, int row, bool whitesTurnn, List<string> Board)
+        }
+        public static List<int> GetIndexesOfPossibleMovesRook(int column, int row, bool whitesTurnn, List<string> Board)//Returns indexes of possible moves of a rook on a certain position in a certain board
         {
             List<int> OutList = new List<int>();
 
@@ -1202,8 +1202,8 @@ namespace Project_ChessWithInterface
             }
 
             return OutList;
-        }//Returns indexes of possible moves of a rook on a certain position in a certain board
-        public static List<int> GetIndexesOfPossibleMovesBishop(int column, int row, bool whitesTurnn, List<string> Board)
+        }
+        public static List<int> GetIndexesOfPossibleMovesBishop(int column, int row, bool whitesTurnn, List<string> Board)//Returns indexes of possible moves of a bishop on a certain position in a certain board
         {
             List<int> OutList = new List<int>();
             int scopedRow = row;
@@ -1372,7 +1372,7 @@ namespace Project_ChessWithInterface
                 }
             }
             return OutList;
-        }//Returns indexes of possible moves of a bishop on a certain position in a certain board
+        }
         public static string ConvertAbsoluteToBoardNotation(int index) //Converts absolute List position to a human readable format
         {
             string ForOut = "";
@@ -1411,7 +1411,7 @@ namespace Project_ChessWithInterface
             }
             return ForOut;
         }
-        public static int GetAbolutePosition(int column, int row)
+        public static int GetAbolutePosition(int column, int row)//Transforms column,row notation of position to an absolute position on the Board
         {
             if (column < 0 || column > 7 || row < 0 || row > 7)
             {
@@ -1425,7 +1425,7 @@ namespace Project_ChessWithInterface
                 row--;
             }
             return forOut;
-        } //Transforms column,row notation of position to an absolute position on the Board
+        } 
         public static int ChessNotationToAbsolute(string n)// Transforms human readable position to absolute position
         {
             Dictionary<string, int> ColumnTable = new Dictionary<string, int>
@@ -1441,9 +1441,9 @@ namespace Project_ChessWithInterface
 
             };
             string temp = Convert.ToString(n[0]);
-            int tempo = 0;
-            ColumnTable.TryGetValue(temp, out tempo);
-            int column = tempo;
+            int temp2 = 0;
+            ColumnTable.TryGetValue(temp, out temp2);
+            int column = temp2;
             temp = Convert.ToString(n[1]);
             int row = Convert.ToInt32(temp) - 1;
             return GetAbolutePosition(column, row);
@@ -2297,7 +2297,7 @@ namespace Project_ChessWithInterface
             return dict;
         }
 
-        private void GameWindow_Loaded(object sender, RoutedEventArgs e)
+        private void GameWindow_Loaded(object sender, RoutedEventArgs e)//Entry point of the window, used to call other important code
         {
             InitializeUI();
 
@@ -2310,7 +2310,7 @@ namespace Project_ChessWithInterface
             {
                 DelayAction(500, new Action(() => { MakeAIMove(); }));
             }
-        } //Entry point of the window, used to call other important code
+        } 
         public static List<int> FindBestMoveAI(string color, List<string> Board)
         {
             List<List<int>> PossibleMoves = GetAllLegalMovesForSelectedColor(color, Board); //Get all possible moves for a particular color in a particular board
@@ -2657,6 +2657,17 @@ namespace Project_ChessWithInterface
                     LocalCopyOfBoard[i] = Regex.Replace(LocalCopyOfBoard[i], @"^W", "");
                     double temp = 0;
                     ValuationsForPieces.TryGetValue(LocalCopyOfBoard[i], out temp);
+                    /*
+                    if(temp == 1)
+                    {
+                        int column = i % BoardSize;
+                        int row = i / BoardSize;
+                        if(row == 3)
+                        {
+                            temp = temp + 0.1;
+                        }
+                    }
+                    */
                     ValuationWhite += temp;
                 }
                 else
@@ -2664,6 +2675,17 @@ namespace Project_ChessWithInterface
                     LocalCopyOfBoard[i] = Regex.Replace(LocalCopyOfBoard[i], @"^B", "");
                     double temp = 0;
                     ValuationsForPieces.TryGetValue(LocalCopyOfBoard[i], out temp);
+                    /*
+                    if (temp == 1)
+                    {
+                        int column = i % BoardSize;
+                        int row = i / BoardSize;
+                        if (row == 4)
+                        {
+                            temp = temp + 0.1;
+                        }
+                    }
+                    */
                     ValuationBlack += temp;
                 }
                
