@@ -253,7 +253,7 @@ namespace Project_ChessWithInterface
             }
         }
 
-        public static string GetConnectionStringForDatabase()
+        public static string GetConnectionStringForDatabase()//Returns a connection string for a database of played games
         {
             string pathToResources = Globals.PathToResources;
             string pathToMainFolder = Regex.Replace(pathToResources, @"\\[^\\]+$", "");
@@ -447,7 +447,7 @@ namespace Project_ChessWithInterface
             }
             return 0;
         }
-        public void DisableAllButtons()
+        public void DisableAllButtons() //Disables all button click events, called when the game has reached terminal state
         {
             foreach (Button btn in Globals.AllButtons)
             {
@@ -609,7 +609,7 @@ namespace Project_ChessWithInterface
             Globals.AllButtons[AIMove[1]].RaiseEvent(newEventArgs);
             Globals.PrimePlayerTimer.IsEnabled = true;
         }
-        public static bool CanProceedWithSecondClick(int startIndex,int endIndex) 
+        public static bool CanProceedWithSecondClick(int startIndex,int endIndex) //Returns true if the piece as startIndex is allowed to move to endIndex. Displays an error message otherwise
         {
             List<int> PossibleMovesOfSelectedPiece = IndexesOfPossibleMoves(Globals.Board,Globals.Board[startIndex], startIndex);
             if(PossibleMovesOfSelectedPiece.Contains(endIndex) == false)
@@ -646,7 +646,7 @@ namespace Project_ChessWithInterface
                
             }
         } 
-        public void SomeTimerTimedOut()
+        public void SomeTimerTimedOut()//Called when timer some timer timed out, and displays the results on the screen
         {
             if(Globals.AI != null)
             {
@@ -683,13 +683,13 @@ namespace Project_ChessWithInterface
             
             DisableAllButtons();
         }
-        public static void DisableTimers()
+        public static void DisableTimers()//Disables the timers, called when the game reaches the terminal stage
         {
             Globals.PrimePlayerTimer.Stop();
             Globals.OtherPlayerTimer.Stop();
         }
         
-        public static void DelayAction(int millisecond, Action action)
+        public static void DelayAction(int millisecond, Action action) //Delays the execution of the code without freezing the UI
         {
             var timer = new DispatcherTimer();
             timer.Tick += delegate
@@ -1453,13 +1453,13 @@ namespace Project_ChessWithInterface
         public static void MovePiece(string initialPos, string destination, int counter)
         {
             string piece = "";
-            int AbsoluteInitialPos = ChessNotationToAbsolute(initialPos);
-            int DestinationAbsolute = ChessNotationToAbsolute(destination);
-            piece = Globals.Board[AbsoluteInitialPos];
-            List<int> IndexesOfPossibleMovess = IndexesOfPossibleMoves(Globals.Board,piece, AbsoluteInitialPos);
+            int AbsoluteInitialPosition = ChessNotationToAbsolute(initialPos);
+            int AbsoluteFinalPosition = ChessNotationToAbsolute(destination);
+            piece = Globals.Board[AbsoluteInitialPosition];
+            List<int> IndexesOfPossibleMovess = IndexesOfPossibleMoves(Globals.Board,piece, AbsoluteInitialPosition);
             string lastMove = "";
-            int column = AbsoluteInitialPos % BoardSize;
-            int row = AbsoluteInitialPos / BoardSize;
+            int column = AbsoluteInitialPosition % BoardSize;
+            int row = AbsoluteInitialPosition / BoardSize;
             int EnPessantDestination = -1;
             int CapturedInEnPessant = -1;
 
@@ -1525,7 +1525,7 @@ namespace Project_ChessWithInterface
                     }
                 }
             }
-            if (IndexesOfPossibleMovess.Contains(DestinationAbsolute) == true)
+            if (IndexesOfPossibleMovess.Contains(AbsoluteFinalPosition) == true)
             {
                 
                 bool kingCastling = false;
@@ -1596,8 +1596,8 @@ namespace Project_ChessWithInterface
                 {
                     if (ConvertAbsoluteToBoardNotation(EnPessantDestination) == destination && piece[1] == 'p')
                     {
-                        Globals.Board[AbsoluteInitialPos] = Empty;
-                        Globals.Board[DestinationAbsolute] = piece;
+                        Globals.Board[AbsoluteInitialPosition] = Empty;
+                        Globals.Board[AbsoluteFinalPosition] = piece;
                         Globals.Board[CapturedInEnPessant] = Empty;
                         Globals.MoveRecord.Add($"{counter}: {piece}{initialPos} => {destination}(En Pessant {ConvertAbsoluteToBoardNotation(CapturedInEnPessant)})");
                         
@@ -1607,10 +1607,10 @@ namespace Project_ChessWithInterface
 
 
 
-                        if (Globals.Board[DestinationAbsolute] == Empty)
+                        if (Globals.Board[AbsoluteFinalPosition] == Empty)
                         {
-                            Globals.Board[DestinationAbsolute] = piece;
-                            Globals.Board[AbsoluteInitialPos] = Empty;
+                            Globals.Board[AbsoluteFinalPosition] = piece;
+                            Globals.Board[AbsoluteInitialPosition] = Empty;
                             Globals.MoveRecord.Add($"{counter}: {piece}{initialPos} => {destination}");
                             if (piece == White + King)
                             {
@@ -1623,11 +1623,11 @@ namespace Project_ChessWithInterface
                             }
                             if (piece[1] == 'p')
                             {
-                                if (DestinationAbsolute >= 56 || DestinationAbsolute <= 7)
+                                if (AbsoluteFinalPosition >= 56 || AbsoluteFinalPosition <= 7)
 
                                 {
                                     string color = Convert.ToString(piece[0]);
-                                    Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { DestinationAbsolute, -1 };
+                                    Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { AbsoluteFinalPosition, -1 };
                                     if(color == Globals.AI)
                                     {
                                         Globals.PositionOfPawnToBePromotedAndPiece[1] = 0;
@@ -1655,7 +1655,7 @@ namespace Project_ChessWithInterface
                                             break;
 
                                     }
-                                    PromoteAPawn(DestinationAbsolute, PromotePieceTo);
+                                    PromoteAPawn(AbsoluteFinalPosition, PromotePieceTo);
                                     string PromotedTo = PromotePieceTo;
                                     Globals.MoveRecord[Globals.MoveRecord.Count - 1] += $"(Promoted to {PromotedTo.ToUpper()})";
 
@@ -1664,9 +1664,9 @@ namespace Project_ChessWithInterface
                         }
                         else
                         {
-                            string temp = Globals.Board[DestinationAbsolute];
-                            Globals.Board[DestinationAbsolute] = piece;
-                            Globals.Board[AbsoluteInitialPos] = Empty;
+                            string temp = Globals.Board[AbsoluteFinalPosition];
+                            Globals.Board[AbsoluteFinalPosition] = piece;
+                            Globals.Board[AbsoluteInitialPosition] = Empty;
                             Globals.MoveRecord.Add($"{counter}: {piece}{initialPos} => {destination}({piece} x {temp})");
                             if (piece == White + King)
                             {
@@ -1679,11 +1679,11 @@ namespace Project_ChessWithInterface
                             }
                             if (piece[1] == 'p')
                             {
-                                if (DestinationAbsolute >= 56 || DestinationAbsolute <= 7)
+                                if (AbsoluteFinalPosition >= 56 || AbsoluteFinalPosition <= 7)
 
                                 {
                                     string color = Convert.ToString(piece[0]);
-                                    Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { DestinationAbsolute, -1 };
+                                    Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { AbsoluteFinalPosition, -1 };
                                     if (color == Globals.AI)
                                     {
                                         Globals.PositionOfPawnToBePromotedAndPiece[1] = 0;
@@ -1710,7 +1710,7 @@ namespace Project_ChessWithInterface
                                             break;
 
                                     }
-                                    PromoteAPawn(DestinationAbsolute, PromotePieceTo);
+                                    PromoteAPawn(AbsoluteFinalPosition, PromotePieceTo);
                                     string PromotedTo = PromotePieceTo;
                                     Globals.MoveRecord[Globals.MoveRecord.Count - 1] += $"(Promoted to {PromotedTo.ToUpper()})";
 
@@ -1735,7 +1735,7 @@ namespace Project_ChessWithInterface
                 Globals.Board[position] = Black + ToWhat;
             }
         }
-        public static List<string> MovePieceLocal(string initialPos, string destination, List<string> arr)
+        public static List<string> MovePieceLocal(string initialPos, string destination, List<string> arr) //Return a list that represents a board on which a certain move has been made 
         {
             List<string> ScopedBoard = new List<string>();
             foreach (string item in arr)
@@ -1743,15 +1743,15 @@ namespace Project_ChessWithInterface
                 ScopedBoard.Add(item);
             }
             string piece = "";
-            int AbsoluteInitialPos = ChessNotationToAbsolute(initialPos);
-            int DestinationAbsolute = ChessNotationToAbsolute(destination);
-            piece = ScopedBoard[AbsoluteInitialPos];
+            int AbsoluteInitialPosition = ChessNotationToAbsolute(initialPos);
+            int AbsoluteFinalPosition = ChessNotationToAbsolute(destination);
+            piece = ScopedBoard[AbsoluteInitialPosition];
             
 
 
 
 
-            if (ScopedBoard[DestinationAbsolute] == Empty)
+            if (ScopedBoard[AbsoluteFinalPosition] == Empty)
             {
                 
 
@@ -1822,36 +1822,36 @@ namespace Project_ChessWithInterface
                     }
                     if (piece == White + Pawn)
                     {
-                        if (AbsoluteInitialPos <= 55 && AbsoluteInitialPos >= 48 && DestinationAbsolute > 55)
+                        if (AbsoluteInitialPosition <= 55 && AbsoluteInitialPosition >= 48 && AbsoluteFinalPosition > 55)
                         {
-                            ScopedBoard[AbsoluteInitialPos] = Empty;
-                            ScopedBoard[DestinationAbsolute] = White + Queen;
+                            ScopedBoard[AbsoluteInitialPosition] = Empty;
+                            ScopedBoard[AbsoluteFinalPosition] = White + Queen;
                         }
                         else
                         {
-                            ScopedBoard[DestinationAbsolute] = piece;
-                            ScopedBoard[AbsoluteInitialPos] = Empty;
+                            ScopedBoard[AbsoluteFinalPosition] = piece;
+                            ScopedBoard[AbsoluteInitialPosition] = Empty;
                         }
                     }
                     else if (piece == Black + Pawn)
                     {
-                        if (AbsoluteInitialPos >= 8 && AbsoluteInitialPos <= 15 && DestinationAbsolute < 8)
+                        if (AbsoluteInitialPosition >= 8 && AbsoluteInitialPosition <= 15 && AbsoluteFinalPosition < 8)
                         {
-                            ScopedBoard[AbsoluteInitialPos] = Empty;
-                            ScopedBoard[DestinationAbsolute] = Black + Queen;
+                            ScopedBoard[AbsoluteInitialPosition] = Empty;
+                            ScopedBoard[AbsoluteFinalPosition] = Black + Queen;
                         }
                         else
                         {
-                            ScopedBoard[DestinationAbsolute] = piece;
-                            ScopedBoard[AbsoluteInitialPos] = Empty;
+                            ScopedBoard[AbsoluteFinalPosition] = piece;
+                            ScopedBoard[AbsoluteInitialPosition] = Empty;
                         }
                     }
                     else
                     {
 
 
-                        ScopedBoard[DestinationAbsolute] = piece;
-                        ScopedBoard[AbsoluteInitialPos] = Empty;
+                        ScopedBoard[AbsoluteFinalPosition] = piece;
+                        ScopedBoard[AbsoluteInitialPosition] = Empty;
                     }
                 
             }
@@ -1859,36 +1859,36 @@ namespace Project_ChessWithInterface
             {
                 if (piece == White + Pawn)
                 {
-                    if (AbsoluteInitialPos <= 55 && AbsoluteInitialPos >= 48 && DestinationAbsolute > 55)
+                    if (AbsoluteInitialPosition <= 55 && AbsoluteInitialPosition >= 48 && AbsoluteFinalPosition > 55)
                     {
-                        ScopedBoard[AbsoluteInitialPos] = Empty;
-                        ScopedBoard[DestinationAbsolute] = White + Queen;
+                        ScopedBoard[AbsoluteInitialPosition] = Empty;
+                        ScopedBoard[AbsoluteFinalPosition] = White + Queen;
                     }
                     else
                     {
-                        ScopedBoard[DestinationAbsolute] = piece;
-                        ScopedBoard[AbsoluteInitialPos] = Empty;
+                        ScopedBoard[AbsoluteFinalPosition] = piece;
+                        ScopedBoard[AbsoluteInitialPosition] = Empty;
                     }
                 }
                 else if (piece == Black + Pawn)
                 {
-                    if (AbsoluteInitialPos >= 8 && AbsoluteInitialPos <= 15 && DestinationAbsolute < 8)
+                    if (AbsoluteInitialPosition >= 8 && AbsoluteInitialPosition <= 15 && AbsoluteFinalPosition < 8)
                     {
-                        ScopedBoard[AbsoluteInitialPos] = Empty;
-                        ScopedBoard[DestinationAbsolute] = Black + Queen;
+                        ScopedBoard[AbsoluteInitialPosition] = Empty;
+                        ScopedBoard[AbsoluteFinalPosition] = Black + Queen;
                     }
                     else
                     {
-                        ScopedBoard[DestinationAbsolute] = piece;
-                        ScopedBoard[AbsoluteInitialPos] = Empty;
+                        ScopedBoard[AbsoluteFinalPosition] = piece;
+                        ScopedBoard[AbsoluteInitialPosition] = Empty;
                     }
                 }
                 else
                 {
 
 
-                    ScopedBoard[DestinationAbsolute] = piece;
-                    ScopedBoard[AbsoluteInitialPos] = Empty;
+                    ScopedBoard[AbsoluteFinalPosition] = piece;
+                    ScopedBoard[AbsoluteInitialPosition] = Empty;
                 }
             }
            
@@ -1899,7 +1899,7 @@ namespace Project_ChessWithInterface
 
         }
 
-        public static List<int> GetIndexesOfPossibleMovesKing(int column, int row, bool whitesTurnn, List<string> board)
+        public static List<int> GetIndexesOfPossibleMovesKing(int column, int row, bool whitesTurnn, List<string> board)//Returns indexes of possible moves of a king on a certain position in a certain board
         {
             bool close = false;
             List<int> ForOut = new List<int>();
@@ -2156,8 +2156,8 @@ namespace Project_ChessWithInterface
 
             return ForOut;
         }
-        
-        public static List<int> KingInCheckAndByWhichFigures(List<string> Board,bool whitesTurn)
+
+        public static List<int> KingInCheckAndByWhichFigures(List<string> Board,bool whitesTurn)//Returns a list of indexes of pieces that are checking the king specified by boolean whitesTurnn
         {
             List<int> PositionsOfWhiteFigures = new List<int>();
             List<int> PositionsOfBlackFigures = new List<int>();
@@ -2232,7 +2232,7 @@ namespace Project_ChessWithInterface
         
         
        
-        public static List<bool> DetermineIfRooksMovedInOrder()
+        public static List<bool> DetermineIfRooksMovedInOrder()//Returns a list that contains information if any of the rooks has moved from thei initial position
         {
             var tempList = new List<string>();
             foreach (string item in Globals.MoveRecord)
@@ -2250,7 +2250,7 @@ namespace Project_ChessWithInterface
             {
                 ForOut.Add(false);
             }
-            if (tempList.Any(x => x.StartsWith("WrA8")) == true)
+            if (tempList.Any(x => x.StartsWith("WrH1")) == true)
             {
                 ForOut.Add(true);
             }
@@ -2258,7 +2258,7 @@ namespace Project_ChessWithInterface
             {
                 ForOut.Add(false);
             }
-            if (tempList.Any(x => x.StartsWith("BrH1")) == true)
+            if (tempList.Any(x => x.StartsWith("BrA8")) == true)
             {
                 ForOut.Add(true);
             }
@@ -2277,7 +2277,7 @@ namespace Project_ChessWithInterface
             return ForOut;
         }
         
-        public static Dictionary<string, string> PopulateADictionary()
+        public static Dictionary<string, string> PopulateADictionary()//A method that maps a chess piece to it’s image in Resources folder. Used to set up global variable FromBoardToPiecePaths
         {
             Dictionary<string, string> dict = new Dictionary<string, string>
             {
@@ -2311,7 +2311,7 @@ namespace Project_ChessWithInterface
                 DelayAction(500, new Action(() => { MakeAIMove(); }));
             }
         } 
-        public static List<int> FindBestMoveAI(string color, List<string> Board)
+        public static List<int> FindBestMoveAI(string color, List<string> Board)//Driver code for AI logic, returns the best move calculated by the algorithm. Also splits the possible moves in two parts in order to utilize parallel processing 
         {
             List<List<int>> PossibleMoves = GetAllLegalMovesForSelectedColor(color, Board); //Get all possible moves for a particular color in a particular board
             List<int> BestMove = new List<int>();
@@ -2381,7 +2381,7 @@ namespace Project_ChessWithInterface
 
 
         }
-        public static double minimax(List<string> Board, int depth,bool maximizing)
+        public static double minimax(List<string> Board, int depth,bool maximizing)//The algorithm responsible for valuation of moves. Uses recursion to give numerical score to all moves 
         {
             
             string color = "";
@@ -2520,7 +2520,7 @@ namespace Project_ChessWithInterface
             }
             
         }
-         public static void ThreadTwo(object c)
+         public static void ThreadTwo(object c)//Calls minimax on the second half of the moves, which parallelises the processing
         {
             
             List<object> Unpack = c as List<object>;
