@@ -30,7 +30,7 @@ namespace Project_ChessWithInterface
         {
             SaveGame();
         }
-        public void SaveGame()
+        public void SaveGame()//Creates a .txt file with a chosen name by the user. This file contains status of all the squares on the board, time remaining on the timers and the game mode
         {
             string ans = txt_FileNameForSave.Text;
 

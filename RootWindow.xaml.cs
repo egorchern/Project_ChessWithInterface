@@ -32,7 +32,7 @@ namespace Project_ChessWithInterface
             
 
         }
-        public static string GetPathToResources()
+        public static string GetPathToResources()//Returns the full path to the Resources folder which is in the root project folder
         {
             string pathToResources = Environment.CurrentDirectory;
             pathToResources = Regex.Replace(pathToResources, @"\\", "¬");
@@ -82,14 +82,14 @@ namespace Project_ChessWithInterface
             startGame.Show();
             this.Close();
         }
-        public static void LoadGame(string path)
+        public static void LoadGame(string path)//Driver function that calls InitializeBoardLoad
         {
             
             List<string> SaveLines = File.ReadAllLines(path).ToList();
             InitializeBoardLoad(SaveLines);
 
         }
-        public static void InitializeBoardLoad(List<string> list)
+        public static void InitializeBoardLoad(List<string> list)//If the ‘load game’ option is chosen in the main menu, this subroutine initializes important parameters for the main game loop window such as positions of all pieces and time remaining on timers
         {
             for (int i = 0; i < 8 * 8; i++)
             {

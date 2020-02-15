@@ -118,7 +118,7 @@ namespace Project_ChessWithInterface
                         minutes = Convert.ToInt32(matchForTimeBlack.Groups["minutes"].Value);
                         seconds = minutes * 60 + Convert.ToInt32(matchForTimeBlack.Groups["seconds"].Value);
                         Globals.OtherPlayerTimerTimeSeconds = seconds;
-                        if(Globals.PrimePlayerTimerTimeSeconds != 2)
+                        if(Globals.PrimePlayerTimerTimeSeconds != -2)
                         {
                             this.Close();
                         }
@@ -130,7 +130,7 @@ namespace Project_ChessWithInterface
                 }
                 else
                 {
-                    if (Globals.PrimePlayerTimerTimeSeconds != 2)
+                    if (Globals.PrimePlayerTimerTimeSeconds != -2)
                     {
                         this.Close();
                     }

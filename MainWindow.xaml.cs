@@ -90,7 +90,7 @@ namespace Project_ChessWithInterface
 
         }
 
-        public static void InsertPlayedGameIntoDatabase(string Winner)
+        public static void InsertPlayedGameIntoDatabase(string Winner)//Uses SQL command INSERT in order to create a new record in the PlayedGames database with appropriate parameters
         {
             
             if (Winner != "Draw" && Winner != "AI")
@@ -600,7 +600,7 @@ namespace Project_ChessWithInterface
            
             
         }
-        public static void MakeAIMove()
+        public static void MakeAIMove()//Uses event raising to make an AI move on the board which is given by FindBestMoveAI() function
         {
             Globals.PrimePlayerTimer.IsEnabled = false;
             List<int> AIMove = FindBestMoveAI(Globals.AI, Globals.Board);
@@ -2553,7 +2553,7 @@ namespace Project_ChessWithInterface
 
         }
         
-        public static List<List<int>> GetAllLegalMovesForSelectedColor(string color, List<string> Board)
+        public static List<List<int>> GetAllLegalMovesForSelectedColor(string color, List<string> Board)//Returns all possible moves for selected color on a certain board
         {
             List<List<int>> listOfAllMoves = new List<List<int>>();
             List<int> PositionsOfWhiteFigures = new List<int>();
@@ -2755,8 +2755,8 @@ namespace Project_ChessWithInterface
         private static List<int> positionOfPawnToBePromotedAndPiece = null;
         private static List<object> exitThreadInfo = new List<object>();
         private static string aI;
-        private static int primePlayerTimerTimeSeconds = 2;
-        private static int otherPlayerTimerTimeSeconds = 2;
+        private static int primePlayerTimerTimeSeconds = -2;
+        private static int otherPlayerTimerTimeSeconds = -2;
         private static DispatcherTimer primalPlayerTimer = new DispatcherTimer();
         private static DispatcherTimer otherPlayerTimer = new DispatcherTimer();
         private static MediaPlayer placePieceSoundEffect = new MediaPlayer();
