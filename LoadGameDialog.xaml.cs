@@ -29,16 +29,25 @@ namespace Project_ChessWithInterface
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void LoadSaveFile_btn_Click(object sender, RoutedEventArgs e)//Gets the full path of the chosen save and returns it to the RootWindow which then uses the data from the save file to load the save file.
         {
-            string saveSelected = ListBox_AvailableSaves.SelectedItem.ToString();
-            saveSelected = Regex.Replace(saveSelected, @"\n.+$", "");
-            PathChosen += "\\" + saveSelected;
-            this.Close();
+            if (ListBox_AvailableSaves.SelectedIndex != -1)
+            {
+
+
+                string saveSelected = ListBox_AvailableSaves.SelectedItem.ToString();
+                saveSelected = Regex.Replace(saveSelected, @"\n.+$", "");
+                PathChosen += "\\" + saveSelected;
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("No save file selected!");
+            }
         }
 
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)//Gets all files with .txt extension in the Saves folder and dispays them in a ListBox
         {
             string PathToSaves = RootWindow.GetPathToSaves();
             DirectoryInfo r = new DirectoryInfo(PathToSaves);
@@ -52,7 +61,7 @@ namespace Project_ChessWithInterface
             ListBox_AvailableSaves.FontSize = 20;
             ListBox_AvailableSaves.FontWeight = FontWeights.Bold;
             PathChosen = PathToSaves;
-            button.Click += Button_Click;
+            LoadSaveFile_btn.Click += LoadSaveFile_btn_Click;
         }
         public  string PathChosen
         {

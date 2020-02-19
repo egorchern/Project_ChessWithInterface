@@ -40,7 +40,7 @@ namespace Project_ChessWithInterface
 
         }
 
-        private void submit_btn_Click(object sender, RoutedEventArgs e)
+        private void submit_btn_Click(object sender, RoutedEventArgs e)// Uses exposed properties of public classes to return the nickname chosen by the user to the mainWindow
         {
             NicknameChosen = Nickname_txt.Text;
             this.Close();

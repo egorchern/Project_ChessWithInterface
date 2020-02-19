@@ -10,8 +10,8 @@
         <ListBox x:Name="OpponentSelection_list" HorizontalAlignment="Left" Height="300" Margin="55,86,0,0" VerticalAlignment="Top" Width="287"/>
         <Label x:Name="label" Content="Who do you want to play against?" HorizontalAlignment="Left" Margin="12,30,0,0" VerticalAlignment="Top" FontWeight ="Bold" FontSize="25"/>
         <Button x:Name="submit_btn" Content="Submit" HorizontalAlignment="Left" Margin="311,424,0,0" VerticalAlignment="Top" Width="163" FontWeight="Bold" FontSize="30" Height="124"/>
-        <Label x:Name="label1" Content="Choose a game mode" HorizontalAlignment="Left" Margin="478,34,0,0" VerticalAlignment="Top"  FontWeight ="Bold" FontSize="25"/>
-        <ListBox x:Name="GameModeSelection_list" HorizontalAlignment="Left" Height="300" Margin="473,87,0,0" VerticalAlignment="Top" Width="287"/>
+        <Label x:Name="label1" Content="Choose a game mode" HorizontalAlignment="Left" Margin="504,35,0,0" VerticalAlignment="Top"  FontWeight ="Bold" FontSize="25"/>
+        <ListBox x:Name="GameModeSelection_list" HorizontalAlignment="Left" Height="300" Margin="473,87,0,0" VerticalAlignment="Top" Width="310"/>
 
     </Grid>
 </Window>

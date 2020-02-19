@@ -20,17 +20,21 @@ namespace Project_ChessWithInterface
     /// </summary>
     public partial class SaveGameDialog : Window
     {
-        public SaveGameDialog()
+        public SaveGameDialog(int GameMode)
         {
             InitializeComponent();
+            GameModel = GameMode;
             SaveGameWindow.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
         }
         
+
+            
         private void btn_Submit_Click(object sender, RoutedEventArgs e)
         {
-            SaveGame();
+            SaveGame(GameModel);
         }
-        public void SaveGame()//Creates a .txt file with a chosen name by the user. This file contains status of all the squares on the board, time remaining on the timers and the game mode
+        public static int GameModel = 0;
+        public void SaveGame(int GameMode)//Creates a .txt file with a chosen name by the user. This file contains status of all the squares on the board, time remaining on the timers and the game mode
         {
             string ans = txt_FileNameForSave.Text;
 
@@ -86,6 +90,7 @@ namespace Project_ChessWithInterface
                     ToWrite.Add(AI);
                     ToWrite.Add(Convert.ToString(Globals.PrimePlayerTimerTimeSeconds));
                     ToWrite.Add(Convert.ToString(Globals.OtherPlayerTimerTimeSeconds));
+                    ToWrite.Add(Convert.ToString(GameMode));
                     File.WriteAllLines(path, ToWrite);
 
 

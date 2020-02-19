@@ -41,15 +41,20 @@ namespace Project_ChessWithInterface
         const string White = "W";
         const int WhitePieces = 16;
         const int BlackPieces = 16;
-        public MainWindow()
+        public MainWindow(int GameMode)
         {
             
             InitializeComponent();
+            GameModel = GameMode;
             
             
             //GetConnectionStringForDatabase();
 
         }
+        public static int GameModel = 0;
+        
+        
+
         public  void InitializeUI()// Initializes visual UI elements
         {
             GetAllButtonElements();
@@ -71,7 +76,7 @@ namespace Project_ChessWithInterface
             }
         } 
 
-        private void SuggestMove_img_MouseDown(object sender, MouseButtonEventArgs e)
+        private void SuggestMove_img_MouseDown(object sender, MouseButtonEventArgs e)//Uses FindBestMoveAI function to suggest a move to the user in the current situation
         {
             string valueOfAIBefore = Globals.AI;
             if(Globals.WhitesTurn == true)
@@ -261,9 +266,9 @@ namespace Project_ChessWithInterface
            
             return ConnectionString;
         }
-        private void SaveGameImage_MouseDown(object sender, MouseButtonEventArgs e)
+        private void SaveGameImage_MouseDown(object sender, MouseButtonEventArgs e)//Displays the SaveGame dialog window which then does all processing to save the game.
         {
-            SaveGameDialog save = new SaveGameDialog();
+            SaveGameDialog save = new SaveGameDialog(GameModel);
             save.ShowDialog();
         }
         
@@ -454,7 +459,7 @@ namespace Project_ChessWithInterface
                 btn.Click -= UniversalSquareClickEventHandle;
             }
         }
-        private void UniversalSquareClickEventHandle(object sender, RoutedEventArgs e)
+        private void UniversalSquareClickEventHandle(object sender, RoutedEventArgs e)//Controls the main game loop flow.Registers the first and second click indexes and does the checks to verify that the move is valid. Also calls AI function if the next turn is AI's
         {
             
             string nameOfButton = ((Button)sender).Name;
@@ -1978,129 +1983,134 @@ namespace Project_ChessWithInterface
                     close = true;
                 }
             }
-            List<bool> RooksMoved = DetermineIfRooksMovedInOrder();
-            if (whitesTurnn == true)
+            if (GameModel == 0)
             {
-                if (Globals.WhiteKingMoved == false)
+
+
+                List<bool> RooksMoved = DetermineIfRooksMovedInOrder();
+                if (whitesTurnn == true)
                 {
-                    if (board[5] == Empty && board[6] == Empty && RooksMoved[1] == false && board[7] == White + Rook)
+                    if (Globals.WhiteKingMoved == false)
                     {
-                        List<int> PiecesCheckingKing = new List<int>();
-                        List<string> ScopedBoard = new List<string>();
-                        foreach (string item in board)
+                        if (board[5] == Empty && board[6] == Empty && RooksMoved[1] == false && board[7] == White + Rook)
                         {
-                            ScopedBoard.Add(item);
-                        }
-                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard,whitesTurnn);
-                        if (PiecesCheckingKing.Count == 0)
-                        {
-
-
-                            ScopedBoard = MovePieceLocal("E1", "F1", ScopedBoard);
-                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
-                            if (PiecesCheckingKing.Count == 0)
+                            List<int> PiecesCheckingKing = new List<int>();
+                            List<string> ScopedBoard = new List<string>();
+                            foreach (string item in board)
                             {
-                                ScopedBoard = MovePieceLocal("F1", "G1", ScopedBoard);
-                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
-                                if (PiecesCheckingKing.Count == 0)
-                                {
-
-                                    ForOut.Add(6);
-                                }
+                                ScopedBoard.Add(item);
                             }
-                        }
-
-                    }
-
-                    if (board[1] == Empty && board[2] == Empty && board[3] == Empty && RooksMoved[0] == false && board[0] == White + Rook)
-                    {
-                        List<int> PiecesCheckingKing = new List<int>();
-                        List<string> ScopedBoard = new List<string>();
-                        foreach (string item in board)
-                        {
-                            ScopedBoard.Add(item);
-                        }
-                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
-                        if (PiecesCheckingKing.Count == 0)
-                        {
-                            ScopedBoard = MovePieceLocal("E1", "D1", ScopedBoard);
                             PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                             if (PiecesCheckingKing.Count == 0)
                             {
-                                ScopedBoard = MovePieceLocal("D1", "C1", ScopedBoard);
+
+
+                                ScopedBoard = MovePieceLocal("E1", "F1", ScopedBoard);
                                 PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                                 if (PiecesCheckingKing.Count == 0)
                                 {
-                                    ScopedBoard = MovePieceLocal("C1", "B1", ScopedBoard);
+                                    ScopedBoard = MovePieceLocal("F1", "G1", ScopedBoard);
                                     PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                                     if (PiecesCheckingKing.Count == 0)
                                     {
-                                        ForOut.Add(2);
+
+                                        ForOut.Add(6);
+                                    }
+                                }
+                            }
+
+                        }
+
+                        if (board[1] == Empty && board[2] == Empty && board[3] == Empty && RooksMoved[0] == false && board[0] == White + Rook)
+                        {
+                            List<int> PiecesCheckingKing = new List<int>();
+                            List<string> ScopedBoard = new List<string>();
+                            foreach (string item in board)
+                            {
+                                ScopedBoard.Add(item);
+                            }
+                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                            if (PiecesCheckingKing.Count == 0)
+                            {
+                                ScopedBoard = MovePieceLocal("E1", "D1", ScopedBoard);
+                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                if (PiecesCheckingKing.Count == 0)
+                                {
+                                    ScopedBoard = MovePieceLocal("D1", "C1", ScopedBoard);
+                                    PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                    if (PiecesCheckingKing.Count == 0)
+                                    {
+                                        ScopedBoard = MovePieceLocal("C1", "B1", ScopedBoard);
+                                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                        if (PiecesCheckingKing.Count == 0)
+                                        {
+                                            ForOut.Add(2);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
-            else
-            {
-                if (Globals.BlackKingMoved == false)
+                else
                 {
-                    if (board[61] == Empty && board[62] == Empty && RooksMoved[3] == false && board[63] == Black + Rook)
+                    if (Globals.BlackKingMoved == false)
                     {
-                        List<int> PiecesCheckingKing = new List<int>();
-                        List<string> ScopedBoard = new List<string>();
-                        foreach (string item in board)
+                        if (board[61] == Empty && board[62] == Empty && RooksMoved[3] == false && board[63] == Black + Rook)
                         {
-                            ScopedBoard.Add(item);
-                        }
-                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
-                        if (PiecesCheckingKing.Count == 0)
-                        {
-                            ScopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(GetAbolutePosition(column, row)), "F8", ScopedBoard);
-                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
-                            if (PiecesCheckingKing.Count == 0)
+                            List<int> PiecesCheckingKing = new List<int>();
+                            List<string> ScopedBoard = new List<string>();
+                            foreach (string item in board)
                             {
-                                ScopedBoard = MovePieceLocal("F8", "G8", ScopedBoard);
-                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
-                                if (PiecesCheckingKing.Count == 0)
-                                {
-                                    ForOut.Add(62);
-                                }
+                                ScopedBoard.Add(item);
                             }
-                        }
-
-                    }
-                    if (board[57] == Empty && board[58] == Empty && board[59] == Empty && RooksMoved[2] == false && board[56] == Black + Rook)
-                    {
-                        List<int> PiecesCheckingKing = new List<int>();
-                        List<string> ScopedBoard = new List<string>();
-                        foreach (string item in board)
-                        {
-                            ScopedBoard.Add(item);
-                        }
-                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
-                        if (PiecesCheckingKing.Count == 0)
-                        {
-                            ScopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(GetAbolutePosition(column, row)), "D8", ScopedBoard);
                             PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                             if (PiecesCheckingKing.Count == 0)
                             {
-                                ScopedBoard = MovePieceLocal("D8", "C8", ScopedBoard);
+                                ScopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(GetAbolutePosition(column, row)), "F8", ScopedBoard);
                                 PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                                 if (PiecesCheckingKing.Count == 0)
                                 {
-                                    ScopedBoard = MovePieceLocal("C8", "B8", ScopedBoard);
+                                    ScopedBoard = MovePieceLocal("F8", "G8", ScopedBoard);
                                     PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
                                     if (PiecesCheckingKing.Count == 0)
                                     {
-                                        ForOut.Add(58);
+                                        ForOut.Add(62);
                                     }
                                 }
                             }
-                        }
 
+                        }
+                        if (board[57] == Empty && board[58] == Empty && board[59] == Empty && RooksMoved[2] == false && board[56] == Black + Rook)
+                        {
+                            List<int> PiecesCheckingKing = new List<int>();
+                            List<string> ScopedBoard = new List<string>();
+                            foreach (string item in board)
+                            {
+                                ScopedBoard.Add(item);
+                            }
+                            PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                            if (PiecesCheckingKing.Count == 0)
+                            {
+                                ScopedBoard = MovePieceLocal(ConvertAbsoluteToBoardNotation(GetAbolutePosition(column, row)), "D8", ScopedBoard);
+                                PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                if (PiecesCheckingKing.Count == 0)
+                                {
+                                    ScopedBoard = MovePieceLocal("D8", "C8", ScopedBoard);
+                                    PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                    if (PiecesCheckingKing.Count == 0)
+                                    {
+                                        ScopedBoard = MovePieceLocal("C8", "B8", ScopedBoard);
+                                        PiecesCheckingKing = KingInCheckAndByWhichFigures(ScopedBoard, whitesTurnn);
+                                        if (PiecesCheckingKing.Count == 0)
+                                        {
+                                            ForOut.Add(58);
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
                     }
                 }
             }
@@ -2300,7 +2310,7 @@ namespace Project_ChessWithInterface
         private void GameWindow_Loaded(object sender, RoutedEventArgs e)//Entry point of the window, used to call other important code
         {
             InitializeUI();
-
+            
 
 
 
@@ -2705,6 +2715,128 @@ namespace Project_ChessWithInterface
                 return ValuationBlack - ValuationWhite;
             }
             return 0;
+        }
+        public static void InitializeBoardFischerChess()
+        {
+            Random rnd = new Random();
+            for(int i = 0; i < 64; i++)
+            {
+                Globals.Board.Add(Empty);
+            }
+            List<int> OccupiedSquares = new List<int>();
+            bool close = false;
+            int tempRndValue = 0;
+            while(close == false)
+            {
+                tempRndValue = rnd.Next(0, 8);
+                if(tempRndValue % 2 == 0)
+                {
+                    OccupiedSquares.Add(tempRndValue);
+                    close = true;
+                }
+
+            }
+            close = false;
+            int tempRndValue2 = 0;
+            while(close == false)
+            {
+                tempRndValue2 = rnd.Next(0, 8);
+                if(tempRndValue2 % 2 == 1 && OccupiedSquares.Contains(tempRndValue2) == false)
+                {
+                    OccupiedSquares.Add(tempRndValue2);
+                    close = true;
+                }
+            }
+            Globals.Board[tempRndValue] = White + Bishop;
+            Globals.Board[tempRndValue2] = White + Bishop;
+            Globals.Board[tempRndValue + 56] = Black + Bishop;
+            Globals.Board[tempRndValue2 + 56] = Black + Bishop;
+            tempRndValue = 0;
+            close = false;
+            while (close == false)
+            {
+                tempRndValue = rnd.Next(0, 8);
+                if (OccupiedSquares.Contains(tempRndValue) == false)
+                {
+                    OccupiedSquares.Add(tempRndValue);
+                    close = true;
+                }
+
+            }
+            close = false;
+            tempRndValue2 = 0;
+            while (close == false)
+            {
+                tempRndValue2 = rnd.Next(0, 8);
+                if (OccupiedSquares.Contains(tempRndValue2) == false)
+                {
+                    OccupiedSquares.Add(tempRndValue2);
+                    close = true;
+                }
+
+            }
+            Globals.Board[tempRndValue] = White + Rook;
+            Globals.Board[tempRndValue2] = White + Rook;
+            Globals.Board[tempRndValue + 56] = Black + Rook;
+            Globals.Board[tempRndValue2 + 56] = Black + Rook;
+            tempRndValue = 0;
+            close = false;
+            while (close == false)
+            {
+                tempRndValue = rnd.Next(0, 8);
+                if (OccupiedSquares.Contains(tempRndValue) == false)
+                {
+                    OccupiedSquares.Add(tempRndValue);
+                    close = true;
+                }
+
+            }
+            close = false;
+            tempRndValue2 = 0;
+            while (close == false)
+            {
+                tempRndValue2 = rnd.Next(0, 8);
+                if (OccupiedSquares.Contains(tempRndValue2) == false)
+                {
+                    OccupiedSquares.Add(tempRndValue2);
+                    close = true;
+                }
+
+            }
+            Globals.Board[tempRndValue] = White + Knight;
+            Globals.Board[tempRndValue2] = White + Knight;
+            Globals.Board[tempRndValue + 56] = Black + Knight;
+            Globals.Board[tempRndValue2 + 56] = Black + Knight;
+            tempRndValue = 0;
+            close = false;
+            while (close == false)
+            {
+                tempRndValue = rnd.Next(0, 8);
+                if (OccupiedSquares.Contains(tempRndValue) == false)
+                {
+                    OccupiedSquares.Add(tempRndValue);
+                    close = true;
+                }
+
+            }
+            Globals.Board[tempRndValue] = White + Queen;
+            Globals.Board[tempRndValue + 56] = Black + Queen;
+            int counter = 0;
+            while(OccupiedSquares.Contains(counter) == true)
+            {
+                counter++;
+            }
+            Globals.Board[counter] = White + King;
+            Globals.Board[counter + 56] = Black + King;
+            for(int i = 8; i < 16; i++)
+            {
+                Globals.Board[i] = White + Pawn;
+            }
+            for (int i = 48; i <56; i++)
+            {
+                Globals.Board[i] = Black + Pawn;
+            }
+
         }
         
 

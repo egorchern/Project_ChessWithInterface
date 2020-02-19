@@ -37,13 +37,13 @@ namespace Project_ChessWithInterface
             BlackKing_btn.Click += BlackKing_btn_Click;
         }
 
-        private void BlackKing_btn_Click(object sender, RoutedEventArgs e)
+        private void BlackKing_btn_Click(object sender, RoutedEventArgs e)//Sets the global variable AI equal to White, which in turn sets the human player colour to Black
         {
             Globals.AI = "W";
             this.Close();
         }
 
-        private void WhiteKing_btn_Click(object sender, RoutedEventArgs e)
+        private void WhiteKing_btn_Click(object sender, RoutedEventArgs e)//Sets the global variable AI equal to Black, which in turn sets the human player colour to White
         {
             Globals.AI = "B";
             this.Close();

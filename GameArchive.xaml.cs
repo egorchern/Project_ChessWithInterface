@@ -30,25 +30,11 @@ namespace Project_ChessWithInterface
 
         private void Games_list_Loaded(object sender, RoutedEventArgs e)
         {
-            /*
-            string connectionString = MainWindow.GetConnectionStringForDatabase();
-            SqlConnection gameArchive = new SqlConnection();
-            SqlCommand command = new SqlCommand();
-            gameArchive.ConnectionString = connectionString;
-            gameArchive.Open();
-            command.Connection = gameArchive;
-            command.CommandText = "UPDATE PlayedGames SET DatePlayed = '2018-08-23' WHERE Id = 7 ";
-            command.ExecuteNonQuery();
-            */
+            
             DisplayAllRecords();
 
         }
-        /*public List<string> ReferenceList
-        {
-            set { referenceList = value; }
-            get { return referenceList; }
-        }
-        */
+        
         private List<string> referenceList = new List<string>();
         public static string GetPathToReferenceFolder()
         {
@@ -61,7 +47,7 @@ namespace Project_ChessWithInterface
             path += "\\MoveRecord";
             return path;
         }
-        public  void DisplayAllRecords()
+        public  void DisplayAllRecords()//Selects all records from the PlayedGames local database. The records are displayed in the listbox and records are ordered by date descending
         {
             referenceList.Clear();
             string connectionString = MainWindow.GetConnectionStringForDatabase();
@@ -96,7 +82,7 @@ namespace Project_ChessWithInterface
             };
         }
 
-        private void DisplayRecord_btn_Click(object sender, RoutedEventArgs e)
+        private void DisplayRecord_btn_Click(object sender, RoutedEventArgs e)//Uses user's default application to open a .txt file that has detailed information about the played game
         {
             if (Games_lst.SelectedIndex != -1)
             {
@@ -110,12 +96,12 @@ namespace Project_ChessWithInterface
 
         }
 
-        private void Reset_btn_Click(object sender, RoutedEventArgs e)
+        private void Reset_btn_Click(object sender, RoutedEventArgs e)//Calls DisplayAllRecords();
         {
             DisplayAllRecords();
         }
 
-        private void Search_btn_Click(object sender, RoutedEventArgs e)
+        private void Search_btn_Click(object sender, RoutedEventArgs e)//Uses user's search parameters to query the database for an appropriate records
         {
             string NickNameSearch = NameSearch_txt.Text;
             string DateSearch = DateSearch_txt.Text;
@@ -164,7 +150,7 @@ namespace Project_ChessWithInterface
             }
         }
 
-        private void Back_btn_Click(object sender, RoutedEventArgs e)
+        private void Back_btn_Click(object sender, RoutedEventArgs e)//Opens RootWindow and closes the current widnow
         {
             RootWindow instance = new RootWindow();
             instance.Show();

@@ -31,6 +31,7 @@ namespace Project_ChessWithInterface
             OpponentSelection_list.Items.Add("AI");
             OpponentSelection_list.Items.Add("Local play(both sides playable)");
             GameModeSelection_list.Items.Add("Classical chess");
+            GameModeSelection_list.Items.Add("Fischer random chess (No castling)");
             GameModeSelection_list.FontSize = 18;
             GameModeSelection_list.FontWeight = FontWeights.Bold;
             submit_btn.Click += Submit_btn_Click;
@@ -40,7 +41,7 @@ namespace Project_ChessWithInterface
 
         
 
-        private void Submit_btn_Click(object sender, RoutedEventArgs e)
+        private void Submit_btn_Click(object sender, RoutedEventArgs e)//An event handler if the submit button is clicked. If AI option is chosen as an opponent - PlayerColorSelection dialog window is displayed. Then Timer dialog window is displayed. After all dialogs are completed the the mainWindow is displayed and this window is closed
         {
             if(OpponentSelection_list.SelectedItem != null && GameModeSelection_list.SelectedItem != null)
             {
@@ -56,10 +57,23 @@ namespace Project_ChessWithInterface
                 }
                 TimerDialog timerDialog = new TimerDialog();
                 timerDialog.ShowDialog();
-                MainWindow.InitializeBoard();
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
+                if (GameModeSelection_list.SelectedItem.ToString() == "Classical chess")
+                {
+
+
+                    MainWindow.InitializeBoard();
+                    MainWindow mainWindow = new MainWindow(0);
+                    mainWindow.Show();
+                    this.Close();
+                }
+                else if (GameModeSelection_list.SelectedItem.ToString() == "Fischer random chess (No castling)")
+                {
+                    MainWindow.InitializeBoardFischerChess();
+                    MainWindow mainWindow = new MainWindow(1);
+                    mainWindow.Show();
+                    this.Close();
+                }
+                
 
 
             }

@@ -24,7 +24,7 @@ namespace Project_ChessWithInterface
         public RootWindow()
         {
             InitializeComponent();
-            newGame_btn.Click += newGameBtn_Click;
+            newGame_btn.Click += NewGameBtn_Click;
             loadGame_btn.Click += LoadGameBtn_Click;
             gameArchive_btn.Click += GameArchiveBtn_Click;
             Globals.PathToResources = GetPathToResources();
@@ -60,7 +60,7 @@ namespace Project_ChessWithInterface
             return path;
         }
 
-        private void LoadGameBtn_Click(object sender, RoutedEventArgs e)
+        private void LoadGameBtn_Click(object sender, RoutedEventArgs e)//An event handler if the load game button is clicked, displays the loadGame dialog window in which the user selects the save file to load. Also closes the RootWindow
         {
             LoadGameDialog loadDialog = new LoadGameDialog();
             loadDialog.ShowDialog();
@@ -69,28 +69,30 @@ namespace Project_ChessWithInterface
             SaveChosen = loadDialog.PathChosen;
             
             
-            LoadGame(SaveChosen);
-            MainWindow instance = new MainWindow();
+            int GameMode = LoadGame(SaveChosen);
+            MainWindow instance = new MainWindow(GameMode);
             instance.Show();
             this.Close();
             
         }
 
-        private void newGameBtn_Click(object sender, RoutedEventArgs e)
+        private void NewGameBtn_Click(object sender, RoutedEventArgs e)//An event handler which is called if the new game button is clicked, displays the second menu that has new game parameters which then need to be filled by user. Also closes the RootWindow
         {
             StartGameParameters startGame = new StartGameParameters();
             startGame.Show();
             this.Close();
         }
-        public static void LoadGame(string path)//Driver function that calls InitializeBoardLoad
+        public static int LoadGame(string path)//Driver function that calls InitializeBoardLoad
         {
             
             List<string> SaveLines = File.ReadAllLines(path).ToList();
-            InitializeBoardLoad(SaveLines);
+            int GameMode = InitializeBoardLoad(SaveLines);
+            return GameMode;
 
         }
-        public static void InitializeBoardLoad(List<string> list)//If the ‘load game’ option is chosen in the main menu, this subroutine initializes important parameters for the main game loop window such as positions of all pieces and time remaining on timers
+        public static int InitializeBoardLoad(List<string> list)//If the ‘load game’ option is chosen in the main menu, this subroutine initializes important parameters for the main game loop window such as positions of all pieces and time remaining on timers
         {
+            int counter = 0;
             for (int i = 0; i < 8 * 8; i++)
             {
                 Globals.Board.Add("00");
@@ -112,7 +114,7 @@ namespace Project_ChessWithInterface
             }
             if (list.Count > 64)
             {
-                int counter = 65;
+                counter = 65;
                 while(1 == 1) 
                 {
                     
@@ -136,6 +138,7 @@ namespace Project_ChessWithInterface
                 Globals.AI = AI;
                 Globals.PrimePlayerTimerTimeSeconds = Convert.ToInt32(list[counter + 1]);
                 Globals.OtherPlayerTimerTimeSeconds = Convert.ToInt32(list[counter + 2]);
+                
                 
             }
             bool whiteKingMoved = false;
@@ -168,11 +171,12 @@ namespace Project_ChessWithInterface
                 Globals.BlackKingMoved = true;
             }
             double d = 0.0;
+            return Convert.ToInt32(list[counter + 3]);
 
 
         }
 
-        private void GameArchiveBtn_Click(object sender, RoutedEventArgs e)
+        private void GameArchiveBtn_Click(object sender, RoutedEventArgs e)//An event handler if the game archive button is clicked, displays the GameArchive window and closes the RootWindow
         {
             GameArchive archive = new GameArchive();
             archive.Show();

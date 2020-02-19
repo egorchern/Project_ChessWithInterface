@@ -58,25 +58,25 @@ namespace Project_ChessWithInterface
             Knight_btn.Click += KnightPromotion;
         }
 
-        private void KnightPromotion(object sender, RoutedEventArgs e)
+        private void KnightPromotion(object sender, RoutedEventArgs e)//sets the global variable for promotion to knight
         {
             Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 3 };
             this.Close();
         }
 
-        private void BishopPromotion(object sender, RoutedEventArgs e)
+        private void BishopPromotion(object sender, RoutedEventArgs e)//sets the global variable for promotion to bishop
         {
             Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 2 };
             this.Close();
         }
 
-        private void RookPromotion(object sender, RoutedEventArgs e)
+        private void RookPromotion(object sender, RoutedEventArgs e)//sets the global variable for promotion to rook
         {
             Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 1 };
             this.Close();
         }
 
-        private void QueenPromotion(object sender, RoutedEventArgs e)
+        private void QueenPromotion(object sender, RoutedEventArgs e)//sets the global variable for promotion to queen 
         {
             Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 0 };
             this.Close();

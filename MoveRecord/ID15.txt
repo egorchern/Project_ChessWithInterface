@@ -1,0 +1,16 @@
+1: WpE2 => E4
+2: BpD7 => D5
+3: WpE4 => D5(Wp x Bp)
+4: BpC7 => C5
+5: WpD5 => C6(En Pessant C5)
+6: BpB7 => B5
+7: WpC6 => C7
+8: BqB8 => B7
+9: WpC7 => D8(Wp x Br)(Promoted to B)
+10: BpB5 => B4
+11: WpC2 => C4
+12: BpB4 => C3(En Pessant C4)
+13: WpB2 => B3
+14: BpC3 => D2(Bp x Wp)
+15: WnC1 => D3
+16: BpD2 => E1(Bp x Wb)

@@ -38,7 +38,7 @@ namespace Project_ChessWithInterface
             }
         }
 
-        private void SubmitBtn_Click(object sender, RoutedEventArgs e)
+        private void SubmitBtn_Click(object sender, RoutedEventArgs e)//Sets the global variables PrimePlayerTimerSeconds and OtherPlayerTimerSeconds according to user's typed time limits
         {
 
             if (BlackTime_txt.Visibility == Visibility.Hidden)
@@ -74,7 +74,7 @@ namespace Project_ChessWithInterface
             }
             else
             {
-                bool PrimeNulled = false;
+                
                 if (WhiteTime_txt.Text == "null")
                 {
                     Globals.PrimePlayerTimerTimeSeconds = -1;
