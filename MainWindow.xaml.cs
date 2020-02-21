@@ -45,6 +45,8 @@ namespace Project_ChessWithInterface
         {
             
             InitializeComponent();
+            
+            
             GameModel = GameMode;
             
             
@@ -106,6 +108,19 @@ namespace Project_ChessWithInterface
                 nameDialog.ShowDialog();
                 NickName = nameDialog.NicknameChosen;
                 Winner += $"({NickName})";
+            }
+            else if(Winner == "AI")
+            {
+                string colour = "";
+                if(Globals.AI == "W")
+                {
+                    colour = "White";
+                }
+                else if(Globals.AI == "B")
+                {
+                    colour = "Black";
+                }
+                Winner =  colour + "(" + Winner + ")";
             }
             
             string connectionString = GetConnectionStringForDatabase();
@@ -296,7 +311,7 @@ namespace Project_ChessWithInterface
             return true;
         }
        
-        public void DisplayBoardOnInterface()
+        public void DisplayBoardOnInterface()//Flushes the contents of all squares and then changes the images of certain squares according to globals.Board
         {
             foreach(Button btn in Globals.AllButtons)
             {
@@ -815,7 +830,7 @@ namespace Project_ChessWithInterface
                 ScopedBoard.Clear();
             }
 
-
+            
             return OutList;
         } 
         public static List<int> IndexesOfPossibleMovesNoReccursion(string piece, int position, List<string> ScopedBoard)//A method that calls GetIndexesOfPossibleMoves(piece)

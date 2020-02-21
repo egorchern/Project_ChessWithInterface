@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="PlayerColorSelectionDialog" Height="300" Width="745.902" ResizeMode="NoResize">
+        Title="PlayerColorSelectionDialog" Height="300" Width="745.902" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="215*"/>

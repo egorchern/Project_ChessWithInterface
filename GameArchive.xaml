@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="GameArchive" Height="622" Width="893" Loaded="Window_Loaded" ResizeMode="NoResize">
+        Title="GameArchive" Height="622" Width="893" Loaded="Window_Loaded" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <ListBox x:Name="Games_lst" HorizontalAlignment="Left" Height="570" Margin="5,5,0,0" VerticalAlignment="Top" Width="430" FontSize="16" FontWeight="Bold" Loaded="Games_list_Loaded"/>
         <Button x:Name="Reset_btn" Content="Reset" HorizontalAlignment="Left" Margin="591,15,0,0" VerticalAlignment="Top" Width="131" FontWeight="Bold" FontSize="30" Height="79" Click="Reset_btn_Click"/>

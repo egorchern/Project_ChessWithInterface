@@ -24,7 +24,8 @@ namespace Project_ChessWithInterface
         public StartGameParameters()
         {
             InitializeComponent();
-           
+            
+            
             ParametersWindow.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
             OpponentSelection_list.FontSize = 18;
             OpponentSelection_list.FontWeight = FontWeights.Bold;
@@ -84,6 +85,6 @@ namespace Project_ChessWithInterface
             
         }
 
-       
+        
     }
 }

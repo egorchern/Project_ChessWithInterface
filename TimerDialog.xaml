@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="TimerDialog" Height="290.279" Width="757" ResizeMode="NoResize">
+        Title="TimerDialog" Height="290.279" Width="757" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <TextBox x:Name="WhiteTime_txt" HorizontalAlignment="Left" Height="23" Margin="89,121,0,0" TextWrapping="Wrap" Text="5:05" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.348" TextAlignment="Center" FontSize="18" FontWeight="Bold" />
         <Label x:Name="WhiteLabel" Content="White player's time&#xA;(null for unlimited)&#xA;&#xA;" HorizontalAlignment="Left" Margin="40,30,0,0" VerticalAlignment="Top" FontWeight ="Bold" FontSize="25" Height="77" Width="240"/>

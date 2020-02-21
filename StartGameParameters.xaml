@@ -5,13 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="GameStartParametersWindow" Height="610" Width="822" ResizeMode="NoResize">
+        Title="GameStartParametersWindow" Height="572" Width="701" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <ListBox x:Name="OpponentSelection_list" HorizontalAlignment="Left" Height="300" Margin="55,86,0,0" VerticalAlignment="Top" Width="287"/>
-        <Label x:Name="label" Content="Who do you want to play against?" HorizontalAlignment="Left" Margin="12,30,0,0" VerticalAlignment="Top" FontWeight ="Bold" FontSize="25"/>
-        <Button x:Name="submit_btn" Content="Submit" HorizontalAlignment="Left" Margin="311,424,0,0" VerticalAlignment="Top" Width="163" FontWeight="Bold" FontSize="30" Height="124"/>
-        <Label x:Name="label1" Content="Choose a game mode" HorizontalAlignment="Left" Margin="504,35,0,0" VerticalAlignment="Top"  FontWeight ="Bold" FontSize="25"/>
-        <ListBox x:Name="GameModeSelection_list" HorizontalAlignment="Left" Height="300" Margin="473,87,0,0" VerticalAlignment="Top" Width="310"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="427*"/>
+            <ColumnDefinition Width="389*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="OpponentSelection_list" HorizontalAlignment="Left" Height="300" Margin="20,91,0,0" VerticalAlignment="Top" Width="287"/>
+        <Label x:Name="label" Content="Opponent Selection" HorizontalAlignment="Left" Margin="44,48,0,0" VerticalAlignment="Top" FontWeight ="Bold" FontSize="25"/>
+        <Button x:Name="submit_btn" Content="Submit" HorizontalAlignment="Left" Margin="247,402,0,0" VerticalAlignment="Top" Width="163" FontWeight="Bold" FontSize="30" Height="124" Grid.ColumnSpan="2"/>
+        <Label x:Name="label1" Content="Choose a game mode" HorizontalAlignment="Left" Margin="9,45,0,0" VerticalAlignment="Top"  FontWeight ="Bold" FontSize="25" Grid.Column="1"/>
+        <ListBox x:Name="GameModeSelection_list" HorizontalAlignment="Left" Height="300" Margin="356,92,0,0" VerticalAlignment="Top" Width="310" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

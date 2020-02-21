@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="LoadGameDialog" Height="584.016" Width="950" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded" ResizeMode="NoResize">
+        Title="LoadGameDialog" Height="584.016" Width="950" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" ResizeMode="NoResize">
     <Grid>
         <ListBox x:Name="ListBox_AvailableSaves" HorizontalAlignment="Left" Height="492" Margin="21,21,0,0" VerticalAlignment="Top" Width="375"/>
         <Button x:Name="LoadSaveFile_btn" Content="Load save file" HorizontalAlignment="Left" Margin="574,189,0,0" VerticalAlignment="Top" Width="213" Height="206" FontWeight="Bold" FontSize="30"/>
