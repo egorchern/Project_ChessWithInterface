@@ -1,0 +1,17 @@
+﻿<Window x:Name="TimersWindow" x:Class="Project_ChessWithInterface.TimerDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project_ChessWithInterface"
+        mc:Ignorable="d"
+        Title="TimerDialog" Height="290.279" Width="757" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBox x:Name="WhiteTime_txt" HorizontalAlignment="Left" Height="23" Margin="89,121,0,0" TextWrapping="Wrap" Text="5:05" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.348" TextAlignment="Center" FontSize="18" FontWeight="Bold" />
+        <Label x:Name="WhiteLabel" Content="White player's time&#xA;(null for unlimited)&#xA;&#xA;" HorizontalAlignment="Left" Margin="40,30,0,0" VerticalAlignment="Top" FontWeight ="Bold" FontSize="25" Height="77" Width="240"/>
+        <TextBox x:Name="BlackTime_txt" HorizontalAlignment="Left" Height="23" Margin="538,120,0,0" TextWrapping="Wrap" Text="5:05" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.348" TextAlignment="Center" FontSize="18" FontWeight="Bold"/>
+        <Label x:Name="BlackLabel" Content="Black player's time&#xA;(null for unlimited)&#xA;" HorizontalAlignment="Left" Margin="480,31,0,0" VerticalAlignment="Top" FontWeight ="Bold" FontSize="25" Height="70" Width="236"/>
+        <Button x:Name="Submit_btn" Content="Submit" HorizontalAlignment="Left" Margin="311,153,0,0" VerticalAlignment="Top" Width="138" FontWeight="Bold" FontSize="30" Height="90" Click="SubmitBtn_Click"/>
+
+    </Grid>
+</Window>

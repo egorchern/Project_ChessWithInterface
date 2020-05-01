@@ -1,0 +1,15 @@
+﻿<Window x:Name="DataBaseDialog" x:Class="Project_ChessWithInterface.NameForDatabaseDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project_ChessWithInterface"
+        mc:Ignorable="d"
+        Title="NameForDatabaseDialog" Height="393.443" Width="358.936" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Label x:Name="Nickname_lbl" Content="Nickname:" HorizontalAlignment="Left" Margin="8,51,0,0" VerticalAlignment="Top" FontWeight ="Bold" FontSize="25"/>
+        <TextBox x:Name="Nickname_txt" HorizontalAlignment="Left" Height="32" Margin="12,104,0,0" TextWrapping="Wrap" Text="Auto" VerticalAlignment="Top" Width="309"  FontSize="18" FontWeight="Bold"/>
+        <Button x:Name="submit_btn" Content="Submit" HorizontalAlignment="Left" Margin="72,222,0,0" VerticalAlignment="Top" Width="182" FontSize="50" FontWeight="Bold" Height="85" Click="submit_btn_Click"/>
+
+    </Grid>
+</Window>

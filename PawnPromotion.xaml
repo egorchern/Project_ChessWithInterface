@@ -1,4 +1,4 @@
-﻿<Window x:Class="Project_ChessWithInterface.PawnPromotion"
+﻿<Window x:Name="PawnPromotionWindow" x:Class="Project_ChessWithInterface.PawnPromotion"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,9 +11,9 @@
             <ColumnDefinition Width="401*"/>
             <ColumnDefinition Width="136*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btn0" Background="Transparent"  HorizontalAlignment="Left" Margin="18,40,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
-        <Button x:Name="btn1" Background="Transparent"  HorizontalAlignment="Left" Margin="126,40,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
-        <Button x:Name="btn2" Background="Transparent"  HorizontalAlignment="Left" Margin="234,40,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
-        <Button x:Name="btn3" Background="Transparent"  HorizontalAlignment="Left" Margin="342,40,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.ColumnSpan="2"/>
+        <Button x:Name="Queen_btn" Background="Transparent"  HorizontalAlignment="Left" Margin="18,40,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="Rook_btn" Background="Transparent"  HorizontalAlignment="Left" Margin="126,40,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="Bishop_btn" Background="Transparent"  HorizontalAlignment="Left" Margin="234,40,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent"/>
+        <Button x:Name="Knight_btn" Background="Transparent"  HorizontalAlignment="Left" Margin="342,40,0,0" VerticalAlignment="Top" Width="89" Height="89" BorderBrush="Transparent" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

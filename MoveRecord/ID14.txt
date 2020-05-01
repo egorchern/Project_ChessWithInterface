@@ -1,0 +1,15 @@
+1: WpE2 => E4
+2: BnG8 => F6
+3: WpE4 => E5
+4: BpH7 => H6
+5: WpE5 => F6(Wp x Bn)
+6: BpE7 => E6
+7: WpF6 => G7(Wp x Bp)
+8: BbF8 => E7
+9: WpG7 => H8(Wp x Br)(Promoted to Q)
+10: BbE7 => F8
+11: WqD1 => G4
+12: BpA7 => A6
+13: WqG4 => G8
+14: BnB8 => C6
+15: WqG8 => F8(Wq x Bb)

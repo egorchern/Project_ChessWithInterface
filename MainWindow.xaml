@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_ChessWithInterface"
         mc:Ignorable="d"
-        Title="MainWindow" Height="871.061" Width="1157.499" Name="GameWindow" Loaded="GameWindow_Loaded">
+        Title="MainWindow" Height="871.061" Width="1118" Name="GameWindow" Loaded="GameWindow_Loaded" WindowStartupLocation="CenterScreen">
 
     <Grid Margin="0,0,-1,1">
         <Grid.ColumnDefinitions>
@@ -88,7 +88,7 @@
         <Label x:Name="label_Copy4" Content="6" HorizontalAlignment="Left" Margin="20,503,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" Grid.ColumnSpan="2"/>
         <Label x:Name="label_Copy5" Content="7" HorizontalAlignment="Left" Margin="20,593,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" Grid.ColumnSpan="2"/>
         <Label x:Name="label_Copy6" Content="8" HorizontalAlignment="Left" Margin="20,683,0,0" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" Grid.ColumnSpan="2"/>
-        <RichTextBox x:Name="MoveRecordWhite" HorizontalAlignment="Left" Height="433" Margin="41,270,0,0" VerticalAlignment="Top" Width="260" FontWeight="Bold" FontSize="25" Grid.Column="2">
+        <RichTextBox x:Name="MoveRecordWhite" HorizontalAlignment="Left" Height="433" Margin="41,372,0,0" VerticalAlignment="Top" Width="260" FontWeight="Bold" FontSize="25" Grid.Column="2">
             <FlowDocument>
                 <Paragraph>
                     <Run Text="1: WpE2 =&gt; E4"/>
@@ -97,7 +97,12 @@
         </RichTextBox>
 
         <TextBlock x:Name="TurnIndicator" Grid.Column="2" HorizontalAlignment="Center" Margin="6,13,16,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="161" Width="319" FontWeight="Bold" FontSize="40" Foreground="Red" TextAlignment="Center"/>
-        <Image x:Name="SaveGameImage" Grid.Column="2" HorizontalAlignment="Left" Height="72" Margin="40,183,0,0" VerticalAlignment="Top" Width="65"/>
+        <Image x:Name="SaveGameImage" Grid.Column="2" HorizontalAlignment="Left" Height="72" Margin="76,292,0,0" VerticalAlignment="Top" Width="65"/>
+        <Label x:Name="PrimePlayerTimer_label" Content="Label" Grid.Column="2" HorizontalAlignment="Left" Margin="71,190,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="38" Foreground="Red"  Visibility="Hidden" />
+        <Label x:Name="OtherPlayer_label" Content="Label" Grid.Column="2" HorizontalAlignment="Left" Margin="209,189,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="38" Foreground="Red" Visibility="Hidden"  />
+        <Label x:Name="TimerLabel" Content="White" Grid.Column="2" HorizontalAlignment="Left" Margin="85,168,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.053,-0.038" Foreground="Red" FontWeight="Bold"/>
+        <Label x:Name="TimerLabel2" Content="Black" Grid.Column="2" HorizontalAlignment="Left" Margin="221,167,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold"/>
+        <Image x:Name="SuggestMove_img" Grid.Column="2" HorizontalAlignment="Left" Height="72" Margin="207,290,0,0" VerticalAlignment="Top" Width="65"/>
 
 
     </Grid>

@@ -20,16 +20,21 @@ namespace Project_ChessWithInterface
     /// </summary>
     public partial class SaveGameDialog : Window
     {
-        public SaveGameDialog()
+        public SaveGameDialog(int GameMode)
         {
             InitializeComponent();
+            GameModel = GameMode;
+            SaveGameWindow.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
         }
         
+
+            
         private void btn_Submit_Click(object sender, RoutedEventArgs e)
         {
-            SaveGame();
+            SaveGame(GameModel);
         }
-        public void SaveGame()
+        public static int GameModel = 0;
+        public void SaveGame(int GameMode)//Creates a .txt file with a chosen name by the user. This file contains status of all the squares on the board, time remaining on the timers and the game mode
         {
             string ans = txt_FileNameForSave.Text;
 
@@ -42,7 +47,7 @@ namespace Project_ChessWithInterface
                 temp.RemoveAt(temp.Count - 1);
                 temp.RemoveAt(temp.Count - 1);
                 path = String.Join("\\", temp);
-                path += $"\\Saves\\{ans}.bin";
+                path += $"\\Saves\\{ans}.txt";
                 bool FileExists = File.Exists(path);
                 Globals.PathToSave = path;
                 if (FileExists == true)
@@ -55,29 +60,40 @@ namespace Project_ChessWithInterface
                     t.Close();
 
 
-                    using (FileStream stream = new FileStream(path, FileMode.Open))
-                    {
-                        using (BinaryWriter writer = new BinaryWriter(stream))
-                        {
-                            for (int i = 0; i < 64; i++)
-                            {
-                                writer.Write($"{i}={Globals.Board[i]}");
-                            }
-                            if (Globals.WhitesTurn == true)
-                            {
-                                writer.Write("true");
-                            }
-                            else
-                            {
-                                writer.Write("false");
-                            }
-                            for (int i = 0; i < Globals.MoveRecord.Count; i++)
-                            {
-                                writer.Write(Globals.MoveRecord[i]);
-                            }
 
-                        }
+                    List<string> ToWrite = new List<string>();
+                    for (int i = 0; i < 64; i++)
+                    {
+                        ToWrite.Add($"{i}={Globals.Board[i]}");
                     }
+                    if (Globals.WhitesTurn == true)
+                    {
+                        ToWrite.Add("true");
+                    }
+                    else
+                    {
+                        ToWrite.Add("false");
+                    }
+                    for (int i = 0; i < Globals.MoveRecord.Count; i++)
+                    {
+                        ToWrite.Add(Globals.MoveRecord[i]);
+                    }
+                    string AI = "";
+                    if (Globals.AI == null)
+                    {
+                        AI = "null";
+                    }
+                    else
+                    {
+                        AI = Globals.AI;
+                    }
+                    ToWrite.Add(AI);
+                    ToWrite.Add(Convert.ToString(Globals.PrimePlayerTimerTimeSeconds));
+                    ToWrite.Add(Convert.ToString(Globals.OtherPlayerTimerTimeSeconds));
+                    ToWrite.Add(Convert.ToString(GameMode));
+                    File.WriteAllLines(path, ToWrite);
+
+
                     MessageBox.Show("Save file was successfuly created");
                     this.Close();
                 }

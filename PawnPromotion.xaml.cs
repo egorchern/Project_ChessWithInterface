@@ -22,6 +22,7 @@ namespace Project_ChessWithInterface
         public PawnPromotion()
         {
             InitializeComponent();
+            PawnPromotionWindow.Icon = new BitmapImage(new Uri(Globals.PathToResources + "\\ChessIcon.png"));
             string colorSubString = "";
             if(Globals.WhitesTurn == true)
             {
@@ -31,51 +32,51 @@ namespace Project_ChessWithInterface
             {
                 colorSubString = "Black";
             }
-            btn0.Content = new Image
+            Queen_btn.Content = new Image
             {
-                Source = new BitmapImage(new Uri(Globals.pathToResources + "\\" + colorSubString + "Queen.png")),
+                Source = new BitmapImage(new Uri(Globals.PathToResources + "\\" + colorSubString + "Queen.png")),
                 VerticalAlignment = VerticalAlignment.Center
             };
-            btn1.Content = new Image
+            Rook_btn.Content = new Image
             {
-                Source = new BitmapImage(new Uri(Globals.pathToResources + "\\" + colorSubString + "Rook.png")),
+                Source = new BitmapImage(new Uri(Globals.PathToResources + "\\" + colorSubString + "Rook.png")),
                 VerticalAlignment = VerticalAlignment.Center
             };
-            btn2.Content = new Image
+            Bishop_btn.Content = new Image
             {
-                Source = new BitmapImage(new Uri(Globals.pathToResources + "\\" + colorSubString + "Bishop.png")),
+                Source = new BitmapImage(new Uri(Globals.PathToResources + "\\" + colorSubString + "Bishop.png")),
                 VerticalAlignment = VerticalAlignment.Center
             };
-            btn3.Content = new Image
+            Knight_btn.Content = new Image
             {
-                Source = new BitmapImage(new Uri(Globals.pathToResources + "\\" + colorSubString + "Knight.png")),
+                Source = new BitmapImage(new Uri(Globals.PathToResources + "\\" + colorSubString + "Knight.png")),
                 VerticalAlignment = VerticalAlignment.Center
             };
-            btn0.Click += Btn0_Click;
-            btn1.Click += Btn1_Click;
-            btn2.Click += Btn2_Click;
-            btn3.Click += Btn3_Click;
+            Queen_btn.Click += QueenPromotion;
+            Rook_btn.Click += RookPromotion;
+            Bishop_btn.Click += BishopPromotion;
+            Knight_btn.Click += KnightPromotion;
         }
 
-        private void Btn3_Click(object sender, RoutedEventArgs e)
+        private void KnightPromotion(object sender, RoutedEventArgs e)//sets the global variable for promotion to knight
         {
             Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 3 };
             this.Close();
         }
 
-        private void Btn2_Click(object sender, RoutedEventArgs e)
+        private void BishopPromotion(object sender, RoutedEventArgs e)//sets the global variable for promotion to bishop
         {
             Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 2 };
             this.Close();
         }
 
-        private void Btn1_Click(object sender, RoutedEventArgs e)
+        private void RookPromotion(object sender, RoutedEventArgs e)//sets the global variable for promotion to rook
         {
             Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 1 };
             this.Close();
         }
 
-        private void Btn0_Click(object sender, RoutedEventArgs e)
+        private void QueenPromotion(object sender, RoutedEventArgs e)//sets the global variable for promotion to queen 
         {
             Globals.PositionOfPawnToBePromotedAndPiece = new List<int> { Globals.PositionOfPawnToBePromotedAndPiece[0], 0 };
             this.Close();
